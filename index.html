@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic & Creative Designer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Anek+Kannada:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Anek Kannada', sans-serif;
+            background: var(--gradient);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .hero {
+            text-align: center;
+            padding: 80px 20px;
+            color: white;
+        }
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-shadow: 0 3px 6px rgba(0,0,0,0.15);
+        }
+        .hero p {
+            font-size: 1.25rem;
+            max-width: 700px;
+            margin: 0 auto 30px auto;
+            opacity: 0.9;
+        }
+        .cta-button {
+            display: inline-block;
+            background: white;
+            color: var(--primary);
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            color: var(--secondary);
+        }
+        .main-content {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            padding: 50px;
+            margin-top: -40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        .preview-image {
+            width: 100%;
+            max-width: 800px;
+            display: block;
+            margin: 0 auto 50px auto;
+            border-radius: 12px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+        .features-section h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            color: var(--dark);
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+        .feature-card {
+            background: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        .feature-card .icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .feature-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+        .feature-card p {
+            font-size: 1rem;
+            color: #6c757d;
+        }
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: white;
+            opacity: 0.8;
+        }
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .hero p { font-size: 1.1rem; }
+            .main-content { padding: 30px; }
+            .features-section h2 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header class="hero">
+            <h1>Infographic & Creative Designer</h1>
+            <p>A powerful, browser-based tool to generate beautiful infographics, charts, tables, and more for your articles and social media.</p>
+            <a href="creator.html" class="cta-button">Launch Tool <i class="fas fa-arrow-right"></i></a>
+        </header>
+
+        <main class="main-content">
+            <img src="https://placehold.co/1000x600/ffffff/cccccc?text=Tool+Screenshot" alt="Screenshot of the infographic creator tool" class="preview-image">
+
+            <section class="features-section">
+                <h2>Features</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="icon"><i class="fas fa-list-ol"></i></div>
+                        <h3>Process & Lists</h3>
+                        <p>Create step-by-step process flows and visually appealing icon lists.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="icon"><i class="fas fa-table"></i></div>
+                        <h3>Text to Table</h3>
+                        <p>Instantly convert your raw text data into clean, structured HTML tables.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="icon"><i class="fas fa-chart-pie"></i></div>
+                        <h3>Data Charts</h3>
+                        <p>Generate beautiful and responsive Bar and Pie charts from your data.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="icon"><i class="fas fa-stream"></i></div>
+                        <h3>Timelines</h3>
+                        <p>Design stunning horizontal or vertical timelines to showcase milestones.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="icon"><i class="fas fa-tags"></i></div>
+                        <h3>Data Cards</h3>
+                        <p>Display key stats, prices, or data points in stylish, easy-to-read cards.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="icon"><i class="fas fa-download"></i></div>
+                        <h3>High-Res Export</h3>
+                        <p>Download your creations as high-quality JPG or transparent PNG images.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Avinash Vagarnal Designs. All Rights Reserved.</p>
+    </footer>
+
+</body>
+</html>

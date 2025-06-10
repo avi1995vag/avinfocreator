@@ -1,0 +1,1557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AV AI CREATIVES</title>
+    <link href="https://fonts.googleapis.com/css2?family=Anek+Kannada:wght@100;200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --accent: #f093fb;
+            --success: #4ecdc4;
+            --warning: #f7b731;
+            --danger: #fc4a1a;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            
+            --primary-dark: #4b5fcc;
+            --secondary-dark: #5b388a;
+            --accent-dark: #d36fe0;
+            --success-dark: #3aa99b;
+            --warning-dark: #c58d27;
+            --danger-dark: #c93a15;
+
+            --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+
+            --global-section-header-color: var(--gradient);
+            --global-header-color: var(--primary);
+            --global-paragraph-color: var(--dark);
+            --global-small-text-color: #555;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Anek Kannada', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; color: var(--dark); display: flex; flex-direction: column;}
+        .container { display: flex; flex-grow: 1; overflow: hidden; }
+        .sidebar { width: 400px; background: rgba(255, 255, 255, 0.97); backdrop-filter: blur(8px); border-radius: 0 20px 20px 0; padding: 20px; overflow-y: auto; box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37); height: 100vh; }
+        .main-content-wrapper { flex: 1; display: flex; flex-direction: column; overflow-y: auto; height: 100vh; }
+        .main-content { flex: 1; padding: 15px; overflow: auto; display: flex; justify-content: center; align-items: flex-start; }
+        .logo { text-align: center; margin-bottom: 25px; }
+        .logo h1 { font-weight: 800; background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 22px; }
+        .tab-container { margin-bottom: 15px; }
+        .tab-buttons { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; }
+        .tab-btn { padding: 7px 10px; border: none; border-radius: 18px; background: var(--light); color: var(--dark); font-size: 11px; font-weight: 500; cursor: pointer; transition: all 0.3s ease; font-family: 'Anek Kannada', sans-serif; }
+        .tab-btn.active, .preset-btn.active { background: var(--gradient); color: white; transform: translateY(-1px); box-shadow: 0 3px 12px rgba(102, 126, 234, 0.35); }
+        .tab-content { display: none; background: rgba(255, 255, 255, 0.85); border-radius: 12px; padding: 12px; margin-bottom: 12px; }
+        .tab-content.active { display: block; }
+        .control-group { margin-bottom: 12px; }
+        .control-group h4 { margin-top: 12px; margin-bottom: 6px; color: var(--primary); font-weight: 600; border-bottom: 1px solid #ddd; padding-bottom: 3px; font-size: 1em; }
+        .control-label { display: block; margin-bottom: 4px; font-weight: 600; font-size: 13px; color: var(--dark); }
+        .control-label small { font-weight: 400; font-size: 0.8em; color: #666; }
+        .control-input, textarea.control-input, select.control-input { width: 100%; padding: 7px 10px; border: 1px solid #d1d9e0; border-radius: 8px; font-family: 'Anek Kannada', sans-serif; font-size: 13px; transition: all 0.3s ease; }
+        input[type="file"].control-input { padding: 3px; font-size: 12px; }
+        textarea.control-input { min-height: 50px; }
+        .control-input:focus, textarea.control-input:focus, select.control-input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.15); }
+        .color-row { display: flex; gap: 8px; align-items: center; }
+        .color-input { width: 45px; height: 30px; border: none; border-radius: 6px; cursor: pointer; padding: 1px; }
+        .btn { padding: 8px 15px; border: none; border-radius: 8px; font-family: 'Anek Kannada', sans-serif; font-weight: 600; cursor: pointer; transition: all 0.3s ease; margin: 4px; font-size: 13px; }
+        .btn-primary { background: var(--gradient); color: white; }
+        .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3); }
+        .btn-success { background: var(--success); color: white; }
+        .btn-success:hover { background: var(--success-dark); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(78, 205, 196, 0.4); }
+        .alert { padding: 10px 15px; border-radius: 8px; margin-top: 15px; font-weight: 500; border: 1px solid transparent; }
+        .alert-success { background-color: #d4edda; color: #155724; border-color: #c3e6cb; }
+
+        .canvas-area { background: #f0f2f5; border-radius: 8px; padding: 30px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); overflow: auto; width: 100%; display: flex; justify-content: center; align-items: center; }
+        .infographic { position: relative; background: white; box-shadow: 0 0 10px rgba(0,0,0,0.15); overflow: hidden; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        .infographic > h1.section-title { text-align: center; margin: 0 auto 20px auto; max-width: 90%; font-weight: 800; word-break: break-word; }
+        .infographic h2, .infographic h3:not(.step-content h3), .infographic h4:not(.hierarchy-node h4) { color: var(--global-header-color); }
+        .infographic p:not(.step-content p):not(.hierarchy-node p) { color: var(--global-paragraph-color); }
+        .infographic small, .infographic .small-text { color: var(--global-small-text-color); }
+
+        /* Generated Table Styles */
+        .generated-table-wrapper { width: 100%; overflow-x: auto;}
+        .generated-table { width: 100%; border-collapse: collapse; font-size: 0.9em; }
+        .generated-table th, .generated-table td { padding: 10px 12px; text-align: left; border: 1px solid #ddd; }
+        .generated-table th { background: var(--light); font-weight: 600; color: var(--dark); }
+        .generated-table tr:nth-child(even) { background: #f9f9f9; }
+
+        /* Process Steps */
+        .process-step { display: flex; align-items: center; margin: 15px 0; padding: 12px; border-radius: 10px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; position: relative; overflow: hidden; box-shadow: 0 3px 8px rgba(0,0,0,0.1); width: 100%; }
+        .process-step::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="1.5" fill="rgba(255,255,255,0.08)"/></svg>'); background-size: 15px 15px; opacity: 0.7; }
+        .step-number { width: 45px; height: 45px; border-radius: 50%; background: rgba(255, 255, 255, 0.2); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 20px; margin-right: 15px; backdrop-filter: blur(3px); flex-shrink: 0; border: 1px solid rgba(255,255,255,0.2); }
+        .step-number i { font-size: 20px; }
+        .step-content { flex-grow: 1; min-width: 0; z-index: 1; }
+        .step-content h3 { font-weight: 600; margin-bottom: 5px; word-break: break-word; color: white !important; }
+        .step-content p { font-weight: 400; opacity: 0.9; font-size: 0.85em; word-break: break-word; color: white !important; }
+        
+        /* Statistical Cards */
+        .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 15px 0; width: 100%;}
+        .stat-card { background: linear-gradient(135deg, var(--success), var(--success-dark)); color: white; padding: 15px; border-radius: 12px; text-align: center; position: relative; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
+        .stat-card:nth-child(2n) { background: linear-gradient(135deg, var(--accent), var(--accent-dark)); }
+        .stat-card:nth-child(3n) { background: linear-gradient(135deg, var(--warning), var(--warning-dark)); }
+        .stat-number { font-weight: 700; line-height: 1.1; margin-bottom: 8px; word-break: break-all; }
+        .stat-label { font-weight: 500; opacity: 0.9; word-break: break-word; }
+        
+        /* Informational Blocks */
+        .info-block-item { display: flex; gap: 15px; align-items: flex-start; padding: 15px; background: rgba(255,255,255,0.03); border: 1px solid rgba(0,0,0,0.05); border-radius: 8px; margin: 15px 0; overflow: hidden; width: 100%;}
+        .info-block-item.image-left { flex-direction: row; }
+        .info-block-item.image-right { flex-direction: row-reverse; } 
+        .info-block-image-container { flex-shrink: 0; display: flex; justify-content: center; align-items: center; overflow: hidden; border-radius: 6px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); position:relative; }
+        .info-block-image-container img { display: block; border-radius: 6px; object-fit: cover; width: 100%; height: 100%; }
+        .info-block-image-container.size-small { width: 70px; height: 70px; } 
+        .info-block-image-container.size-medium { width: 100px; height: 100px; } 
+        .info-block-image-container.size-large { width: 130px; height: 130px; } 
+        .info-block-text { flex-grow: 1; min-width: 0; }
+        .info-block-text h2 { margin-bottom: 6px; word-break: break-word; } 
+        .info-block-text p { line-height: 1.5; word-break: break-word; } 
+
+        /* Timeline (Vertical) */
+        .timeline-vertical-container { position: relative; padding: 15px 0; display:flex; flex-direction:column; align-items:center; width: 100%;}
+        .timeline-vertical-container::before { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 3px; background: var(--gradient); transform: translateX(-50%); border-radius: 2px; }
+        .timeline-vertical-item { display: flex; margin: 20px 0; position: relative; width: calc(50% - 20px); max-width: 320px; } 
+        .timeline-vertical-item:nth-child(odd) { align-self: flex-start; padding-right: 25px; } 
+        .timeline-vertical-item:nth-child(even) { align-self: flex-end; flex-direction: row-reverse; padding-left: 25px; } 
+        .timeline-vertical-content { flex: 1; padding: 12px; background: white; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); min-width: 0; border-left: 3px solid var(--primary); }
+        .timeline-vertical-item:nth-child(even) .timeline-vertical-content { border-left: none; border-right: 3px solid var(--secondary); }
+        .timeline-vertical-content h3 { word-break: break-word; color: var(--accent) !important; margin-bottom: 3px; text-transform: uppercase; letter-spacing: 0.5px;} 
+        .timeline-vertical-content h4 { word-break: break-word; margin-bottom: 5px; font-weight:600;} 
+        .timeline-vertical-content p { word-break: break-word; line-height: 1.4;} 
+        .timeline-vertical-dot { width: 18px; height: 18px; border-radius: 50%; background: white; border: 4px solid var(--primary); position: absolute; top: 15px; z-index: 2; box-shadow: 0 0 0 3px white; }
+        .timeline-vertical-item:nth-child(odd) .timeline-vertical-dot { left: 100%; transform: translateX(-50%); }
+        .timeline-vertical-item:nth-child(even) .timeline-vertical-dot { left: 0%; transform: translateX(-50%); border-color: var(--secondary); }
+
+        /* Timeline (Horizontal) */
+        .timeline-horizontal-wrapper { width:100%; overflow-x:auto; padding: 10px 0;}
+        .timeline-horizontal-container { display: flex; flex-direction: column; position: relative; padding: 30px 10px; min-width: fit-content; }
+        .timeline-horizontal-line { position: absolute; left: 0; right: 0; top: 50%; height: 3px; background: var(--gradient); transform: translateY(-50%); z-index: 1; min-width: 100%; border-radius: 2px;}
+        .timeline-horizontal-events { display: flex; position: relative; z-index: 2; padding: 0 15px; }
+        .timeline-horizontal-item { display: flex; flex-direction: column; align-items: center; min-width: 130px; margin: 0 10px; position:relative; }
+        .timeline-horizontal-dot { width: 16px; height: 16px; border-radius: 50%; background: white; border: 3px solid var(--primary); margin-bottom: 8px; margin-top: 8px; z-index:3; box-shadow: 0 0 0 3px white;}
+        .timeline-horizontal-content { background: white; padding: 8px 10px; border-radius: 6px; box-shadow: 0 1px 6px rgba(0,0,0,0.1); text-align: center; width:100%; min-width: 0; border-top: 3px solid var(--primary); }
+        .timeline-horizontal-item:nth-child(odd) .timeline-horizontal-content { margin-bottom: 25px; }
+        .timeline-horizontal-item:nth-child(even) .timeline-horizontal-content { margin-top: 25px; border-top-color: var(--secondary); }
+        .timeline-horizontal-item:nth-child(odd) .timeline-horizontal-dot { order: 2; }
+        .timeline-horizontal-item:nth-child(even) .timeline-horizontal-dot { order: -1; border-color: var(--secondary); }
+        .timeline-horizontal-content h3 { color: var(--accent) !important; margin-bottom: 2px; word-break: break-all; text-transform: uppercase;}
+        .timeline-horizontal-content h4 { margin-bottom: 3px; word-break: break-all; font-weight:600;} 
+        .timeline-horizontal-content p { color: #555 !important; word-break: break-all; line-height: 1.3;} 
+
+        /* Chart Container */
+        .chart-container { margin: 20px 0; padding: 15px; background: white; border-radius: 8px; box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08); display: flex; flex-direction: column; width: 100%; max-width: 95%;}
+        .chart-container h3.chart-title {text-align: center; margin-bottom: 15px; font-weight: 700;} 
+        .chart-canvas-wrapper { position: relative; height: 250px; width: 100%; } 
+        
+        /* Dam Levels */
+        .dam-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin: 15px 0; width: 100%;}
+        .dam-card { padding: 15px; border-radius:10px; color:white; text-align:center; }
+        .dam-name { font-weight:600; margin-bottom:5px; color:white !important;}
+        .dam-level { font-weight:700; margin-bottom:5px; color:white !important;}
+        .dam-progress-bar-bg { width: 100%; height: 8px; background: rgba(255,255,255,0.3); border-radius: 4px; margin-top: 8px; overflow:hidden; }
+        .dam-progress-bar-fg { height: 100%; background: white; border-radius: 4px; }
+        .dam-capacity-info { margin-top:8px; opacity:0.9; color:white !important;}
+        .dam-progress-label { margin-top: 5px; opacity: 0.8; color:white !important;}
+
+        /* Price Cards */
+        .price-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin: 15px 0; width: 100%;}
+        .price-card { padding: 18px; border-radius: 10px; text-align: center; color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
+        .price-card * { color: white !important; } 
+        .price-card:nth-child(1) { background: linear-gradient(135deg, #FFD700, #FFA500); } 
+        .price-card:nth-child(2) { background: linear-gradient(135deg, #ffe26b, #ffbf36); } 
+        .price-card:nth-child(3) { background: linear-gradient(135deg, #C0C0C0, #A9A9A9); } 
+        .price-label { font-weight: 600; margin-bottom: 8px; }
+        .price-value { font-weight: 700; margin-bottom: 5px; }
+        .price-unit { opacity: 0.9; margin-bottom: 10px;}
+        .price-update-info { opacity: 0.8; margin-top:10px; }
+
+        /* Comparison */
+        .comparison-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin: 15px 0; width: 100%;}
+        .comparison-card { background: white; border-radius: 10px; padding: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); border-top: 4px solid var(--primary); }
+        .comparison-card:nth-child(even) { border-top-color: var(--secondary); }
+        .comparison-card h3 { margin-bottom: 8px; text-align:center; } 
+        .comparison-card .price { color: var(--accent) !important; margin-bottom: 15px; text-align:center; font-weight:600; }
+        .comparison-card ul { list-style: none; padding: 0; margin:0; }
+        .comparison-card ul li { padding: 8px 0; border-bottom: 1px solid #eee; display:flex; align-items:center; } 
+        .comparison-card ul li:last-child { border-bottom: none; }
+        .comparison-card ul li i { color: var(--success) !important; margin-right: 8px; }
+
+        /* Hierarchical */
+        .hierarchy-container { text-align: center; margin: 15px 0; width: 100%;}
+        .hierarchy-node { background: var(--primary); color: white; padding: 10px 15px; border-radius: 8px; display: inline-block; margin: 10px; min-width:150px; }
+        .hierarchy-node h4 { margin-bottom: 5px; color:white !important; }
+        .hierarchy-node p { opacity: 0.9; color:white !important; }
+        .hierarchy-children { margin-top: 15px; display:flex; justify-content:center; gap:15px; flex-wrap:wrap; }
+        .hierarchy-connector { width: 2px; height: 20px; background: #ccc; margin: 0 auto; } 
+
+        /* List */
+        .list-infographic-item { display: flex; align-items: flex-start; background: white; padding: 15px; border-radius: 8px; margin-bottom: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.07); width: 100%;}
+        .list-infographic-item .icon { font-size: 1.8em; color: var(--primary) !important; margin-right: 15px; min-width:30px; text-align:center; }
+        .list-infographic-item .text-content h4 { margin-bottom: 5px; font-weight:600; } 
+        .list-infographic-item .text-content p { line-height:1.4; } 
+
+        /* Coming Up Infographic */
+        .coming-up-infographic { display: flex; align-items: center; text-align: center; padding: 20px; width: 100%; position: relative; }
+        .coming-up-infographic .image-container { position:relative; width:100%; max-width: 80%; margin-bottom: 15px; } 
+        .coming-up-infographic .image-container.full-width-bg { max-width: 100%; height: 100%; position: absolute; top:0; left:0; z-index:0;}
+        .coming-up-infographic img.main-image { width: 100%; height: auto; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); object-fit: cover; max-height: 300px; display:block; }
+        .coming-up-infographic .image-container.full-width-bg img.main-image {border-radius:0; max-height:none; height:100%;}
+        .coming-up-infographic .text-content-area { z-index: 1; position:relative; width:100%; } 
+        .coming-up-infographic .header { font-weight: 700; } 
+        .coming-up-infographic .sub-header { font-weight: 500; } 
+        .coming-up-infographic .info-text { max-width: 90%; line-height: 1.5; margin-left:auto; margin-right:auto;} 
+        .coming-up-infographic .date-time { font-weight: 600; color: var(--accent) !important; background-color: rgba(255,255,255,0.8); padding: 8px 15px; border-radius: 20px; display: inline-block; box-shadow: 0 2px 5px rgba(0,0,0,0.1);}
+        
+        /* Branding on Image Overlay */
+        .image-brand-logo-overlay, .image-brand-text-overlay {
+            position: absolute;
+            z-index: 5; 
+            display: flex;
+            align-items: center;
+            padding: 5px 8px;
+            background-color: rgba(0, 0, 0, 0.4); 
+            border-radius: 4px;
+            pointer-events: none; 
+        }
+        .image-brand-logo-overlay img { max-height: 20px; width: auto; display: block; }
+        .image-brand-text-overlay span { font-family: 'Anek Kannada', sans-serif; font-weight: 500; }
+        
+        /* Positions for brand overlay elements */
+        .brand-pos-bottom-left { bottom: 10px; left: 10px; }
+        .brand-pos-bottom-right { bottom: 10px; right: 10px; }
+        .brand-pos-top-left { top: 10px; left: 10px; }
+        .brand-pos-top-right { top: 10px; right: 10px; }
+        .brand-pos-center { top: 50%; left: 50%; transform: translate(-50%, -50%); }
+
+        /* Footer & Action Buttons Area */
+        .actions-and-footer-area { padding: 15px 20px; text-align: center; background: rgba(0,0,0,0.1); }
+        .action-buttons-container { margin-bottom: 15px; }
+        .footer-note-container .footer-note { font-size: 0.8em; color: rgba(236, 240, 241, 0.8); }
+        .footer-note-container .control-input { width: 60%; max-width: 400px; margin: 5px auto 0 auto; font-size: 0.8em; background: rgba(255,255,255,0.1); color:white; border-color: rgba(255,255,255,0.3); }
+        .footer-note-container .control-input::placeholder { color: rgba(255,255,255,0.5); }
+
+
+        @media (max-width: 1200px) { .sidebar { width: 320px; } }
+        @media (max-width: 992px) { 
+            .container { flex-direction: column; height: auto; overflow-y: auto; }
+            .sidebar { width: 100%; border-radius: 0; max-height: none; height: auto; }
+            .main-content-wrapper { height: auto; }
+            .main-content { min-height: 50vh; padding: 10px; }
+            .canvas-area { height: auto; min-height: 350px; padding: 20px; align-items: flex-start; }
+        }
+        @media (max-width: 768px) {
+            .canvas-area { padding: 15px; }
+            .infographic { padding: 15px; } 
+            .infographic > h1.section-title { margin: 0 auto 15px auto; }
+            .timeline-vertical-container::before { left: 15px; } 
+            .timeline-vertical-item { width: calc(100% - 30px); align-self: flex-start !important; flex-direction: row !important; padding-left: 30px !important; margin-left: 15px; padding-right:0 !important; }
+            .timeline-vertical-item .timeline-vertical-dot { left: 0px; transform: translateX(-50%); top: 15px; width:16px; height:16px; }
+            .timeline-vertical-content { margin-left: 10px; padding: 10px; }
+            .timeline-vertical-item:nth-child(even) { flex-direction: row !important; } 
+            .timeline-vertical-item:nth-child(even) .timeline-vertical-content { border-left: 3px solid var(--secondary); border-right: none; }
+            .info-block-item { flex-direction: column !important; gap: 8px; margin: 10px 0; padding: 10px; }
+            .info-block-image-container { margin: 0 auto 10px auto; }
+            .timeline-horizontal-events { padding: 0 5px; }
+            .timeline-horizontal-item { min-width: 120px; margin: 0 5px;}
+            .stat-grid { grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap:10px; }
+            .dam-grid { grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap:10px; }
+            .price-grid { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap:10px; }
+            .comparison-grid { grid-template-columns: 1fr; gap:15px; } 
+            .coming-up-infographic .header { font-size: 1.5em; }
+            .coming-up-infographic .sub-header { font-size: 1.1em; }
+            .coming-up-infographic .info-text { font-size: 0.9em; }
+            .coming-up-infographic .date-time { font-size: 0.9em; padding: 6px 12px;}
+            .coming-up-infographic.layout-image-left .image-container,
+            .coming-up-infographic.layout-image-right .image-container { max-width: 40%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="logo">
+                <h1><i class="fas fa-chart-line"></i> AV AI CREATIVES</h1>
+                <p>Create stunning infographics</p>
+            </div>
+
+            <div class="tab-container">
+                 <div class="tab-buttons">
+                    <button class="tab-btn active" data-tab="process">Process</button>
+                    <button class="tab-btn" data-tab="statistical">Stats</button>
+                    <button class="tab-btn" data-tab="textToTable">Text to Table</button>
+                    <button class="tab-btn" data-tab="informational">Info</button>
+                    <button class="tab-btn" data-tab="timeline">Timeline</button>
+                    <button class="tab-btn" data-tab="barChart">Bar Chart</button>
+                    <button class="tab-btn" data-tab="pieChart">Pie Chart</button>
+                    <button class="tab-btn" data-tab="dams">Dams</button>
+                    <button class="tab-btn" data-tab="prices">Prices</button>
+                    <button class="tab-btn" data-tab="comparison">Compare</button>
+                    <button class="tab-btn" data-tab="hierarchical">Hierarchy</button>
+                    <button class="tab-btn" data-tab="list">List</button>
+                    <button class="tab-btn" data-tab="comingUp">Coming Up</button>
+                </div>
+
+                <div class="tab-content active" id="process">
+                    <h3>Process Infographic</h3>
+                    <div class="control-group"> <label>Section Header</label> <input type="text" class="control-input" id="processSectionTitle" value="Our Workflow"> </div>
+                    <div class="control-group"> <label>Step Titles <small>(CSV)</small></label> <textarea class="control-input" id="processStepTitlesCSV" rows="2">Discovery,Design,Development,Deployment</textarea> </div>
+                    <div class="control-group"> <label>Step Descriptions <small>(CSV)</small></label> <textarea class="control-input" id="processStepDescsCSV" rows="3">Research & planning phase.,Wireframing & UI design concepts.,Coding & building the application.,Final testing & official launch.</textarea> </div>
+                    <div class="control-group"> <label>Step Icon <small>(FA class or text, CSV)</small></label> <input type="text" class="control-input" id="processStepIconsCSV" placeholder="fas fa-search,fas fa-palette,fas fa-code,fas fa-rocket"> </div>
+                </div>
+
+                <div class="tab-content" id="statistical">
+                    <h3>Statistical Infographic</h3>
+                    <div class="control-group"> <label>Section Header</label> <input type="text" class="control-input" id="statSectionTitle" value="Key Performance Indicators"> </div>
+                    <div class="control-group"> <label>Stat Values <small>(CSV)</small></label> <textarea class="control-input" id="statValuesCSV" rows="2">85%,2.5M,150+,9.2/10</textarea> </div>
+                    <div class="control-group"> <label>Stat Labels <small>(CSV)</small></label> <textarea class="control-input" id="statLabelsCSV" rows="2">Success Rate,Active Users,Countries Reached,Avg. Rating</textarea> </div>
+                </div>
+                
+                <div class="tab-content" id="textToTable">
+                    <h3>Text to Table Infographic</h3>
+                    <div class="control-group"> <label>Section Header</label> <input type="text" class="control-input" id="tableSectionTitle" value="Data Overview"> </div>
+                     <div class="control-group">
+                        <label for="tableInputText">Input Text Data:</label>
+                        <textarea id="tableInputText" class="control-input" rows="5" placeholder="Paste text here. Use tabs, commas, or vertical format."></textarea>
+                    </div>
+                    <div class="control-group">
+                        <label for="tableDataFormat">Data Format:</label>
+                        <select id="tableDataFormat" class="control-input" onchange="toggleTableFormatOptions()">
+                            <option value="tabular">Tabular (Columns)</option>
+                            <option value="vertical">Vertical (Key: Value)</option>
+                        </select>
+                    </div>
+                    <div class="control-group" id="tableSeparatorGroup">
+                        <label for="tableSeparator">Column Separator:</label>
+                        <select id="tableSeparator" class="control-input">
+                            <option value="\t">Tab</option>
+                            <option value=",">Comma (,)</option>
+                            <option value="|">Pipe (|)</option>
+                            <option value=";">Semicolon (;)</option>
+                        </select>
+                    </div>
+                    <div class="control-group" id="tableVerticalOptions" style="display: none;">
+                        <label for="tableFieldSeparator">Field-Value Separator:</label>
+                        <select id="tableFieldSeparator" class="control-input">
+                            <option value=" : ">Space-Colon-Space</option>
+                            <option value=":">Colon</option>
+                            <option value=" - ">Space-Dash-Space</option>
+                            <option value="=">Equals</option>
+                        </select>
+                    </div>
+                    <div class="control-group" id="tableHasHeaderGroup">
+                        <label style="display: flex; align-items: center; gap: 8px;">
+                            <input type="checkbox" id="tableHasHeader" checked style="width: auto;"> First row is header
+                        </label>
+                    </div>
+                    <div class="control-group">
+                        <button class="btn btn-success" onclick="copyGeneratedTable()" style="width: 100%;">
+                            <i class="fas fa-copy"></i> Copy Table for Pasting
+                        </button>
+                    </div>
+                     <div id="tableAlertContainer"></div>
+                </div>
+
+                <div class="tab-content" id="informational">
+                    <h3>Informational Infographic</h3>
+                    <div class="control-group"> <label>Section Header</label> <input type="text" class="control-input" id="infoSectionTitle" value="Important Information"> </div>
+                    <div class="control-group"> <label>Number of Info Blocks (1-5)</label> <input type="number" class="control-input" id="infoBlockCount" value="1" min="1" max="5"> </div>
+                    <div id="infoBlockControlsContainer"></div>
+                </div>
+
+                <div class="tab-content" id="timeline">
+                    <h3>Timeline Infographic</h3>
+                    <div class="control-group"> <label>Section Header</label> <input type="text" class="control-input" id="timelineSectionTitle" value="Project Milestones"> </div>
+                    <div class="control-group"> <label>Layout Type</label> <select class="control-input" id="timelineLayoutType"> <option value="vertical">Vertical (Alternating)</option> <option value="horizontal">Horizontal (Scrollable)</option> </select> </div>
+                    <div class="control-group"> <label>Event Dates/Subtitles <small>(CSV)</small></label> <textarea class="control-input" id="timelineEventDatesCSV" rows="2">2020,Q1 '21,Jan '22,Dec '23</textarea> </div>
+                    <div class="control-group"> <label>Event Titles <small>(CSV)</small></label> <textarea class="control-input" id="timelineEventTitlesCSV" rows="2">Foundation,Product Launch,Version 2.0,Global Expansion</textarea> </div>
+                    <div class="control-group"> <label>Event Descriptions <small>(CSV)</small></label> <textarea class="control-input" id="timelineEventDescsCSV" rows="3">Company officially established and initial funding secured.,Our flagship product is introduced to the market.,Major update with new features and improved performance.,Services expanded to new international regions.</textarea> </div>
+                </div>
+
+                <div class="tab-content" id="barChart">
+                    <h3>Bar Chart Infographic</h3>
+                    <div class="control-group"> <label>Section Header (Optional)</label> <input type="text" class="control-input" id="barChartSectionTitle" value="Data Analysis"> </div>
+                    <div class="control-group"> <label>Chart Title</label> <input type="text" class="control-input" id="barChartTitle" value="Monthly Revenue (₹ Lakhs)"> </div>
+                    <div class="control-group"> <label>Data Labels <small>(CSV)</small></label> <input type="text" class="control-input" id="barChartLabelsCSV" value="Jan,Feb,Mar,Apr,May,Jun"> </div>
+                    <div class="control-group"> <label>Data Values <small>(CSV)</small></label> <input type="text" class="control-input" id="barChartDataCSV" value="120,190,150,250,220,300"> </div>
+                </div>
+
+                <div class="tab-content" id="pieChart">
+                    <h3>Pie Chart Infographic</h3>
+                    <div class="control-group"> <label>Section Header (Optional)</label> <input type="text" class="control-input" id="pieChartSectionTitle" value="Distribution Data"> </div>
+                    <div class="control-group"> <label>Chart Title</label> <input type="text" class="control-input" id="pieChartUserTitle" value="User Demographics (%)"> </div>
+                    <div class="control-group"> <label>Data Labels <small>(CSV)</small></label> <input type="text" class="control-input" id="pieChartLabelsCSV" value="Mobile,Desktop,Tablet,Other"> </div>
+                    <div class="control-group"> <label>Data Values <small>(CSV)</small></label> <input type="text" class="control-input" id="pieChartDataCSV" value="60,25,10,5"> </div>
+                </div>
+                
+                <div class="tab-content" id="comparison">
+                    <h3>Comparison Infographic</h3>
+                     <div class="control-group"> <label>Section Header</label> <input type="text" class="control-input" id="compareSectionTitle" value="Choose Your Plan"> </div>
+                    <h4>Item 1</h4>
+                    <div class="control-group"> <label>Header</label> <input type="text" class="control-input" id="compareItem1Title" value="Basic Plan"> </div>
+                    <div class="control-group"> <label>Sub-Header/Price</label> <input type="text" class="control-input" id="compareItem1Price" value="₹999 / month"> </div>
+                    <div class="control-group"> <label>Features <small>(CSV)</small></label> <textarea class="control-input" id="compareItem1FeaturesCSV" rows="2">5 Projects,10GB Storage,Email Support,Community Access</textarea> </div>
+                    <h4>Item 2</h4>
+                    <div class="control-group"> <label>Header</label> <input type="text" class="control-input" id="compareItem2Title" value="Pro Plan"> </div>
+                    <div class="control-group"> <label>Sub-Header/Price</label> <input type="text" class="control-input" id="compareItem2Price" value="₹1999 / month"> </div>
+                    <div class="control-group"> <label>Features <small>(CSV)</small></label> <textarea class="control-input" id="compareItem2FeaturesCSV" rows="2">Unlimited Projects,100GB Storage,Priority Support,API Access,Advanced Analytics</textarea> </div>
+                </div>
+
+                <div class="tab-content" id="hierarchical">
+                    <h3>Hierarchical Infographic</h3>
+                    <div class="control-group"> <label>Section Header</label> <input type="text" class="control-input" id="hierarchySectionTitle" value="Organizational Chart"> </div>
+                    <h4>Level 1 (Top)</h4>
+                    <div class="control-group"> <label>Title</label> <input type="text" class="control-input" id="hierarchyL1Title" value="CEO"> </div>
+                    <div class="control-group"> <label>Description</label> <input type="text" class="control-input" id="hierarchyL1Desc" value="Overall strategy & vision"> </div>
+                    <h4>Level 2 - Children of Level 1 <small>(CSV for titles)</small></h4>
+                    <div class="control-group"> <label>Titles</label> <textarea class="control-input" id="hierarchyL2TitlesCSV" rows="1">CTO,COO,CMO</textarea> </div>
+                    <div class="control-group"> <label>Descriptions <small>(CSV, matches titles)</small></label> <textarea class="control-input" id="hierarchyL2DescsCSV" rows="2">Tech & Engineering,Operations,Marketing & Sales</textarea> </div>
+                     <p style="font-size:0.8em; opacity:0.7;">Simple 2-level hierarchy.</p>
+                </div>
+
+                <div class="tab-content" id="list">
+                     <h3>List Infographic</h3>
+                    <div class="control-group"> <label>Section Header</label> <input type="text" class="control-input" id="listSectionTitle" value="Key Advantages"> </div>
+                    <div class="control-group"> <label>Item Titles <small>(CSV)</small></label> <textarea class="control-input" id="listItemTitlesCSV" rows="2" placeholder="Title 1,Title 2,...">Innovative Solutions,Expert Team,Client-Centric Focus,Proven Results</textarea> </div>
+                    <div class="control-group"> <label>Item Descriptions <small>(CSV)</small></label> <textarea class="control-input" id="listItemDescsCSV" rows="3" placeholder="Desc 1,Desc 2,...">Cutting-edge technology and approaches.,Highly skilled and experienced professionals.,We prioritize your needs and goals above all.,A track record of delivering successful outcomes.</textarea> </div>
+                    <div class="control-group"> <label>Item Icons <small>(Optional CSV: FA class or text)</small></label> <textarea class="control-input" id="listItemIconsCSV" rows="1" placeholder="fas fa-lightbulb,fas fa-users,fas fa-bullseye,fas fa-chart-line">fas fa-lightbulb,fas fa-users,fas fa-bullseye,fas fa-chart-line</textarea> </div>
+                </div>
+                
+                <div class="tab-content" id="dams">
+                    <h3>Dam Water Levels</h3>
+                    <div class="control-group"> <label>Section Header</label> <input type="text" class="control-input" id="damSectionTitle" value="Reservoir Status"> </div>
+                    <div class="control-group"> <label>Dam Names <small>(CSV)</small></label> <textarea class="control-input" id="damNamesCSV" rows="2">KRS Dam,Kabini Reservoir,Hemavathi Dam</textarea> </div>
+                    <div class="control-group"> <label>Present Levels <small>(CSV)</small></label> <textarea class="control-input" id="damPresentLevelsCSV" rows="2" placeholder="100,80,110">100,80,110</textarea> </div>
+                    <div class="control-group"> <label>Max Capacities <small>(CSV)</small></label> <textarea class="control-input" id="damMaxCapacitiesCSV" rows="2" placeholder="124.8,98.5,129.6">124.8,98.5,129.6</textarea> </div>
+                    <div class="control-group">
+                        <label class="control-label">Unit of Measurement</label>
+                        <select class="control-input" id="damUnitOfMeasure">
+                            <option value="TMC">TMC</option>
+                            <option value="Feet">Feet</option>
+                            <option value="Meters">Meters</option>
+                            <option value="GL">GL (Giga Litres)</option>
+                        </select>
+                    </div>
+                    <div class="control-group"> <label>Progress Bar Label</label> <input type="text" class="control-input" id="damProgressLabel" value="Current Storage"> </div>
+                </div>
+
+                <div class="tab-content" id="prices">
+                    <h3>Gold & Silver Rates</h3>
+                    <div class="control-group"> <label>Section Header</label> <input type="text" class="control-input" id="priceSectionTitle" value="Precious Metal Prices"> </div>
+                    <h4>Item 1 (e.g., Gold 24K)</h4>
+                    <div class="control-group"> <label>Label</label> <input type="text" class="control-input" id="priceItem1Label" value="24K Gold"> </div>
+                    <div class="control-group"> <label>Rate (₹)</label> <input type="number" class="control-input" id="priceItem1Rate" value="72500"> </div>
+                    <div class="control-group"> <label>Unit</label> <input type="text" class="control-input" id="priceItem1Unit" value="per 10 grams"> </div>
+                    <h4>Item 2 (e.g., Gold 22K)</h4>
+                    <div class="control-group"> <label>Label</label> <input type="text" class="control-input" id="priceItem2Label" value="22K Gold"> </div>
+                    <div class="control-group"> <label>Rate (₹)</label> <input type="number" class="control-input" id="priceItem2Rate" value="68300"> </div>
+                    <div class="control-group"> <label>Unit</label> <input type="text" class="control-input" id="priceItem2Unit" value="per 10 grams"> </div>
+                    <h4>Item 3 (e.g., Silver)</h4>
+                    <div class="control-group"> <label>Label</label> <input type="text" class="control-input" id="priceItem3Label" value="Silver"> </div>
+                    <div class="control-group"> <label>Rate (₹)</label> <input type="number" class="control-input" id="priceItem3Rate" value="85500"> </div>
+                    <div class="control-group"> <label>Unit</label> <input type="text" class="control-input" id="priceItem3Unit" value="per kilogram"> </div>
+                    <div class="control-group"> <label>Update Info Label</label> <input type="text" class="control-input" id="priceUpdateLabel" value="Last updated: Today"> </div>
+                </div>
+
+                <div class="tab-content" id="comingUp">
+                    <h3>Coming Up Infographic</h3>
+                    <div class="control-group"> <label>Image URL</label> <input type="url" class="control-input" id="comingUpImageUrl" placeholder="https://placehold.co/600x300/667eea/white?text=Event+Image"> </div>
+                    <div class="control-group"> <label>Upload Image</label> <input type="file" class="control-input" id="comingUpImageUpload" accept="image/*"></div>
+                    <div class="control-group"> <label>Image Position</label> 
+                        <select class="control-input" id="comingUpImagePosition">
+                            <option value="top" selected>Image Top, Text Below</option>
+                            <option value="bottom">Text Top, Image Below</option>
+                            <option value="left">Image Left, Text Right</option>
+                            <option value="right">Text Left, Image Right</option>
+                            <option value="background">Image as Background, Text Overlay</option>
+                        </select>
+                    </div>
+                    <div class="control-group"> <label>Header</label> <input type="text" class="control-input" id="comingUpHeader" value="Exciting Event Ahead!"> </div>
+                    <div class="control-group"> <label>Sub-Header</label> <input type="text" class="control-input" id="comingUpSubHeader" value="Don't Miss Out"> </div>
+                    <div class="control-group"> <label>Information Text</label> <textarea class="control-input" id="comingUpInfoText" rows="3">Join us for an amazing experience. More details to follow soon. This will be a game-changer!</textarea> </div>
+                    <div class="control-group"> <label>Date</label> <input type="text" class="control-input" id="comingUpDate" value="October 26, 2025"> </div>
+                    <div class="control-group"> <label>Time</label> <input type="text" class="control-input" id="comingUpTime" value="7:00 PM IST"> </div>
+                </div>
+
+                <div class="control-group" style="padding-top: 10px; border-top: 1px solid #ccc;"> <h4>Global Settings</h4> </div>
+                <div class="control-group"> <label>Canvas Width (px)</label> <input type="number" class="control-input" id="canvasWidth" value="800" step="10"> </div>
+                <div class="control-group"> <label>Canvas Height (px)</label> <input type="number" class="control-input" id="canvasHeight" value="1000" step="10"> </div>
+                <div class="control-group"> <label>Canvas Presets</label> <div class="tab-buttons" id="canvasPresetButtons" style="flex-wrap: wrap; gap: 3px; justify-content: flex-start;"> <button class="tab-btn preset-btn" data-width="1080" data-height="1080">Insta Post (1:1)</button> <button class="tab-btn preset-btn" data-width="1080" data-height="1920">Story (9:16)</button> <button class="tab-btn preset-btn" data-width="1200" data-height="630">Facebook (1.91:1)</button> <button class="tab-btn preset-btn" data-width="1600" data-height="900">16:9 HD</button> <button class="tab-btn preset-btn" data-width="1000" data-height="1500">Pinterest (2:3)</button> <button class="tab-btn preset-btn active" data-width="800" data-height="1000">Default</button> </div> </div>
+                
+                <div class="control-group"> <label>Overall Font Weight</label> <select class="control-input" id="fontWeight"> <option value="400">Normal</option> <option value="500">Medium</option> <option value="600">Semi Bold</option> <option value="700">Bold</option> <option value="800">Extra Bold</option> </select> </div>
+                
+                <h5>Global Font Sizes (px)</h5>
+                <div class="control-group"> <label>Section Title Font Size</label> <input type="number" class="control-input" id="globalSectionTitleFontSize" value="28" min="10" max="72"> </div>
+                <div class="control-group"> <label>Header Font Size (H2, H3, etc.)</label> <input type="number" class="control-input" id="globalHeaderFontSize" value="20" min="8" max="48"> </div>
+                <div class="control-group"> <label>Paragraph Font Size</label> <input type="number" class="control-input" id="globalParagraphFontSize" value="14" min="6" max="36"> </div>
+                <div class="control-group"> <label>Small Text Font Size</label> <input type="number" class="control-input" id="globalSmallTextFontSize" value="11" min="5" max="24"> </div>
+
+                <h5>Global Text Colors</h5>
+                <div class="control-group"> <label>Section Title Color</label> <input type="color" class="control-input" id="globalSectionTitleColor" value="#667eea"> </div>
+                <div class="control-group"> <label>Header Color</label> <input type="color" class="control-input" id="globalHeaderColor" value="#764ba2"> </div>
+                <div class="control-group"> <label>Paragraph Color</label> <input type="color" class="control-input" id="globalParagraphColor" value="#2c3e50"> </div>
+                <div class="control-group"> <label>Small Text Color</label> <input type="color" class="control-input" id="globalSmallTextColor" value="#555555"> </div>
+                
+                <h5>Global Spacing (px)</h5>
+                <div class="control-group"> <label>Margin Below Section Title</label> <input type="number" class="control-input" id="globalSectionTitleMarginBottom" value="20" min="0"></div>
+                <div class="control-group"> <label>Margin Below Headers (H2,H3)</label> <input type="number" class="control-input" id="globalHeaderMarginBottom" value="10" min="0"></div>
+                <div class="control-group"> <label>Margin Below Sub-Headers</label> <input type="number" class="control-input" id="globalSubHeaderMarginBottom" value="8" min="0"></div>
+                <div class="control-group"> <label>Paragraph Line Height (e.g., 1.6)</label> <input type="number" class="control-input" id="globalParagraphLineHeight" value="1.6" step="0.1" min="1"></div>
+
+
+                <div class="control-group"> <label>Theme Colors</label> <div class="color-row"> <input type="color" class="color-input" id="primaryColor" value="#667eea"> <input type="color" class="color-input" id="secondaryColor" value="#764ba2"> <input type="color" class="color-input" id="accentColor" value="#f093fb"> </div> </div>
+                <div class="control-group"> <label>Infographic Background</label> <select class="control-input" id="infographicBackgroundType"> <option value="solid">Solid White</option> <option value="gradient">Subtle Gradient</option> <option value="image">Image URL</option> <option value="transparent">Transparent (for PNG)</option></select> </div>
+                <div class="control-group" id="infographicBackgroundImageControl" style="display:none;"> 
+                    <label>BG Image URL</label> <input type="url" class="control-input" id="infographicBackgroundImageUrl" placeholder="https://example.com/bg.jpg"> 
+                    <label>Upload BG Image</label> <input type="file" class="control-input" id="infographicBackgroundImageUpload" accept="image/*">
+                </div>
+
+                <h5>Brand on Image Settings</h5>
+                <h6>Logo Settings</h6>
+                <div class="control-group"> <label><input type="checkbox" id="brandLogoOnImageEnable" style="width:auto; margin-right: 5px;"> Add Logo to Images</label> </div>
+                <div class="control-group"> <label>Logo URL</label> <input type="url" class="control-input" id="brandLogoOnImageLogoUrl" placeholder="https://placehold.co/100x30/transparent/ffffff?text=LOGO"> </div>
+                <div class="control-group"> <label>Upload Logo</label> <input type="file" class="control-input" id="brandLogoOnImageLogoUpload" accept="image/*"></div>
+                <div class="control-group"> <label>Logo Position on Image</label> 
+                    <select class="control-input" id="brandLogoOnImagePosition">
+                        <option value="bottom-left" selected>Bottom Left</option> <option value="bottom-right">Bottom Right</option> <option value="top-left">Top Left</option> <option value="top-right">Top Right</option> <option value="center">Center</option>
+                    </select>
+                </div>
+                <div class="control-group"> <label>Logo Height (px)</label> <input type="number" class="control-input" id="brandLogoOnImageLogoHeight" value="20" min="10" max="50"> </div>
+                
+                <h6>Text (Website Name) Settings</h6>
+                <div class="control-group"> <label><input type="checkbox" id="brandTextOnImageEnable" style="width:auto; margin-right: 5px;"> Add Text to Images</label> </div>
+                <div class="control-group"> <label>Brand Text (e.g., Website)</label> <input type="text" class="control-input" id="brandTextOnImageText" value="MyCreativeSite.com"> </div>
+                <div class="control-group"> <label>Text Position on Image</label> 
+                    <select class="control-input" id="brandTextOnImagePosition">
+                        <option value="bottom-right" selected>Bottom Right</option><option value="bottom-left">Bottom Left</option> <option value="top-left">Top Left</option> <option value="top-right">Top Right</option> <option value="center">Center</option>
+                    </select>
+                </div>
+                <div class="control-group"> <label>Text Color</label> <input type="color" class="control-input" id="brandTextOnImageTextColor" value="#FFFFFF"> </div>
+                <div class="control-group"> <label>Text Size (px)</label> <input type="number" class="control-input" id="brandTextOnImageTextSize" value="10" min="6" max="24"> </div>
+
+            </div>
+        </div>
+
+        <div class="main-content-wrapper">
+            <div class="main-content">
+                <div class="canvas-area" id="canvasArea">
+                    <div class="infographic" id="infographicCanvas">
+                        <h1 style="text-align: center; margin: 50px; font-weight: 800; color: #2c3e50;">Loading Infographic...</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="actions-and-footer-area">
+                <div class="action-buttons-container">
+                    <button class="btn btn-primary" onclick="generateInfographic(true)"> <i class="fas fa-sync-alt"></i> Refresh </button> 
+                    <button class="btn btn-primary" onclick="downloadInfographic()"> <i class="fas fa-download"></i> Download </button>
+                </div>
+                <div class="footer-note-container">
+                    <p class="footer-note" id="footerNoteText">© 2025 AV AI Creatives. All Rights Reserved. For demonstration purposes only.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- Global Data Stores for Uploaded Images ---
+        const uploadedImageCache = {};
+
+        // --- Helper Functions ---
+        function parseCSV(str) {
+            if (!str || typeof str !== 'string') return [];
+            return str.split(',').map(item => item.trim()).filter(item => item !== "");
+        }
+        function getElementValue(id, defaultValue = '') {
+            const element = document.getElementById(id);
+            if (!element) return defaultValue;
+            if (element.type === 'checkbox') return element.checked;
+            if (element.type === 'file') {
+                if (element.files && element.files[0] && uploadedImageCache[id]) {
+                    return uploadedImageCache[id];
+                } else if (uploadedImageCache[id] && (!element.files || element.files.length === 0)) {
+                     return uploadedImageCache[id];
+                } else if (element.files && element.files.length === 0 && element.dataset.lastUrl) {
+                    return element.dataset.lastUrl;
+                }
+            }
+            return element.value !== "" ? element.value : defaultValue;
+        }
+        function getElementIntValue(id, defaultValue = 0) {
+            const val = getElementValue(id, defaultValue.toString());
+            if (typeof val === 'boolean') return val ? 1: 0; 
+            const parsed = parseInt(val);
+            return isNaN(parsed) ? defaultValue : parsed;
+        }
+         function getElementFloatValue(elementIdOrValue, defaultValue = 0.0) {
+            let valStr;
+            if (typeof elementIdOrValue === 'string' && document.getElementById(elementIdOrValue)) {
+                valStr = document.getElementById(elementIdOrValue).value;
+            } else {
+                valStr = String(elementIdOrValue); 
+            }
+            if (valStr === null || typeof valStr === 'undefined' || valStr.trim() === "" || valStr.toLowerCase() === "undefined") return defaultValue;
+            const floatVal = parseFloat(valStr.trim());
+            return isNaN(floatVal) ? defaultValue : floatVal;
+        }
+        function sanitizeHTML(text) {
+            if (typeof text !== 'string') text = String(text);
+            const temp = document.createElement('div');
+            temp.textContent = text;
+            return temp.innerHTML;
+        }
+        function shadeHexColor(hex, percent) {
+            hex = String(hex).replace(/^#/, '');
+            if (hex.length === 3) hex = hex.split('').map(char => char + char).join('');
+            if (hex.length !== 6) return '#' + hex; 
+            let R = parseInt(hex.substring(0, 2), 16), G = parseInt(hex.substring(2, 4), 16), B = parseInt(hex.substring(4, 6), 16);
+            R = parseInt(R * (1 + percent)); G = parseInt(G * (1 + percent)); B = parseInt(B * (1 + percent));
+            R = Math.min(255, Math.max(0, R)); G = Math.min(255, Math.max(0, G)); B = Math.min(255, Math.max(0, B));
+            return "#" + R.toString(16).padStart(2, '0') + G.toString(16).padStart(2, '0') + B.toString(16).padStart(2, '0');
+        }
+
+        function handleImageUpload(event, cacheKey, urlInputId) {
+            const file = event.target.files[0];
+            const urlInput = document.getElementById(urlInputId);
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    uploadedImageCache[cacheKey] = e.target.result;
+                    if (urlInput) {
+                        urlInput.dataset.lastUrl = urlInput.value;
+                        urlInput.value = '';
+                    }
+                    generateInfographic();
+                };
+                reader.readAsDataURL(file);
+            } else {
+                delete uploadedImageCache[cacheKey];
+                generateInfographic();
+            }
+        }
+
+        // --- Tab Switching & UI Updates ---
+        let currentTab = 'process';
+        document.querySelectorAll('.sidebar .tab-buttons .tab-btn:not(.preset-btn)').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.sidebar .tab-buttons .tab-btn:not(.preset-btn)').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.sidebar .tab-content').forEach(c => c.classList.remove('active'));
+                btn.classList.add('active');
+                const tabContentElement = document.getElementById(btn.dataset.tab);
+                if (tabContentElement) tabContentElement.classList.add('active');
+                currentTab = btn.dataset.tab;
+                if (currentTab === 'informational') buildInfoBlockControls(); 
+                generateInfographic();
+            });
+        });
+        
+        document.querySelectorAll('#canvasPresetButtons .preset-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('#canvasPresetButtons .preset-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                document.getElementById('canvasWidth').value = btn.dataset.width;
+                document.getElementById('canvasHeight').value = btn.dataset.height;
+                generateInfographic();
+            });
+        });
+        
+        const globalSettingIds = [
+            'fontWeight', 'primaryColor', 'secondaryColor', 'accentColor', 
+            'canvasWidth', 'canvasHeight', 'infographicBackgroundType', 
+            'globalSectionTitleFontSize', 'globalHeaderFontSize', 'globalParagraphFontSize', 'globalSmallTextFontSize',
+            'globalSectionTitleColor', 'globalHeaderColor', 'globalParagraphColor', 'globalSmallTextColor',
+            'globalSectionTitleMarginBottom', 'globalHeaderMarginBottom', 'globalSubHeaderMarginBottom', 'globalParagraphLineHeight',
+            'brandLogoOnImageEnable', 'brandLogoOnImageLogoUrl', 'brandLogoOnImagePosition', 'brandLogoOnImageLogoHeight',
+            'brandTextOnImageEnable', 'brandTextOnImageText', 'brandTextOnImagePosition', 'brandTextOnImageTextColor', 'brandTextOnImageTextSize'
+        ];
+        globalSettingIds.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) {
+                 const eventType = (el.tagName === 'SELECT' || el.type === 'color' || el.type === 'range' || el.type === 'checkbox') ? 'change' : 'input';
+                 el.addEventListener(eventType, () => {
+                    if (id === 'infographicBackgroundType') {
+                         document.getElementById('infographicBackgroundImageControl').style.display = (el.value === 'image') ? 'block' : 'none';
+                    }
+                    generateInfographic();
+                 });
+            }
+        });
+        
+        ['infographicBackgroundImageUrl', 'comingUpImageUrl', 'brandLogoOnImageLogoUrl'].forEach(urlInputId => {
+            const urlEl = document.getElementById(urlInputId);
+            if (urlEl) {
+                urlEl.addEventListener('input', () => {
+                    const correspondingFileUploadId = urlEl.id.replace('Url', 'Upload');
+                    if (uploadedImageCache[correspondingFileUploadId]) {
+                        delete uploadedImageCache[correspondingFileUploadId];
+                        const fileInput = document.getElementById(correspondingFileUploadId);
+                        if (fileInput) fileInput.value = "";
+                    }
+                    generateInfographic();
+                });
+            }
+        });
+        
+        function buildInfoBlockControls() {
+            const container = document.getElementById('infoBlockControlsContainer');
+            if (!container) return;
+            container.innerHTML = ''; 
+            const count = getElementIntValue('infoBlockCount', 1);
+
+            for (let i = 1; i <= count; i++) {
+                const blockIdPrefix = `infoBlock${i}`;
+                const blockHTML = `
+                    <h4>Block ${i}</h4>
+                    <div class="control-group"> <label>Header</label> <input type="text" class="control-input info-block-control" id="${blockIdPrefix}Title" value="Info Header ${i}"> </div>
+                    <div class="control-group"> <label>Content</label> <textarea class="control-input info-block-control" id="${blockIdPrefix}Content" rows="2">Details for block ${i}.</textarea> </div>
+                    <div class="control-group"> <label>Image URL</label> <input type="url" class="control-input info-block-control" id="${blockIdPrefix}ImageUrl" placeholder="https://placehold.co/100x100/eee/777?text=Img${i}"> </div>
+                    <div class="control-group"> <label>Upload Image</label> <input type="file" class="control-input info-block-control" id="${blockIdPrefix}ImageUpload" accept="image/*"> </div>
+                    <div class="control-group"> <label>Image Position</label> <select class="control-input info-block-control" id="${blockIdPrefix}ImagePos"> <option value="none">None</option> <option value="left">Left</option> <option value="right">Right</option> </select> </div>
+                    <div class="control-group"> <label>Image Size</label> <select class="control-input info-block-control" id="${blockIdPrefix}ImageSize"> <option value="medium">Medium (100px)</option> <option value="small">Small (70px)</option> <option value="large">Large (130px)</option> </select> </div>`;
+                container.insertAdjacentHTML('beforeend', blockHTML);
+                
+                const fileInput = document.getElementById(`${blockIdPrefix}ImageUpload`);
+                if (fileInput) {
+                    fileInput.addEventListener('change', (event) => handleImageUpload(event, `${blockIdPrefix}ImageUpload`, `${blockIdPrefix}ImageUrl`));
+                }
+            }
+            container.querySelectorAll('.info-block-control:not([type="file"])').forEach(input => {
+                const eventType = (input.tagName === 'SELECT' || input.type === 'color' || input.type === 'range') ? 'change' : 'input';
+                input.addEventListener(eventType, () => generateInfographic()); 
+            });
+        }
+
+        if(document.getElementById('infoBlockCount')) {
+            document.getElementById('infoBlockCount').addEventListener('input', () => {
+                buildInfoBlockControls(); 
+                generateInfographic(); 
+            });
+        }
+        
+        let barChartInstance = null;
+        let pieChartInstance = null;
+
+        function getGlobalLayoutStyles() {
+            return {
+                sectionTitleMarginBottom: getElementValue('globalSectionTitleMarginBottom', '20') + 'px',
+                headerMarginBottom: getElementValue('globalHeaderMarginBottom', '10') + 'px',
+                subHeaderMarginBottom: getElementValue('globalSubHeaderMarginBottom', '8') + 'px',
+                paragraphLineHeight: getElementValue('globalParagraphLineHeight', '1.6')
+            };
+        }
+
+        function generateInfographic(isManualGenerateClick = false) {
+            try {
+                const infographicDiv = document.getElementById('infographicCanvas');
+                if (!infographicDiv) return;
+                
+                infographicDiv.innerHTML = ''; 
+                
+                const canvasWidth = getElementIntValue('canvasWidth', 800);
+                const canvasHeight = getElementIntValue('canvasHeight', 1000);
+                infographicDiv.style.width = `${canvasWidth}px`;
+                infographicDiv.style.height = `${canvasHeight}px`; 
+                
+                infographicDiv.classList.remove('infographic-is-small', 'infographic-is-very-small');
+                if (canvasWidth < 450) infographicDiv.classList.add('infographic-is-small');
+                if (canvasWidth < 320) infographicDiv.classList.add('infographic-is-very-small');
+
+                let infographicBgImgSrc = getElementValue('infographicBackgroundImageUpload') || getElementValue('infographicBackgroundImageUrl');
+
+                const infographicBgType = getElementValue('infographicBackgroundType', 'solid');
+                infographicDiv.style.backgroundImage = ''; 
+                infographicDiv.style.background = ''; 
+
+                const primaryColorValue = getElementValue('primaryColor', '#667eea');
+                const secondaryColorValue = getElementValue('secondaryColor', '#764ba2');
+                const globalSectionHeaderColorValue = getElementValue('globalSectionTitleColor', '#667eea');
+                const rootStyle = document.documentElement.style;
+
+                rootStyle.setProperty('--primary', primaryColorValue);
+                rootStyle.setProperty('--secondary', secondaryColorValue);
+                rootStyle.setProperty('--accent', getElementValue('accentColor', '#f093fb'));
+                
+                if (globalSectionHeaderColorValue === '#667eea') {
+                    rootStyle.setProperty('--global-section-header-color', 'linear-gradient(135deg, var(--primary), var(--secondary))');
+                } else {
+                    rootStyle.setProperty('--global-section-header-color', globalSectionHeaderColorValue);
+                }
+
+                rootStyle.setProperty('--global-header-color', getElementValue('globalHeaderColor', '#764ba2'));
+                rootStyle.setProperty('--global-paragraph-color', getElementValue('globalParagraphColor', '#2c3e50'));
+                rootStyle.setProperty('--global-small-text-color', getElementValue('globalSmallTextColor', '#555555'));
+
+                if (infographicBgType === 'solid') infographicDiv.style.backgroundColor = '#ffffff'; 
+                else if (infographicBgType === 'gradient') infographicDiv.style.background = `linear-gradient(135deg, ${primaryColorValue}1A, ${secondaryColorValue}1A)`;
+                else if (infographicBgType === 'image' && infographicBgImgSrc) {
+                    infographicDiv.style.backgroundImage = `url(${sanitizeHTML(infographicBgImgSrc)})`;
+                    infographicDiv.style.backgroundSize = 'cover';
+                    infographicDiv.style.backgroundPosition = 'center';
+                } else if (infographicBgType === 'transparent') infographicDiv.style.backgroundColor = 'transparent';
+
+                infographicDiv.style.fontWeight = getElementValue('fontWeight', '400');
+                drawCurrentInfographicType(infographicDiv, canvasWidth);
+            } catch (error) {
+                console.error("Error during generateInfographic:", error);
+                const infographicDiv = document.getElementById('infographicCanvas');
+                if(infographicDiv) infographicDiv.innerHTML = `<p style="color:red; padding:20px; text-align:center;">Error generating infographic. Check console for details. <br>Error: ${sanitizeHTML(error.message)}</p>`;
+            }
+        }
+
+        function getGlobalFontStyles() {
+            return {
+                sectionTitleFontSize: getElementValue('globalSectionTitleFontSize', '28') + 'px',
+                headerFontSize: getElementValue('globalHeaderFontSize', '20') + 'px',
+                paragraphFontSize: getElementValue('globalParagraphFontSize', '14') + 'px',
+                smallTextFontSize: getElementValue('globalSmallTextFontSize', '11') + 'px'
+            };
+        }
+        
+        function addBrandToElement(elementContainer) {
+            if (!elementContainer) return;
+            elementContainer.querySelectorAll('.image-brand-logo-overlay, .image-brand-text-overlay').forEach(ov => ov.remove());
+
+            const enableLogo = getElementValue('brandLogoOnImageEnable');
+            const enableText = getElementValue('brandTextOnImageEnable');
+
+            if (enableLogo) {
+                let logoUrl = getElementValue('brandLogoOnImageLogoUpload') || getElementValue('brandLogoOnImageLogoUrl');
+                const logoPosition = getElementValue('brandLogoOnImagePosition', 'bottom-left');
+                const logoHeight = getElementValue('brandLogoOnImageLogoHeight', '20') + 'px';
+
+                if (logoUrl) {
+                    const logoOverlay = document.createElement('div');
+                    logoOverlay.className = `image-brand-logo-overlay brand-pos-${logoPosition}`;
+                    const logoImg = document.createElement('img');
+                    logoImg.src = sanitizeHTML(logoUrl);
+                    logoImg.alt = "Brand Logo";
+                    logoImg.style.maxHeight = logoHeight;
+                    logoImg.onerror = () => { logoImg.style.display = 'none'; };
+                    logoOverlay.appendChild(logoImg);
+                    elementContainer.style.position = 'relative';
+                    elementContainer.appendChild(logoOverlay);
+                }
+            }
+
+            if (enableText) {
+                const brandText = getElementValue('brandTextOnImageText');
+                const textPosition = getElementValue('brandTextOnImagePosition', 'bottom-right');
+                const textColor = getElementValue('brandTextOnImageTextColor', '#FFFFFF');
+                const textSize = getElementValue('brandTextOnImageTextSize', '10') + 'px';
+
+                if (brandText) {
+                    const textOverlay = document.createElement('div');
+                    textOverlay.className = `image-brand-text-overlay brand-pos-${textPosition}`;
+                    const textSpan = document.createElement('span');
+                    textSpan.textContent = sanitizeHTML(brandText);
+                    textSpan.style.color = textColor;
+                    textSpan.style.fontSize = textSize;
+                    textOverlay.appendChild(textSpan);
+                    elementContainer.style.position = 'relative';
+                    elementContainer.appendChild(textOverlay);
+                }
+            }
+        }
+
+        function drawCurrentInfographicType(canvas, canvasWidth) {
+            const fontStyles = getGlobalFontStyles();
+            const layoutStyles = getGlobalLayoutStyles();
+
+             switch(currentTab) {
+                case 'process': generateProcessInfographic(canvas, fontStyles, layoutStyles); break;
+                case 'statistical': generateStatisticalInfographic(canvas, fontStyles, layoutStyles); break;
+                case 'textToTable': generateTableInfographic(canvas, fontStyles, layoutStyles); break;
+                case 'informational': generateInformationalInfographic(canvas, fontStyles, layoutStyles); break;
+                case 'timeline': generateTimelineInfographic(canvas, fontStyles, layoutStyles); break;
+                case 'barChart': generateBarChartInfographic(canvas, fontStyles, layoutStyles); break;
+                case 'pieChart': generatePieChartInfographic(canvas, fontStyles, layoutStyles); break;
+                case 'dams': generateDamInfographic(canvas, fontStyles, layoutStyles); break;
+                case 'prices': generatePriceInfographic(canvas, fontStyles, layoutStyles); break;
+                case 'comparison': generateComparisonInfographic(canvas, fontStyles, layoutStyles); break;
+                case 'hierarchical': generateHierarchicalInfographic(canvas, fontStyles, layoutStyles); break;
+                case 'list': generateListInfographic(canvas, fontStyles, layoutStyles); break;
+                case 'comingUp': generateComingUpInfographic(canvas, fontStyles, layoutStyles); break;
+                default:
+                    canvas.innerHTML = `<h1 class="section-title" style="font-size: ${fontStyles.sectionTitleFontSize};">Select an Infographic Type</h1>`;
+            }
+        }
+
+        // --- Infographic Generation Functions ---
+
+        function generateTableInfographic(canvas, fonts, layout) {
+            const sectionTitle = getElementValue('tableSectionTitle', 'Data Table');
+            const isGradient = getComputedStyle(document.documentElement).getPropertyValue('--global-section-header-color').includes('gradient');
+            let html = `<h1 class="section-title" style="font-size: ${fonts.sectionTitleFontSize}; margin-bottom: ${layout.sectionTitleMarginBottom}; background: var(--global-section-header-color); -webkit-background-clip: text; -webkit-text-fill-color: ${isGradient ? 'transparent' : 'var(--global-section-header-color)'}; color: var(--global-section-header-color);">${sanitizeHTML(sectionTitle)}</h1>`;
+
+            const inputText = document.getElementById('tableInputText').value.trim();
+            const dataFormat = document.getElementById('tableDataFormat').value;
+            
+            if (!inputText) {
+                html += `<p style="text-align:center; font-size: ${fonts.paragraphFontSize};">Paste data into the controls to generate a table.</p>`;
+                canvas.innerHTML = html;
+                return;
+            }
+            
+            try {
+                let tableContent = '<div class="generated-table-wrapper"><table class="generated-table">\n';
+                if (dataFormat === 'vertical') {
+                    tableContent += generateVerticalTableContent(inputText);
+                } else {
+                    tableContent += generateTabularTableContent(inputText);
+                }
+                tableContent += '</table></div>';
+                html += tableContent;
+            } catch (error) {
+                html += `<p style="text-align:center; color:red; font-size: ${fonts.paragraphFontSize};">${sanitizeHTML(error.message)}</p>`;
+            }
+
+            canvas.innerHTML = html;
+        }
+
+        function generateVerticalTableContent(inputText) {
+            const fieldSeparator = document.getElementById('tableFieldSeparator').value;
+            const blocks = inputText.split(/\n\s*\n/).filter(block => block.trim());
+            if (blocks.length === 0) throw new Error('No data blocks found in vertical format.');
+
+            const firstBlockLines = blocks[0].trim().split('\n');
+            const headers = firstBlockLines.map(line => {
+                const parts = line.split(fieldSeparator);
+                return parts.length >= 2 ? parts[0].trim() : null;
+            }).filter(Boolean);
+            if (headers.length === 0) throw new Error('Could not determine headers from the first block.');
+            
+            let html = '  <thead>\n    <tr>\n';
+            headers.forEach(header => { html += `      <th>${sanitizeHTML(header)}</th>\n`; });
+            html += '    </tr>\n  </thead>\n  <tbody>\n';
+            
+            blocks.forEach(block => {
+                const lines = block.trim().split('\n');
+                const rowData = new Map();
+                lines.forEach(line => {
+                    const parts = line.split(fieldSeparator);
+                    if (parts.length >= 2) {
+                        rowData.set(parts[0].trim(), parts.slice(1).join(fieldSeparator).trim());
+                    }
+                });
+                
+                html += '    <tr>\n';
+                headers.forEach(header => {
+                    html += `      <td>${sanitizeHTML(rowData.get(header) || '')}</td>\n`;
+                });
+                html += '    </tr>\n';
+            });
+            html += '  </tbody>\n';
+            return html;
+        }
+
+        function generateTabularTableContent(inputText) {
+            const separator = document.getElementById('tableSeparator').value.replace(/\\t/g, '\t');
+            const hasHeader = document.getElementById('tableHasHeader').checked;
+            const lines = inputText.split('\n').filter(line => line.trim());
+            if (lines.length === 0) throw new Error('No valid data found in tabular format.');
+            
+            let html = '';
+            if (hasHeader && lines.length > 0) {
+                const headerCells = lines.shift().split(separator);
+                html += '  <thead>\n    <tr>\n';
+                headerCells.forEach(cell => { html += `      <th>${sanitizeHTML(cell.trim())}</th>\n`; });
+                html += '    </tr>\n  </thead>\n';
+            }
+            
+            html += '  <tbody>\n';
+            lines.forEach(line => {
+                const cells = line.split(separator);
+                html += '    <tr>\n';
+                cells.forEach(cell => { html += `      <td>${sanitizeHTML(cell.trim())}</td>\n`; });
+                html += '    </tr>\n';
+            });
+            html += '  </tbody>\n';
+            return html;
+        }
+        
+        function generateProcessInfographic(canvas, fonts, layout) {
+            const sectionTitle = getElementValue('processSectionTitle', "Our Process");
+            const isGradient = getComputedStyle(document.documentElement).getPropertyValue('--global-section-header-color').includes('gradient');
+            let html = `<h1 class="section-title" style="font-size: ${fonts.sectionTitleFontSize}; margin-bottom: ${layout.sectionTitleMarginBottom}; background: var(--global-section-header-color); -webkit-background-clip: text; -webkit-text-fill-color: ${isGradient ? 'transparent' : 'var(--global-section-header-color)'}; color: var(--global-section-header-color);">${sanitizeHTML(sectionTitle)}</h1>`;
+            const titles = parseCSV(getElementValue('processStepTitlesCSV'));
+            const descs = parseCSV(getElementValue('processStepDescsCSV'));
+            const icons = parseCSV(getElementValue('processStepIconsCSV'));
+            const count = Math.max(titles.length, descs.length);
+
+            if (count > 0) {
+                for(let i = 0; i < count; i++) {
+                    const title = sanitizeHTML(titles[i] || `Step ${i+1}`);
+                    const desc = sanitizeHTML(descs[i] || "Description pending.");
+                    const iconOrText = sanitizeHTML(icons[i] || (i + 1).toString());
+                    let iconHTML = iconOrText.startsWith('fa') ? `<i class="${iconOrText}"></i>` : iconOrText;
+
+                    html += `<div class="process-step">
+                                <div class="step-number">${iconHTML}</div>
+                                <div class="step-content">
+                                    <h3 style="font-size: ${fonts.headerFontSize}; margin-bottom: ${layout.subHeaderMarginBottom};">${title}</h3>
+                                    <p style="font-size: ${fonts.smallTextFontSize}; line-height: ${layout.paragraphLineHeight};">${desc}</p>
+                                </div>
+                             </div>`;
+                }
+            }
+            canvas.innerHTML = html;
+        }
+
+        function generateStatisticalInfographic(canvas, fonts, layout) {
+            const sectionTitle = getElementValue('statSectionTitle', "Key Statistics");
+            const values = parseCSV(getElementValue('statValuesCSV'));
+            const labels = parseCSV(getElementValue('statLabelsCSV'));
+            const isGradient = getComputedStyle(document.documentElement).getPropertyValue('--global-section-header-color').includes('gradient');
+            let html = `<h1 class="section-title" style="font-size: ${fonts.sectionTitleFontSize}; margin-bottom: ${layout.sectionTitleMarginBottom}; background: var(--global-section-header-color); -webkit-background-clip: text; -webkit-text-fill-color: ${isGradient ? 'transparent' : 'var(--global-section-header-color)'}; color: var(--global-section-header-color);">${sanitizeHTML(sectionTitle)}</h1><div class="stat-grid">`;
+            const count = Math.max(values.length, labels.length);
+
+            if (count > 0) {
+                for(let i = 0; i < count; i++) {
+                    const value = sanitizeHTML(values[i] || "N/A");
+                    const label = sanitizeHTML(labels[i] || `Stat ${i+1}`);
+                    let statNumberFontSize = parseFloat(fonts.headerFontSize) * 1.5; 
+                    if (value.length > 6) statNumberFontSize *= 0.7; 
+                    else if (value.length > 4) statNumberFontSize *= 0.85;
+                    
+                    html += `<div class="stat-card">
+                                <div class="stat-number" style="font-size: ${Math.max(16,statNumberFontSize)}px;">${value}</div>
+                                <div class="stat-label" style="font-size: ${fonts.smallTextFontSize};">${label}</div>
+                             </div>`;
+                }
+            }
+            html += '</div>';
+            canvas.innerHTML = html;
+        }
+        
+        function generateInformationalInfographic(canvas, fonts, layout) {
+            const sectionTitle = getElementValue('infoSectionTitle', "Information Hub");
+            const isGradient = getComputedStyle(document.documentElement).getPropertyValue('--global-section-header-color').includes('gradient');
+            let html = `<h1 class="section-title" style="font-size: ${fonts.sectionTitleFontSize}; margin-bottom: ${layout.sectionTitleMarginBottom}; background: var(--global-section-header-color); -webkit-background-clip: text; -webkit-text-fill-color: ${isGradient ? 'transparent' : 'var(--global-section-header-color)'}; color: var(--global-section-header-color);">${sanitizeHTML(sectionTitle)}</h1>`;
+            const blockCount = getElementIntValue('infoBlockCount', 0);
+
+            if (blockCount > 0) {
+                for (let i = 1; i <= blockCount; i++) {
+                    const title = sanitizeHTML(getElementValue(`infoBlock${i}Title`, `Header ${i}`));
+                    const content = sanitizeHTML(getElementValue(`infoBlock${i}Content`, `Content for block ${i}.`));
+                    let imageUrl = getElementValue(`infoBlock${i}ImageUpload`) || getElementValue(`infoBlock${i}ImageUrl`);
+                    const imagePos = getElementValue(`infoBlock${i}ImagePos`, 'none');
+                    const imageSize = getElementValue(`infoBlock${i}ImageSize`, 'medium');
+
+                    let imageHTML = '';
+                    if (imageUrl && imagePos !== 'none') {
+                        imageHTML = `<div class="info-block-image-container size-${imageSize}">
+                                        <img src="${sanitizeHTML(imageUrl)}" alt="${title}" onerror="this.style.display='none'; this.parentElement.innerHTML='<p style=\\'font-size:0.8em; color:grey;\\'>Image not found</p>';">
+                                     </div>`;
+                    }
+                    
+                    html += `<div class="info-block-item ${imagePos !== 'none' ? 'image-' + imagePos : ''}">
+                                ${imagePos === 'left' || imagePos === 'top' ? imageHTML : ''}
+                                <div class="info-block-text">
+                                    <h2 style="font-size: ${fonts.headerFontSize}; margin-bottom: ${layout.headerMarginBottom};">${title}</h2>
+                                    <p style="font-size: ${fonts.paragraphFontSize}; line-height: ${layout.paragraphLineHeight};">${content.replace(/\n/g, '<br>')}</p>
+                                </div>
+                                ${imagePos === 'right' || imagePos === 'bottom' ? imageHTML : ''}
+                             </div>`;
+                }
+            }
+            canvas.innerHTML = html;
+            canvas.querySelectorAll('.info-block-image-container').forEach(container => addBrandToElement(container));
+        }
+
+        function generateTimelineInfographic(canvas, fonts, layout) {
+            const sectionTitle = getElementValue('timelineSectionTitle', "Our Journey");
+            const layoutType = getElementValue('timelineLayoutType', 'vertical');
+            const dates = parseCSV(getElementValue('timelineEventDatesCSV'));
+            const titles = parseCSV(getElementValue('timelineEventTitlesCSV'));
+            const descs = parseCSV(getElementValue('timelineEventDescsCSV'));
+            const isGradient = getComputedStyle(document.documentElement).getPropertyValue('--global-section-header-color').includes('gradient');
+            let html = `<h1 class="section-title" style="font-size: ${fonts.sectionTitleFontSize}; margin-bottom: ${layout.sectionTitleMarginBottom}; background: var(--global-section-header-color); -webkit-background-clip: text; -webkit-text-fill-color: ${isGradient ? 'transparent' : 'var(--global-section-header-color)'}; color: var(--global-section-header-color);">${sanitizeHTML(sectionTitle)}</h1>`;
+            const count = Math.max(dates.length, titles.length, descs.length);
+
+            if (count === 0) {
+                canvas.innerHTML = html; return;
+            }
+
+            if (layoutType === 'vertical') {
+                html += '<div class="timeline-vertical-container">';
+                for(let i = 0; i < count; i++) {
+                    const date = sanitizeHTML(dates[i] || `Event ${i+1}`);
+                    const title = sanitizeHTML(titles[i] || "Milestone Title");
+                    const desc = sanitizeHTML(descs[i] || "Details about this event.");
+                    html += `<div class="timeline-vertical-item">
+                                <div class="timeline-vertical-dot"></div>
+                                <div class="timeline-vertical-content">
+                                    <h3 style="font-size: ${fonts.smallTextFontSize}; font-weight:500; margin-bottom: ${layout.subHeaderMarginBottom};">${date}</h3>
+                                    <h4 style="font-size: ${fonts.headerFontSize}; margin-bottom: ${layout.headerMarginBottom};">${title}</h4>
+                                    <p style="font-size: ${fonts.smallTextFontSize}; line-height: ${layout.paragraphLineHeight};">${desc.replace(/\n/g, '<br>')}</p>
+                                </div>
+                             </div>`;
+                }
+                html += '</div>';
+            } else { 
+                html += '<div class="timeline-horizontal-wrapper"><div class="timeline-horizontal-container">';
+                html += '<div class="timeline-horizontal-line"></div><div class="timeline-horizontal-events">';
+                for(let i = 0; i < count; i++) {
+                    const date = sanitizeHTML(dates[i] || `Event ${i+1}`);
+                    const title = sanitizeHTML(titles[i] || "Milestone");
+                    const desc = sanitizeHTML(descs[i] || "Details.");
+                     html += `<div class="timeline-horizontal-item">
+                                <div class="timeline-horizontal-content">
+                                    <h3 style="font-size: ${Math.max(8, parseFloat(fonts.smallTextFontSize) * 0.9)}px; margin-bottom: ${parseFloat(layout.subHeaderMarginBottom) * 0.8}px;">${date}</h3>
+                                    <h4 style="font-size: ${Math.max(9, parseFloat(fonts.headerFontSize) * 0.9)}px; margin-bottom: ${parseFloat(layout.headerMarginBottom) * 0.8}px;">${title}</h4>
+                                    <p style="font-size: ${Math.max(8, parseFloat(fonts.smallTextFontSize) * 0.85)}px; line-height: ${parseFloat(layout.paragraphLineHeight) * 0.9};">${desc.replace(/\n/g, '<br>')}</p>
+                                </div>
+                                <div class="timeline-horizontal-dot"></div>
+                             </div>`;
+                }
+                html += '</div></div></div>';
+            }
+            canvas.innerHTML = html;
+        }
+        
+        function generateDamInfographic(canvas, fonts, layout) {
+            const sectionTitle = getElementValue('damSectionTitle', "Dam Levels");
+            const isGradient = getComputedStyle(document.documentElement).getPropertyValue('--global-section-header-color').includes('gradient');
+            let html = `<h1 class="section-title" style="font-size: ${fonts.sectionTitleFontSize}; margin-bottom: ${layout.sectionTitleMarginBottom}; background: var(--global-section-header-color); -webkit-background-clip: text; -webkit-text-fill-color: ${isGradient ? 'transparent' : 'var(--global-section-header-color)'}; color: var(--global-section-header-color);">${sanitizeHTML(sectionTitle)}</h1><div class="dam-grid">`;
+            const names = parseCSV(getElementValue('damNamesCSV'));
+            const presentLevelsRaw = parseCSV(getElementValue('damPresentLevelsCSV'));
+            const maxCapacitiesRaw = parseCSV(getElementValue('damMaxCapacitiesCSV'));
+            const unit = getElementValue('damUnitOfMeasure', "TMC");
+            const progressLabelText = getElementValue('damProgressLabel', "Storage");
+            const count = Math.max(names.length, presentLevelsRaw.length, maxCapacitiesRaw.length);
+            const rootStyle = getComputedStyle(document.documentElement);
+            const successHex = rootStyle.getPropertyValue('--success').trim() || '#4ecdc4';
+            const warningHex = rootStyle.getPropertyValue('--warning').trim() || '#f7b731';
+            const dangerHex = rootStyle.getPropertyValue('--danger').trim() || '#fc4a1a';
+
+            if (count > 0) {
+                for(let i = 0; i < count; i++) {
+                    const name = sanitizeHTML(names[i] || `Dam ${i+1}`);
+                    const present = getElementFloatValue(presentLevelsRaw[i], 0); 
+                    const max = getElementFloatValue(maxCapacitiesRaw[i], 100); 
+                    let effectiveMax = max > 0 ? max : (present > 0 ? present * 1.25 : 100);                     
+                    const percentage = effectiveMax > 0 ? Math.min(Math.max(0, Math.round((present / effectiveMax) * 100)), 100) : 0;
+                    let currentLevelColorHex = percentage > 80 ? successHex : (percentage > 50 ? warningHex : dangerHex);
+                    const darkerLevelColorHex = shadeHexColor(currentLevelColorHex, -0.25);
+                    
+                    html += `<div class="dam-card" style="background: linear-gradient(135deg, ${currentLevelColorHex}, ${darkerLevelColorHex});">
+                                <div class="dam-name" style="font-size: ${fonts.headerFontSize}; margin-bottom: ${layout.subHeaderMarginBottom};">${name}</div>
+                                <div class="dam-level" style="font-size: ${fonts.sectionTitleFontSize}; margin-bottom: ${layout.headerMarginBottom};">${percentage}%</div>
+                                <div class="dam-progress-bar-bg"><div class="dam-progress-bar-fg" style="width: ${percentage}%;"></div></div>
+                                <div class="dam-capacity-info" style="font-size: ${fonts.smallTextFontSize}; line-height: ${layout.paragraphLineHeight};">${present.toLocaleString(undefined, {minimumFractionDigits: (present % 1 === 0 ? 0:1) , maximumFractionDigits: 2})} / ${max.toLocaleString(undefined, {minimumFractionDigits: (max % 1 === 0 ? 0:1), maximumFractionDigits: 2})} ${sanitizeHTML(unit)}</div>
+                                <div class="dam-progress-label" style="font-size: ${Math.max(7, parseFloat(fonts.smallTextFontSize) * 0.9)}px;">${sanitizeHTML(progressLabelText)}</div>
+                             </div>`;
+                }
+            }
+            html += '</div>';
+            canvas.innerHTML = html;
+        }
+
+        function generateComparisonInfographic(canvas, fonts, layout) {
+            const sectionTitle = getElementValue('compareSectionTitle', "Plan Comparison");
+            const isGradient = getComputedStyle(document.documentElement).getPropertyValue('--global-section-header-color').includes('gradient');
+            let html = `<h1 class="section-title" style="font-size: ${fonts.sectionTitleFontSize}; margin-bottom: ${layout.sectionTitleMarginBottom}; background: var(--global-section-header-color); -webkit-background-clip: text; -webkit-text-fill-color: ${isGradient ? 'transparent' : 'var(--global-section-header-color)'}; color: var(--global-section-header-color);">${sanitizeHTML(sectionTitle)}</h1><div class="comparison-grid">`;
+            for (let i = 1; i <= 2; i++) { 
+                const itemTitle = sanitizeHTML(getElementValue(`compareItem${i}Title`, `Option ${i}`));
+                const itemPrice = sanitizeHTML(getElementValue(`compareItem${i}Price`, "N/A"));
+                const features = parseCSV(getElementValue(`compareItem${i}FeaturesCSV`));
+                html += `<div class="comparison-card">
+                            <h3 style="font-size: ${fonts.headerFontSize}; margin-bottom: ${layout.headerMarginBottom};">${itemTitle}</h3>
+                            <div class="price" style="font-size: ${fonts.paragraphFontSize}; margin-bottom: ${layout.subHeaderMarginBottom}; font-weight:bold;">${itemPrice}</div>
+                            <ul>`;
+                if (features.length > 0) {
+                    features.forEach(feature => {
+                        html += `<li style="font-size: ${fonts.smallTextFontSize}; line-height: ${layout.paragraphLineHeight};"><i class="fas fa-check-circle"></i> ${sanitizeHTML(feature)}</li>`;
+                    });
+                }
+                html += `</ul></div>`;
+            }
+            html += '</div>';
+            canvas.innerHTML = html;
+        }
+        
+        function generateHierarchicalInfographic(canvas, fonts, layout) {
+            const sectionTitle = getElementValue('hierarchySectionTitle', "Structure");
+            const l1Title = sanitizeHTML(getElementValue('hierarchyL1Title', "Top Level"));
+            const l1Desc = sanitizeHTML(getElementValue('hierarchyL1Desc', "Description"));
+            const l2Titles = parseCSV(getElementValue('hierarchyL2TitlesCSV'));
+            const l2Descs = parseCSV(getElementValue('hierarchyL2DescsCSV'));
+            const isGradient = getComputedStyle(document.documentElement).getPropertyValue('--global-section-header-color').includes('gradient');
+
+            let html = `<h1 class="section-title" style="font-size: ${fonts.sectionTitleFontSize}; margin-bottom: ${layout.sectionTitleMarginBottom}; background: var(--global-section-header-color); -webkit-background-clip: text; -webkit-text-fill-color: ${isGradient ? 'transparent' : 'var(--global-section-header-color)'}; color: var(--global-section-header-color);">${sanitizeHTML(sectionTitle)}</h1>
+                        <div class="hierarchy-container">
+                            <div class="hierarchy-node">
+                                <h4 style="font-size: ${fonts.headerFontSize}; margin-bottom: ${layout.subHeaderMarginBottom};">${l1Title}</h4>
+                                <p style="font-size: ${fonts.smallTextFontSize}; line-height: ${layout.paragraphLineHeight};">${l1Desc}</p>
+                            </div>`;
+            if (l2Titles.length > 0) {
+                html += '<div class="hierarchy-connector"></div><div class="hierarchy-children">';
+                l2Titles.forEach((title, index) => {
+                    const desc = sanitizeHTML(l2Descs[index] || "Child Description");
+                    html += `<div class="hierarchy-node" style="background: var(--secondary);">
+                                <h4 style="font-size: ${Math.max(10, parseFloat(fonts.headerFontSize) * 0.9)}px; margin-bottom: ${parseFloat(layout.subHeaderMarginBottom)*0.8}px;">${sanitizeHTML(title)}</h4>
+                                <p style="font-size: ${Math.max(9, parseFloat(fonts.smallTextFontSize) * 0.9)}px; line-height: ${parseFloat(layout.paragraphLineHeight)*0.9};">${desc}</p>
+                             </div>`;
+                });
+                html += '</div>';
+            }
+            html += '</div>';
+            canvas.innerHTML = html;
+        }
+
+        function generateListInfographic(canvas, fonts, layout) {
+            const sectionTitle = getElementValue('listSectionTitle', "Key Items");
+            const isGradient = getComputedStyle(document.documentElement).getPropertyValue('--global-section-header-color').includes('gradient');
+            let html = `<h1 class="section-title" style="font-size: ${fonts.sectionTitleFontSize}; margin-bottom: ${layout.sectionTitleMarginBottom}; background: var(--global-section-header-color); -webkit-background-clip: text; -webkit-text-fill-color: ${isGradient ? 'transparent' : 'var(--global-section-header-color)'}; color: var(--global-section-header-color);">${sanitizeHTML(sectionTitle)}</h1>`;
+            const titles = parseCSV(getElementValue('listItemTitlesCSV'));
+            const descs = parseCSV(getElementValue('listItemDescsCSV'));
+            const icons = parseCSV(getElementValue('listItemIconsCSV'));
+            const count = Math.max(titles.length, descs.length);
+
+            if (count > 0) {
+                for (let i = 0; i < count; i++) {
+                    const title = sanitizeHTML(titles[i] || `Item ${i+1}`);
+                    const desc = sanitizeHTML(descs[i] || "Details about this item.");
+                    const iconOrText = sanitizeHTML(icons[i] || "");
+                    let iconHTML = iconOrText.startsWith('fa') ? `<i class="${iconOrText}"></i>` : (iconOrText || `<i class="fas fa-circle" style="font-size:0.5em;"></i>`);
+
+                    html += `<div class="list-infographic-item">
+                                <div class="icon">${iconHTML}</div>
+                                <div class="text-content">
+                                    <h4 style="font-size: ${fonts.headerFontSize}; margin-bottom: ${layout.subHeaderMarginBottom};">${title}</h4>
+                                    <p style="font-size: ${fonts.paragraphFontSize}; line-height: ${layout.paragraphLineHeight};">${desc.replace(/\n/g, '<br>')}</p>
+                                </div>
+                             </div>`;
+                }
+            }
+            canvas.innerHTML = html;
+        }
+        
+        function generatePriceInfographic(canvas, fonts, layout) {
+            const sectionTitle = getElementValue('priceSectionTitle', "Current Rates");
+            const isGradient = getComputedStyle(document.documentElement).getPropertyValue('--global-section-header-color').includes('gradient');
+            let html = `<h1 class="section-title" style="font-size: ${fonts.sectionTitleFontSize}; margin-bottom: ${layout.sectionTitleMarginBottom}; background: var(--global-section-header-color); -webkit-background-clip: text; -webkit-text-fill-color: ${isGradient ? 'transparent' : 'var(--global-section-header-color)'}; color: var(--global-section-header-color);">${sanitizeHTML(sectionTitle)}</h1><div class="price-grid">`;
+            const updateInfo = sanitizeHTML(getElementValue('priceUpdateLabel', "As of today"));
+            let itemsExist = false;
+            for (let i = 1; i <= 3; i++) { 
+                const label = sanitizeHTML(getElementValue(`priceItem${i}Label`));
+                if (!label) continue; 
+                itemsExist = true;
+                const rate = sanitizeHTML(getElementValue(`priceItem${i}Rate`, "N/A"));
+                const unit = sanitizeHTML(getElementValue(`priceItem${i}Unit`, ""));
+
+                html += `<div class="price-card">
+                            <div class="price-label" style="font-size: ${fonts.headerFontSize}; margin-bottom: ${layout.subHeaderMarginBottom};">${label}</div>
+                            <div class="price-value" style="font-size: ${fonts.sectionTitleFontSize}; margin-bottom: ${layout.headerMarginBottom};">₹${rate}</div>
+                            <div class="price-unit" style="font-size: ${fonts.smallTextFontSize};">${unit}</div>
+                         </div>`;
+            }
+            html += '</div>';
+            if (itemsExist && updateInfo) {
+                html += `<p class="price-update-info" style="text-align:center; font-size: ${fonts.smallTextFontSize}; margin-top:15px;">${updateInfo}</p>`;
+            }
+            canvas.innerHTML = html;
+        }
+        
+        function generateBarChartInfographic(canvas, fonts, layout) {
+            const sectionTitle = getElementValue('barChartSectionTitle');
+            const isGradient = getComputedStyle(document.documentElement).getPropertyValue('--global-section-header-color').includes('gradient');
+            let html = '';
+            if (sectionTitle) {
+                html += `<h1 class="section-title" style="font-size: ${fonts.sectionTitleFontSize}; margin-bottom: ${layout.sectionTitleMarginBottom}; background: var(--global-section-header-color); -webkit-background-clip: text; -webkit-text-fill-color: ${isGradient ? 'transparent' : 'var(--global-section-header-color)'}; color: var(--global-section-header-color);">${sanitizeHTML(sectionTitle)}</h1>`;
+            }
+            const chartTitleText = sanitizeHTML(getElementValue('barChartTitle', "Bar Chart"));
+            html += `<div class="chart-container">
+                        <h3 class="chart-title" style="font-size: ${fonts.headerFontSize}; margin-bottom: ${layout.headerMarginBottom};">${chartTitleText}</h3>
+                        <div class="chart-canvas-wrapper"><canvas id="infographicBarChartInstance"></canvas></div>
+                     </div>`;
+            canvas.innerHTML = html;
+            const chartBaseFontSize = parseFloat(fonts.smallTextFontSize);
+
+            setTimeout(() => { 
+                const barChartLabels = parseCSV(getElementValue('barChartLabelsCSV'));
+                const barChartData = parseCSV(getElementValue('barChartDataCSV')).map(Number);
+                if (document.getElementById('infographicBarChartInstance') && barChartLabels.length > 0 && barChartData.length > 0) {
+                     createBarChart('infographicBarChartInstance', barChartLabels, barChartData, chartTitleText, chartBaseFontSize);
+                }
+            }, 50);
+        }
+
+        function generatePieChartInfographic(canvas, fonts, layout) {
+            const sectionTitle = getElementValue('pieChartSectionTitle');
+            const isGradient = getComputedStyle(document.documentElement).getPropertyValue('--global-section-header-color').includes('gradient');
+            let html = '';
+            if (sectionTitle) {
+                html += `<h1 class="section-title" style="font-size: ${fonts.sectionTitleFontSize}; margin-bottom: ${layout.sectionTitleMarginBottom}; background: var(--global-section-header-color); -webkit-background-clip: text; -webkit-text-fill-color: ${isGradient ? 'transparent' : 'var(--global-section-header-color)'}; color: var(--global-section-header-color);">${sanitizeHTML(sectionTitle)}</h1>`;
+            }
+            const chartUserTitleText = sanitizeHTML(getElementValue('pieChartUserTitle', "Pie Chart"));
+             html += `<div class="chart-container">
+                        <h3 class="chart-title" style="font-size: ${fonts.headerFontSize}; margin-bottom: ${layout.headerMarginBottom};">${chartUserTitleText}</h3>
+                        <div class="chart-canvas-wrapper"><canvas id="infographicPieChartInstance"></canvas></div>
+                      </div>`;
+            canvas.innerHTML = html;
+            const chartBaseFontSize = parseFloat(fonts.smallTextFontSize);
+
+            setTimeout(() => { 
+                const pieChartLabels = parseCSV(getElementValue('pieChartLabelsCSV'));
+                const pieChartData = parseCSV(getElementValue('pieChartDataCSV')).map(Number);
+                 if (document.getElementById('infographicPieChartInstance') && pieChartLabels.length > 0 && pieChartData.length > 0) {
+                    createPieChart('infographicPieChartInstance', pieChartLabels, pieChartData, chartUserTitleText, chartBaseFontSize);
+                }
+            }, 50);
+        }
+
+        function createBarChart(canvasId, labels, data, title, baseFontSize) { 
+            const ctx = document.getElementById(canvasId)?.getContext('2d');
+            if (!ctx) return;
+            if (barChartInstance) barChartInstance.destroy();
+            const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim();
+            const secondaryColor = getComputedStyle(document.documentElement).getPropertyValue('--secondary').trim();
+            barChartInstance = new Chart(ctx, { 
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: title, data: data,
+                        backgroundColor: data.map((_, i) => i % 2 === 0 ? primaryColor+'CC' : secondaryColor+'CC'), 
+                        borderColor: data.map((_, i) => i % 2 === 0 ? primaryColor : secondaryColor),
+                        borderWidth: 1, borderRadius: 4,
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false,
+                    scales: { y: { beginAtZero: true } },
+                    plugins: { legend: { display: false } }
+                }
+            });
+        }
+        function createPieChart(canvasId, labels, data, title, baseFontSize) { 
+            const ctx = document.getElementById(canvasId)?.getContext('2d');
+            if (!ctx) return;
+            if (pieChartInstance) pieChartInstance.destroy();
+            const rootStyle = getComputedStyle(document.documentElement);
+            const baseColors = [ rootStyle.getPropertyValue('--primary').trim(), rootStyle.getPropertyValue('--secondary').trim(), rootStyle.getPropertyValue('--accent').trim(), rootStyle.getPropertyValue('--success').trim(), rootStyle.getPropertyValue('--warning').trim(), rootStyle.getPropertyValue('--danger').trim() ];
+            pieChartInstance = new Chart(ctx, { 
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{ label: title, data: data, backgroundColor: baseColors, borderWidth: 1 }]
+                },
+                options: { responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { position: 'bottom' } }
+                }
+            });
+        }
+        
+        function generateComingUpInfographic(canvas, fonts, layout) {
+            let imageUrl = getElementValue('comingUpImageUpload') || getElementValue('comingUpImageUrl');
+            const imagePosition = getElementValue('comingUpImagePosition', 'top');
+            const header = getElementValue('comingUpHeader', 'Event Title');
+            const subHeader = getElementValue('comingUpSubHeader', 'Subtitle');
+            const infoText = getElementValue('comingUpInfoText', 'Event details here.');
+            const date = getElementValue('comingUpDate', 'Date');
+            const time = getElementValue('comingUpTime', 'Time');
+
+            canvas.className = 'infographic coming-up-infographic'; 
+            let imageHTML = '', textHTML = '';
+            let imageContainerClass = 'image-container';
+
+            if (imagePosition === 'background') {
+                imageContainerClass += ' full-width-bg';
+                if (imageUrl) {
+                    imageHTML = `<div class="${imageContainerClass}">
+                                    <img src="${sanitizeHTML(imageUrl)}" class="main-image" alt="${sanitizeHTML(header)}" onerror="this.parentElement.style.background='#eee'; this.remove();">
+                                 </div>`;
+                } else {
+                    imageHTML = `<div class="${imageContainerClass}" style="background:#eee;"></div>`;
+                }
+            } else if (imageUrl) {
+                 imageHTML = `<div class="${imageContainerClass}">
+                                <img src="${sanitizeHTML(imageUrl)}" class="main-image" alt="${sanitizeHTML(header)}" onerror="this.src='https://placehold.co/600x300/cccccc/969696?text=Image+Not+Found'; this.alt='Image not found';">
+                             </div>`;
+            }
+            
+            textHTML = `<div class="text-content-area">
+                            <div class="header" style="font-size: ${fonts.sectionTitleFontSize}; margin-bottom: ${layout.headerMarginBottom};">${sanitizeHTML(header)}</div>
+                            <div class="sub-header" style="font-size: ${fonts.headerFontSize}; margin-bottom: ${layout.subHeaderMarginBottom};">${sanitizeHTML(subHeader)}</div>
+                            <p class="info-text" style="font-size: ${fonts.paragraphFontSize}; line-height: ${layout.paragraphLineHeight}; margin-bottom: ${parseFloat(layout.paragraphLineHeight)*10}px;">${sanitizeHTML(infoText).replace(/\n/g, '<br>')}</p>
+                            <div class="date-time" style="font-size: ${fonts.paragraphFontSize};">${sanitizeHTML(date)} - ${sanitizeHTML(time)}</div>
+                        </div>`;
+            
+            canvas.classList.add(`layout-image-${imagePosition}`);
+            if (imagePosition === 'top') { canvas.style.flexDirection = 'column'; canvas.innerHTML = imageHTML + textHTML; } 
+            else if (imagePosition === 'bottom') { canvas.style.flexDirection = 'column'; canvas.innerHTML = textHTML + imageHTML; } 
+            else if (imagePosition === 'left') { canvas.style.flexDirection = 'row'; canvas.style.alignItems = 'flex-start'; canvas.innerHTML = imageHTML + textHTML; if(canvas.querySelector('.image-container')) canvas.querySelector('.image-container').style.marginRight = '20px'; } 
+            else if (imagePosition === 'right') { canvas.style.flexDirection = 'row'; canvas.style.alignItems = 'flex-start'; canvas.innerHTML = textHTML + imageHTML; if(canvas.querySelector('.image-container')) canvas.querySelector('.image-container').style.marginLeft = '20px'; } 
+            else if (imagePosition === 'background') { canvas.innerHTML = imageHTML + textHTML; }
+            
+            const imgContainerForBrand = canvas.querySelector('.image-container');
+            if(imgContainerForBrand) addBrandToElement(imgContainerForBrand);
+        }
+
+        function updateFooterNote() {
+            const noteText = getElementValue('footerNoteInput', '© 2025 AV AI Creatives. All Rights Reserved.');
+            const noteElement = document.getElementById('footerNoteText');
+            if(noteElement) noteElement.textContent = sanitizeHTML(noteText);
+        }
+        
+        // --- Table Specific Functions ---
+        function toggleTableFormatOptions() {
+            const format = document.getElementById('tableDataFormat').value;
+            document.getElementById('tableSeparatorGroup').style.display = format === 'tabular' ? 'block' : 'none';
+            document.getElementById('tableVerticalOptions').style.display = format === 'vertical' ? 'block' : 'none';
+            document.getElementById('tableHasHeaderGroup').style.display = format === 'tabular' ? 'block' : 'none';
+            generateInfographic();
+        }
+
+        function copyGeneratedTable() {
+            if (currentTab !== 'textToTable') {
+                showAlert('Switch to the Text to Table tab to use this feature.', 'warning');
+                return;
+            }
+            const tableElement = document.querySelector('#infographicCanvas .generated-table');
+            if (!tableElement) {
+                showAlert('Please generate a table first.', 'danger');
+                return;
+            }
+            
+            // Create a temporary div to hold the table for copying
+            const copyDiv = document.createElement('div');
+            copyDiv.contentEditable = true;
+            copyDiv.innerHTML = tableElement.outerHTML;
+            document.body.appendChild(copyDiv);
+
+            // Select and copy
+            const range = document.createRange();
+            range.selectNodeContents(copyDiv);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            
+            try {
+                document.execCommand('copy');
+                showAlert('Formatted table copied to clipboard!', 'success');
+            } catch (err) {
+                showAlert('Could not copy table automatically.', 'danger');
+                console.error('Failed to copy table: ', err);
+            } finally {
+                document.body.removeChild(copyDiv);
+                selection.removeAllRanges();
+            }
+        }
+
+        function showAlert(message, type) {
+            const container = document.getElementById('tableAlertContainer');
+            if (!container) return;
+
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type}`;
+            alert.textContent = message;
+            
+            container.innerHTML = ''; // Clear previous alerts
+            container.appendChild(alert);
+            
+            setTimeout(() => {
+                if (alert) alert.remove();
+            }, 3000);
+        }
+
+        function downloadInfographic() {
+            const originalElement = document.getElementById('infographicCanvas');
+            if (!originalElement) {
+                alert("Error: Canvas element not found.");
+                return;
+            }
+
+            const clone = originalElement.cloneNode(true);
+            clone.style.position = 'absolute';
+            clone.style.left = '-9999px';
+            clone.style.top = '0px';
+            clone.style.boxShadow = 'none';
+            document.body.appendChild(clone);
+
+            const gradientHeaders = clone.querySelectorAll('h1.section-title');
+            const headerColorFallback = getElementValue('globalSectionTitleColor', getElementValue('primaryColor', '#667eea'));
+
+            gradientHeaders.forEach(header => {
+                const computedStyle = window.getComputedStyle(header);
+                if (computedStyle.webkitBackgroundClip === 'text' || computedStyle.backgroundClip === 'text') {
+                    header.style.background = 'none';
+                    header.style.webkitBackgroundClip = 'initial';
+                    header.style.backgroundClip = 'initial';
+                    header.style.webkitTextFillColor = 'initial';
+                    header.style.color = headerColorFallback;
+                }
+            });
+            
+            const infographicBgType = getElementValue('infographicBackgroundType', 'solid');
+            const computedStyle = getComputedStyle(originalElement);
+            const width = parseInt(computedStyle.width, 10);
+            const height = parseInt(computedStyle.height, 10);
+            
+            const options = {
+                width: width,
+                height: height,
+                scale: 2,
+                useCORS: true,
+                backgroundColor: infographicBgType === 'transparent' ? null : (clone.style.backgroundColor || '#ffffff'),
+            };
+
+            html2canvas(clone, options).then(canvas => {
+                const imageFormat = infographicBgType === 'transparent' ? 'image/png' : 'image/jpeg';
+                const fileExtension = infographicBgType === 'transparent' ? 'png' : 'jpg';
+                const image = canvas.toDataURL(imageFormat, 0.95);
+                
+                const link = document.createElement('a');
+                link.download = `infographic-${currentTab}.${fileExtension}`;
+                link.href = image;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+
+            }).catch(err => {
+                console.error("Error during html2canvas operation:", err);
+                alert("Download failed. Please check the browser console for more details.");
+            }).finally(() => {
+                document.body.removeChild(clone);
+            });
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            buildInfoBlockControls(); 
+            const fileUploadFields = [
+                { uploadId: 'infographicBackgroundImageUpload', urlId: 'infographicBackgroundImageUrl' },
+                { uploadId: 'comingUpImageUpload', urlId: 'comingUpImageUrl' },
+                { uploadId: 'brandLogoOnImageLogoUpload', urlId: 'brandLogoOnImageLogoUrl' }
+            ];
+            fileUploadFields.forEach(field => {
+                const el = document.getElementById(field.uploadId);
+                if (el) el.addEventListener('change', (event) => handleImageUpload(event, field.uploadId, field.urlId));
+            });
+            
+            // Set default text for the table input
+            const tableTextInput = document.getElementById('tableInputText');
+            if (tableTextInput) {
+                tableTextInput.value = 'ಸ್ಥಾನ : 01\nದೇಶ : ಅಮೆರಿಕ\nಕಂಪೆನಿಗಳ ಸಂಖ್ಯೆ : 1,873\nಮಾರುಕಟ್ಟೆ ಮೌಲ್ಯ : 57.11\n\nಸ್ಥಾನ : 02\nದೇಶ : ಜಪಾನ್\nಕಂಪೆನಿಗಳ ಸಂಖ್ಯೆ : 404\nಮಾರುಕಟ್ಟೆ ಮೌಲ್ಯ : 5.11\n\nಸ್ಥಾನ : 03\nದೇಶ : ಭಾರತ\nಕಂಪೆನಿಗಳ ಸಂಖ್ಯೆ : 348\nಮಾರುಕಟ್ಟೆ ಮೌಲ್ಯ : 3.75';
+            }
+            document.getElementById('tableDataFormat').value = 'vertical';
+            toggleTableFormatOptions();
+
+            document.querySelectorAll('.sidebar .control-input:not([type="file"]):not(#footerNoteInput)').forEach(input => {
+                 const eventType = (input.tagName === 'SELECT' || input.type === 'color' || input.type === 'range' || input.type === 'checkbox') ? 'change' : 'input';
+                 if (!input.dataset.globalListenerAttached) { 
+                     input.addEventListener(eventType, () => generateInfographic());
+                     input.dataset.globalListenerAttached = 'true';
+                 }
+            });
+
+            const defaultPresetButton = document.querySelector('#canvasPresetButtons .preset-btn[data-width="800"][data-height="1000"]');
+            if (defaultPresetButton) defaultPresetButton.classList.add('active');
+            else { const firstPreset = document.querySelector('#canvasPresetButtons .preset-btn'); if(firstPreset) firstPreset.classList.add('active');}
+            
+            updateFooterNote(); 
+            generateInfographic(true); 
+        });
+    </script>
+</body>
+</html>
