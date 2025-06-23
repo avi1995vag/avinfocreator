@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" rel="stylesheet">
     
     <style>
         /* --- Basic Setup & Variables --- */
@@ -88,6 +88,8 @@
             align-items: center;
             padding-top: 2rem;
             padding-bottom: 2rem;
+            position: relative;
+            z-index: 10;
         }
 
         .logo-link {
@@ -142,6 +144,7 @@
 
         .hero-content {
             flex-basis: 55%;
+            z-index: 5;
         }
 
         .main-headline {
@@ -174,26 +177,51 @@
             transform: translateX(5px);
         }
 
-        .hero-image-container {
+        .hero-icon-grid {
             flex-basis: 40%;
-            text-align: center;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            perspective: 1000px;
+        }
+        
+        .hero-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            width: 100px;
+            height: 100px;
+            background: var(--card-bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            color: var(--primary-color);
+            animation: float 6s ease-in-out infinite;
+            transition: color 0.3s, background 0.3s;
+        }
+        
+        .hero-icon:hover {
+            background: var(--primary-color);
+            color: white;
         }
 
-        .hero-image-container img {
-            max-width: 100%;
-            height: auto;
-            filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.4));
-            animation: float 5s ease-in-out infinite;
-        }
+        .hero-icon:nth-child(2) { animation-delay: -1s; }
+        .hero-icon:nth-child(3) { animation-delay: -2s; }
+        .hero-icon:nth-child(4) { animation-delay: -3s; }
+        .hero-icon:nth-child(5) { animation-delay: -4s; color: var(--secondary-color); }
+        .hero-icon:nth-child(6) { animation-delay: -5s; }
+
 
         @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
+            0% { transform: translateY(0px) rotateX(0deg) rotateY(0deg); }
+            50% { transform: translateY(-20px) rotateX(10deg) rotateY(-10deg); }
+            100% { transform: translateY(0px) rotateX(0deg) rotateY(0deg); }
         }
 
         /* --- Section Styling --- */
         section {
             padding: 6rem 0;
+            position: relative;
         }
 
         .section-title {
@@ -227,7 +255,7 @@
             border-color: rgba(102, 126, 234, 0.5);
         }
 
-        .feature-card i {
+        .feature-card .feature-icon {
             font-size: 2.5rem;
             margin-bottom: 1.5rem;
             color: var(--primary-color);
@@ -246,41 +274,48 @@
         /* --- Showcase Section --- */
         .showcase-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
         }
 
         .showcase-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            background: var(--card-bg-color);
+            border: 1px solid var(--border-color);
+            padding: 2.5rem 2rem;
             border-radius: 12px;
-            overflow: hidden;
-            position: relative;
-            cursor: pointer;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        
+        .showcase-item .showcase-icon {
+            font-size: 3.5rem;
+            color: white;
+            margin-bottom: 1.5rem;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background-image: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             transition: transform 0.3s ease;
         }
-
-        .showcase-item:hover {
-            transform: scale(1.03);
-        }
-
-        .showcase-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
+        
+        .showcase-item:hover .showcase-icon {
+            transform: scale(1.1) rotate(-10deg);
         }
 
         .showcase-item h3 {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            padding: 1.5rem;
-            font-size: 1.2rem;
-            font-weight: 600;
-            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
-            margin: 0;
-            color: #fff;
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .showcase-item p {
+            color: var(--text-muted-color);
         }
 
         /* --- Final CTA Section --- */
@@ -315,17 +350,13 @@
             .hero-content {
                 order: 2;
             }
-            .hero-image-container {
+            .hero-icon-grid {
                 order: 1;
-                margin-bottom: 2rem;
-                max-width: 400px;
+                margin-bottom: 3rem;
             }
             .subtitle {
                 margin-left: auto;
                 margin-right: auto;
-            }
-            .showcase-grid {
-                grid-template-columns: 1fr;
             }
         }
 
@@ -340,6 +371,14 @@
                 flex-direction: column;
                 gap: 1rem;
             }
+             .hero-icon-grid {
+                gap: 1rem;
+            }
+            .hero-icon {
+                width: 80px;
+                height: 80px;
+                font-size: 2rem;
+            }
         }
     </style>
 </head>
@@ -353,7 +392,7 @@
             <span>AV AI Info Creator</span>
         </a>
         <nav>
-            <a href="TodayAI.html" class="cta-button header-cta">Launch App</a>
+            <a href="creator.html" class="cta-button header-cta">Launch App</a>
         </nav>
     </header>
 
@@ -364,12 +403,17 @@
                 <p class="subtitle">
                     Leverage the power of AI to transform your data and ideas into beautiful, shareable visuals. No design skills required.
                 </p>
-                <a href="TodayAI.html" class="cta-button hero-cta">
+                <a href="creator.html" class="cta-button hero-cta">
                     Start Creating for Free <i class="fas fa-arrow-right"></i>
                 </a>
             </div>
-            <div class="hero-image-container">
-                <img src="https://i.ibb.co/L5r6c1m/hero-visual.png" alt="A collage of beautiful infographics created with the tool">
+            <div class="hero-icon-grid">
+                <div class="hero-icon"><i class="fas fa-newspaper"></i></div>
+                <div class="hero-icon"><i class="fas fa-chart-bar"></i></div>
+                <div class="hero-icon"><i class="fas fa-timeline"></i></div>
+                <div class="hero-icon"><i class="fas fa-quote-right"></i></div>
+                <div class="hero-icon"><i class="fas fa-sitemap"></i></div>
+                <div class="hero-icon"><i class="fas fa-lightbulb"></i></div>
             </div>
         </section>
 
@@ -377,22 +421,22 @@
             <h2 class="section-title">Why Choose AI Info Creator?</h2>
             <div class="features-grid">
                 <div class="feature-card">
-                    <i class="fas fa-robot"></i>
+                    <i class="fas fa-robot feature-icon"></i>
                     <h3>AI-Powered Content</h3>
                     <p>Use the built-in AI assistant to generate ideas, write text, and get data for your infographics instantly.</p>
                 </div>
                 <div class="feature-card">
-                    <i class="fas fa-layer-group"></i>
+                    <i class="fas fa-layer-group feature-icon"></i>
                     <h3>15+ Versatile Templates</h3>
                     <p>From news alerts and social media posts to complex charts and timelines, we have a template for every need.</p>
                 </div>
                 <div class="feature-card">
-                    <i class="fas fa-palette"></i>
+                    <i class="fas fa-palette feature-icon"></i>
                     <h3>Effortless Customization</h3>
                     <p>Control every detail, including colors, fonts, layouts, and images, with our intuitive sidebar controls.</p>
                 </div>
                  <div class="feature-card">
-                    <i class="fas fa-download"></i>
+                    <i class="fas fa-download feature-icon"></i>
                     <h3>Instant High-Res Downloads</h3>
                     <p>Export your creations as high-quality JPG or transparent PNG files, ready for web or print.</p>
                 </div>
@@ -400,23 +444,27 @@
         </section>
 
         <section id="showcase" class="container">
-            <h2 class="section-title">See What You Can Create</h2>
+            <h2 class="section-title">Featured Templates</h2>
             <div class="showcase-grid">
                 <div class="showcase-item">
-                    <img src="https://i.ibb.co/Jqj84YV/showcase-news.png" alt="Example of a news alert infographic">
-                    <h3>Breaking News Alerts</h3>
+                    <div class="showcase-icon"><i class="fas fa-newspaper"></i></div>
+                    <h3>News Alerts</h3>
+                    <p>Create professional, broadcast-style news graphics for breaking stories and important updates.</p>
                 </div>
                  <div class="showcase-item">
-                    <img src="https://i.ibb.co/yQj9wF4/showcase-chart.png" alt="Example of a 3D bar chart infographic">
-                    <h3>Statistical Charts</h3>
+                    <div class="showcase-icon"><i class="fas fa-chart-pie"></i></div>
+                    <h3>Data & Charts</h3>
+                    <p>Visualize your data with beautiful 3D-effect bar and pie charts that are easy to create and understand.</p>
                 </div>
                 <div class="showcase-item">
-                    <img src="https://i.ibb.co/3W6qW21/showcase-social.png" alt="Example of a social media quote post">
-                    <h3>Social Media Posts</h3>
+                    <div class="showcase-icon"><i class="fas fa-timeline"></i></div>
+                    <h3>Timelines & Processes</h3>
+                    <p>Illustrate historical events, project milestones, or step-by-step guides with elegant flow graphics.</p>
                 </div>
                  <div class="showcase-item">
-                    <img src="https://i.ibb.co/C0wR5s5/showcase-process.png" alt="Example of a process flow infographic">
-                    <h3>Process Flows</h3>
+                    <div class="showcase-icon"><i class="fas fa-balance-scale"></i></div>
+                    <h3>Comparison Tables</h3>
+                    <p>Highlight the differences between products, plans, or ideas with clean, easy-to-read comparison cards.</p>
                 </div>
             </div>
         </section>
@@ -424,7 +472,7 @@
         <section id="cta-final" class="container">
             <h2 class="section-title">Ready to Bring Your Ideas to Life?</h2>
              <p class="subtitle">Your next viral infographic is just a click away.</p>
-            <a href="TodayAI.html" class="cta-button hero-cta">Launch the Creator Studio</a>
+            <a href="creator.html" class="cta-button hero-cta">Launch the Creator Studio</a>
         </section>
 
     </main>
