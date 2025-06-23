@@ -3,177 +3,436 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AV AI Info Generator</title>
-    <link href="https://fonts.googleapis.com/css2?family=Anek+Kannada:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>AV AI Info Creator - Your Personal Infographic Studio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
     <style>
+        /* --- Basic Setup & Variables --- */
         :root {
-            --primary: #667eea;
-            --secondary: #764ba2;
-            --dark: #2c3e50;
-            --light: #ecf0f1;
-            --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --bg-color: #12121c;
+            --text-color: #e2e8f0;
+            --text-muted-color: #94a3b8;
+            --card-bg-color: rgba(255, 255, 255, 0.05);
+            --border-color: rgba(255, 255, 255, 0.1);
         }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: 'Anek Kannada', sans-serif;
-            background: var(--gradient);
-            color: var(--dark);
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
             line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
         }
+
         .container {
-            max-width: 1100px;
+            width: 90%;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 0 15px;
         }
-        .hero {
-            text-align: center;
-            padding: 80px 20px;
-            color: white;
+
+        /* --- Animated Background --- */
+        .background-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
         }
-        .hero h1 {
-            font-size: 3.5rem;
+
+        .background-animation::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 150vmax;
+            height: 150vmax;
+            background-image: radial-gradient(circle at center, var(--primary-color) 0%, transparent 30%),
+                              radial-gradient(circle at center, var(--secondary-color) 0%, transparent 30%);
+            background-blend-mode: screen;
+            opacity: 0.3;
+            transform: translate(-50%, -50%);
+            animation: moveGradient 20s linear infinite;
+        }
+
+        @keyframes moveGradient {
+            0% { background-position: 0% 50%, 100% 50%; }
+            25% { background-position: 50% 0%, 50% 100%; }
+            50% { background-position: 100% 50%, 0% 50%; }
+            75% { background-position: 50% 100%, 50% 0%; }
+            100% { background-position: 0% 50%, 100% 50%; }
+        }
+
+        /* --- Header --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+        }
+
+        .logo-link {
             font-weight: 700;
-            margin-bottom: 20px;
-            text-shadow: 0 3px 6px rgba(0,0,0,0.15);
+            font-size: 1.2rem;
+            color: var(--text-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
-        .hero p {
-            font-size: 1.25rem;
-            max-width: 700px;
-            margin: 0 auto 30px auto;
-            opacity: 0.9;
+
+        .logo-link i {
+            color: var(--primary-color);
         }
+
+        /* --- Buttons --- */
         .cta-button {
             display: inline-block;
-            background: white;
-            color: var(--primary);
-            padding: 15px 40px;
-            font-size: 1.1rem;
-            font-weight: 600;
+            background-image: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 12px 28px;
             border-radius: 50px;
             text-decoration: none;
+            font-weight: 600;
             transition: all 0.3s ease;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            border: none;
         }
+
         .cta-button:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-            color: var(--secondary);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+            filter: brightness(1.1);
         }
-        .main-content {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            padding: 50px;
-            margin-top: -40px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+
+        .header-cta {
+            padding: 10px 24px;
+            font-size: 0.9rem;
         }
-        .features-section h2 {
+
+        /* --- Hero Section --- */
+        #hero {
+            min-height: calc(100vh - 100px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 3rem;
+            padding-top: 2rem;
+            padding-bottom: 4rem;
+        }
+
+        .hero-content {
+            flex-basis: 55%;
+        }
+
+        .main-headline {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            line-height: 1.2;
+            background: linear-gradient(135deg, #fff, #bdc3c7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1.5rem;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-muted-color);
+            max-width: 550px;
+            margin-bottom: 2.5rem;
+        }
+
+        .hero-cta {
+            font-size: 1.1rem;
+        }
+
+        .hero-cta i {
+            margin-left: 0.5rem;
+            transition: transform 0.2s ease;
+        }
+
+        .hero-cta:hover i {
+            transform: translateX(5px);
+        }
+
+        .hero-image-container {
+            flex-basis: 40%;
+            text-align: center;
+        }
+
+        .hero-image-container img {
+            max-width: 100%;
+            height: auto;
+            filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.4));
+            animation: float 5s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        /* --- Section Styling --- */
+        section {
+            padding: 6rem 0;
+        }
+
+        .section-title {
             text-align: center;
             font-size: 2.5rem;
-            margin-bottom: 40px;
-            color: var(--dark);
+            font-weight: 600;
+            margin-bottom: 3rem;
         }
+
+        /* --- Features Section --- */
         .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
+            gap: 2rem;
         }
+
         .feature-card {
-            background: #fff;
-            padding: 30px;
-            border-radius: 15px;
+            background: var(--card-bg-color);
+            border: 1px solid var(--border-color);
+            padding: 2.5rem 2rem;
+            border-radius: 12px;
             text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
+
         .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transform: translateY(-8px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            border-color: rgba(102, 126, 234, 0.5);
         }
-        .feature-card .icon {
+
+        .feature-card i {
             font-size: 2.5rem;
-            margin-bottom: 15px;
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
         }
+
         .feature-card h3 {
-            font-size: 1.4rem;
-            margin-bottom: 10px;
-            color: var(--dark);
+            font-size: 1.3rem;
+            margin-bottom: 0.75rem;
         }
+
         .feature-card p {
-            font-size: 1rem;
-            color: #6c757d;
+            color: var(--text-muted-color);
+            font-size: 0.95rem;
         }
-        footer {
+
+        /* --- Showcase Section --- */
+        .showcase-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        .showcase-item {
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .showcase-item:hover {
+            transform: scale(1.03);
+        }
+
+        .showcase-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .showcase-item h3 {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 1.5rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            margin: 0;
+            color: #fff;
+        }
+
+        /* --- Final CTA Section --- */
+        #cta-final {
             text-align: center;
-            padding: 40px 20px;
-            color: white;
-            opacity: 0.8;
         }
+
+        #cta-final .subtitle {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* --- Footer --- */
+        footer {
+            padding: 2rem 0;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+            margin-top: 4rem;
+        }
+
+        footer p {
+            color: var(--text-muted-color);
+            font-size: 0.9rem;
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 992px) {
+            #hero {
+                flex-direction: column;
+                text-align: center;
+            }
+            .hero-content {
+                order: 2;
+            }
+            .hero-image-container {
+                order: 1;
+                margin-bottom: 2rem;
+                max-width: 400px;
+            }
+            .subtitle {
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .showcase-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
         @media (max-width: 768px) {
-            .hero h1 { font-size: 2.5rem; }
-            .hero p { font-size: 1.1rem; }
-            .main-content { padding: 30px; }
-            .features-section h2 { font-size: 2rem; }
+            .section-title {
+                font-size: 2rem;
+            }
+            .main-headline {
+                font-size: 2.2rem;
+            }
+            header {
+                flex-direction: column;
+                gap: 1rem;
+            }
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <header class="hero">
-            <h1>AV AI Info Generator</h1>
-            <p>A powerful, browser-based tool to generate beautiful infographics, charts, tables, and more for your articles and social media.</p>
-            <a href="creator.html" class="cta-button">Launch Tool <i class="fas fa-arrow-right"></i></a>
-        </header>
+    <div class="background-animation"></div>
 
-        <main class="main-content">
-            <section class="features-section">
-                <h2>Features</h2>
-                <div class="features-grid">
-                    <div class="feature-card">
-                        <div class="icon"><i class="fas fa-list-ol"></i></div>
-                        <h3>Process & Lists</h3>
-                        <p>Create step-by-step process flows and visually appealing icon lists.</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="icon"><i class="fas fa-table"></i></div>
-                        <h3>Text to Table</h3>
-                        <p>Instantly convert your raw text data into clean, structured HTML tables.</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="icon"><i class="fas fa-chart-pie"></i></div>
-                        <h3>Data Charts</h3>
-                        <p>Generate beautiful and responsive Bar and Pie charts from your data.</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="icon"><i class="fas fa-stream"></i></div>
-                        <h3>Timelines</h3>
-                        <p>Design stunning horizontal or vertical timelines to showcase milestones.</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="icon"><i class="fas fa-tags"></i></div>
-                        <h3>Data Cards</h3>
-                        <p>Display key stats, prices, or data points in stylish, easy-to-read cards.</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="icon"><i class="fas fa-download"></i></div>
-                        <h3>High-Res Export</h3>
-                        <p>Download your creations as high-quality JPG or transparent PNG images.</p>
-                    </div>
+    <header class="container">
+        <a href="#" class="logo-link">
+            <i class="fas fa-chart-line"></i>
+            <span>AV AI Info Creator</span>
+        </a>
+        <nav>
+            <a href="TodayAI.html" class="cta-button header-cta">Launch App</a>
+        </nav>
+    </header>
+
+    <main>
+        <section id="hero" class="container">
+            <div class="hero-content">
+                <h1 class="main-headline">Create Stunning Infographics in Seconds</h1>
+                <p class="subtitle">
+                    Leverage the power of AI to transform your data and ideas into beautiful, shareable visuals. No design skills required.
+                </p>
+                <a href="TodayAI.html" class="cta-button hero-cta">
+                    Start Creating for Free <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+            <div class="hero-image-container">
+                <img src="https://i.ibb.co/L5r6c1m/hero-visual.png" alt="A collage of beautiful infographics created with the tool">
+            </div>
+        </section>
+
+        <section id="features" class="container">
+            <h2 class="section-title">Why Choose AI Info Creator?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-robot"></i>
+                    <h3>AI-Powered Content</h3>
+                    <p>Use the built-in AI assistant to generate ideas, write text, and get data for your infographics instantly.</p>
                 </div>
-            </section>
-        </main>
-    </div>
+                <div class="feature-card">
+                    <i class="fas fa-layer-group"></i>
+                    <h3>15+ Versatile Templates</h3>
+                    <p>From news alerts and social media posts to complex charts and timelines, we have a template for every need.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-palette"></i>
+                    <h3>Effortless Customization</h3>
+                    <p>Control every detail, including colors, fonts, layouts, and images, with our intuitive sidebar controls.</p>
+                </div>
+                 <div class="feature-card">
+                    <i class="fas fa-download"></i>
+                    <h3>Instant High-Res Downloads</h3>
+                    <p>Export your creations as high-quality JPG or transparent PNG files, ready for web or print.</p>
+                </div>
+            </div>
+        </section>
 
+        <section id="showcase" class="container">
+            <h2 class="section-title">See What You Can Create</h2>
+            <div class="showcase-grid">
+                <div class="showcase-item">
+                    <img src="https://i.ibb.co/Jqj84YV/showcase-news.png" alt="Example of a news alert infographic">
+                    <h3>Breaking News Alerts</h3>
+                </div>
+                 <div class="showcase-item">
+                    <img src="https://i.ibb.co/yQj9wF4/showcase-chart.png" alt="Example of a 3D bar chart infographic">
+                    <h3>Statistical Charts</h3>
+                </div>
+                <div class="showcase-item">
+                    <img src="https://i.ibb.co/3W6qW21/showcase-social.png" alt="Example of a social media quote post">
+                    <h3>Social Media Posts</h3>
+                </div>
+                 <div class="showcase-item">
+                    <img src="https://i.ibb.co/C0wR5s5/showcase-process.png" alt="Example of a process flow infographic">
+                    <h3>Process Flows</h3>
+                </div>
+            </div>
+        </section>
+        
+        <section id="cta-final" class="container">
+            <h2 class="section-title">Ready to Bring Your Ideas to Life?</h2>
+             <p class="subtitle">Your next viral infographic is just a click away.</p>
+            <a href="TodayAI.html" class="cta-button hero-cta">Launch the Creator Studio</a>
+        </section>
+
+    </main>
+    
     <footer>
-        <p>© 2025 Avinash Vagarnal AI Creatives. All Rights Reserved.</p>
+        <div class="container">
+            <p>© 2025 Avinash Vagarnal AI Creatives. All Rights Reserved.</p>
+        </div>
     </footer>
 
 </body>
