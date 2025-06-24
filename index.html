@@ -3,485 +3,237 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AV AI Info Creator - Your Personal Infographic Studio</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <title>AV AI Info Creator - Instantly Visualize Your Ideas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Anek+Kannada:wght@300;400;500;700;800&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" rel="stylesheet">
-    
     <style>
-        /* --- Basic Setup & Variables --- */
         :root {
-            --primary-color: #667eea;
-            --secondary-color: #764ba2;
-            --bg-color: #12121c;
-            --text-color: #e2e8f0;
-            --text-muted-color: #94a3b8;
-            --card-bg-color: rgba(255, 255, 255, 0.05);
+            --bg-color: #0d1117;
+            --primary-glow: #667eea;
+            --secondary-glow: #764ba2;
+            --accent-glow: #f093fb;
+            --success-glow: #4ecdc4;
+            --warning-glow: #f7b731;
+            --text-primary: #e6edf3;
+            --text-secondary: #a1aec4;
             --border-color: rgba(255, 255, 255, 0.1);
+            --card-bg: rgba(22, 27, 34, 0.6);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
 
         body {
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Anek Kannada', sans-serif;
             background-color: var(--bg-color);
-            color: var(--text-color);
-            line-height: 1.6;
+            color: var(--text-primary);
             overflow-x: hidden;
-            position: relative;
-        }
-
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 15px;
-        }
-
-        /* --- Animated Background --- */
-        .background-animation {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            overflow: hidden;
-        }
-
-        .background-animation::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 150vmax;
-            height: 150vmax;
-            background-image: radial-gradient(circle at center, var(--primary-color) 0%, transparent 30%),
-                              radial-gradient(circle at center, var(--secondary-color) 0%, transparent 30%);
-            background-blend-mode: screen;
-            opacity: 0.3;
-            transform: translate(-50%, -50%);
-            animation: moveGradient 20s linear infinite;
-        }
-
-        @keyframes moveGradient {
-            0% { background-position: 0% 50%, 100% 50%; }
-            25% { background-position: 50% 0%, 50% 100%; }
-            50% { background-position: 100% 50%, 0% 50%; }
-            75% { background-position: 50% 100%, 50% 0%; }
-            100% { background-position: 0% 50%, 100% 50%; }
-        }
-
-        /* --- Header --- */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-top: 2rem;
-            padding-bottom: 2rem;
-            position: relative;
-            z-index: 10;
-        }
-
-        .logo-link {
-            font-weight: 700;
-            font-size: 1.2rem;
-            color: var(--text-color);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .logo-link i {
-            color: var(--primary-color);
-        }
-
-        /* --- Buttons --- */
-        .cta-button {
-            display: inline-block;
-            background-image: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            padding: 12px 28px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            border: none;
-        }
-
-        .cta-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
-            filter: brightness(1.1);
-        }
-
-        .header-cta {
-            padding: 10px 24px;
-            font-size: 0.9rem;
-        }
-
-        /* --- Hero Section --- */
-        #hero {
-            min-height: calc(100vh - 100px);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 3rem;
-            padding-top: 2rem;
-            padding-bottom: 4rem;
-        }
-
-        .hero-content {
-            flex-basis: 55%;
-            z-index: 5;
-        }
-
-        .main-headline {
-            font-size: clamp(2.5rem, 5vw, 4rem);
-            font-weight: 700;
-            line-height: 1.2;
-            background: linear-gradient(135deg, #fff, #bdc3c7);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 1.5rem;
-        }
-
-        .subtitle {
-            font-size: 1.1rem;
-            color: var(--text-muted-color);
-            max-width: 550px;
-            margin-bottom: 2.5rem;
-        }
-
-        .hero-cta {
-            font-size: 1.1rem;
-        }
-
-        .hero-cta i {
-            margin-left: 0.5rem;
-            transition: transform 0.2s ease;
-        }
-
-        .hero-cta:hover i {
-            transform: translateX(5px);
-        }
-
-        .hero-icon-grid {
-            flex-basis: 40%;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1.5rem;
-            perspective: 1000px;
+            line-height: 1.6;
         }
         
-        .hero-icon {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
-            width: 100px;
-            height: 100px;
-            background: var(--card-bg-color);
-            border: 1px solid var(--border-color);
-            border-radius: 15px;
-            color: var(--primary-color);
-            animation: float 6s ease-in-out infinite;
-            transition: color 0.3s, background 0.3s;
-        }
+        .aurora-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: -1; }
+        .aurora-blob { position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.3; }
+        .blob1 { width: 400px; height: 400px; background: var(--primary-glow); top: -150px; left: -150px; animation: move-blob1 20s infinite alternate; }
+        .blob2 { width: 500px; height: 500px; background: var(--secondary-glow); bottom: -200px; right: -200px; animation: move-blob2 25s infinite alternate; }
+        .blob3 { width: 300px; height: 300px; background: var(--accent-glow); top: 50%; left: 50%; transform: translate(-50%, -50%); animation: move-blob3 15s infinite alternate; }
+
+        @keyframes move-blob1 { from { transform: translate(0, 0) scale(1); } to { transform: translate(200px, 100px) scale(1.2); } }
+        @keyframes move-blob2 { from { transform: translate(0, 0) scale(1.2); } to { transform: translate(-150px, -100px) scale(1); } }
+        @keyframes move-blob3 { from { transform: rotate(0deg) scale(1); } to { transform: rotate(180deg) scale(1.3); } }
+
+        .container { width: 90%; max-width: 1100px; margin: 0 auto; padding: 6rem 0; }
         
-        .hero-icon:hover {
-            background: var(--primary-color);
-            color: white;
-        }
+        .main-header { position: fixed; top: 0; left: 0; width: 100%; padding: 1rem 5%; display: flex; justify-content: space-between; align-items: center; background: rgba(13, 17, 23, 0.7); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color); z-index: 100; }
+        .logo { font-weight: 700; font-size: 1.5rem; }
+        .logo i { margin-right: 0.5rem; color: var(--primary-glow); }
+        .cta-button { display: inline-block; background: linear-gradient(90deg, var(--primary-glow), var(--secondary-glow)); color: white; padding: 0.7rem 1.5rem; border-radius: 8px; text-decoration: none; font-size: 1rem; font-weight: 600; transition: all 0.3s ease; border: 1px solid transparent; }
+        .cta-button:hover { transform: translateY(-2px); box-shadow: 0 8px 15px rgba(118, 75, 162, 0.2); }
 
-        .hero-icon:nth-child(2) { animation-delay: -1s; }
-        .hero-icon:nth-child(3) { animation-delay: -2s; }
-        .hero-icon:nth-child(4) { animation-delay: -3s; }
-        .hero-icon:nth-child(5) { animation-delay: -4s; color: var(--secondary-color); }
-        .hero-icon:nth-child(6) { animation-delay: -5s; }
+        .hero-section { display: flex; align-items: center; gap: 4rem; min-height: 90vh; }
+        .hero-content { flex: 1; }
+        .hero-content .highlight { font-weight: 700; color: var(--accent-glow); }
+        .hero-content h1 { font-size: 3.5rem; font-weight: 800; line-height: 1.1; margin-bottom: 1.5rem; }
+        .hero-content p { font-size: 1.1rem; color: var(--text-secondary); margin-bottom: 2rem; max-width: 500px; }
 
-
-        @keyframes float {
-            0% { transform: translateY(0px) rotateX(0deg) rotateY(0deg); }
-            50% { transform: translateY(-20px) rotateX(10deg) rotateY(-10deg); }
-            100% { transform: translateY(0px) rotateX(0deg) rotateY(0deg); }
-        }
-
-        /* --- Section Styling --- */
-        section {
-            padding: 6rem 0;
-            position: relative;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 2.5rem;
-            font-weight: 600;
-            margin-bottom: 3rem;
-        }
-
-        /* --- Features Section --- */
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-        }
-
-        .feature-card {
-            background: var(--card-bg-color);
-            border: 1px solid var(--border-color);
-            padding: 2.5rem 2rem;
-            border-radius: 12px;
-            text-align: center;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            border-color: rgba(102, 126, 234, 0.5);
-        }
-
-        .feature-card .feature-icon {
-            font-size: 2.5rem;
-            margin-bottom: 1.5rem;
-            color: var(--primary-color);
-        }
-
-        .feature-card h3 {
-            font-size: 1.3rem;
-            margin-bottom: 0.75rem;
-        }
-
-        .feature-card p {
-            color: var(--text-muted-color);
-            font-size: 0.95rem;
-        }
-
-        /* --- Showcase Section --- */
-        .showcase-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-
-        .showcase-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            background: var(--card-bg-color);
-            border: 1px solid var(--border-color);
-            padding: 2.5rem 2rem;
-            border-radius: 12px;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-        }
+        .hero-visual { flex: 1; perspective: 1000px; display: flex; justify-content: center; align-items: center; }
+        .visual-container { width: 500px; height: 500px; position: relative; transform: rotateY(-20deg) rotateX(10deg); transform-style: preserve-3d; border-radius: 16px; border: 1px solid var(--border-color); box-shadow: 0 20px 40px rgba(0,0,0,0.3); backdrop-filter: blur(5px); background: rgba(0,0,0,0.1); }
         
-        .showcase-item .showcase-icon {
-            font-size: 3.5rem;
-            color: white;
-            margin-bottom: 1.5rem;
-            width: 100px;
-            height: 100px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            background-image: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            transition: transform 0.3s ease;
+        /* --- Animation Engine --- */
+        .mock-infographic { position: absolute; inset: 0; padding: 2rem; border-radius: 16px; opacity: 0; animation: cycle-infographics 32s infinite ease-in-out; font-family: 'Anek Kannada', sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        @keyframes cycle-infographics {
+            0%, 100% { opacity: 0; transform: scale(0.95); }
+            2%, 10.5% { opacity: 1; transform: scale(1); } /* Visible from 2% to 10.5% */
+            12.5% { opacity: 0; transform: scale(0.95); }
         }
+
+        /* --- Individual Mockup Styles & Animation Delays --- */
+        .mock-infographic.social { animation-delay: 0s; background: linear-gradient(135deg, #e73c7e, #ee7752); }
+        .mock-infographic.bar-chart { animation-delay: 4s; background: #fff; color: #333; }
+        .mock-infographic.timeline { animation-delay: 8s; background: #182338; }
+        .mock-infographic.dam-levels { animation-delay: 12s; background: #111; }
+        .mock-infographic.prices { animation-delay: 16s; background: linear-gradient(135deg, #1d2b4b, #2c3e50); }
+        .mock-infographic.doughnut-chart { animation-delay: 20s; background: #fff; color: #333; }
+        .mock-infographic.news { animation-delay: 24s; background: #111; }
+        .mock-infographic.create-yours { animation-delay: 28s; background: linear-gradient(45deg, var(--primary-glow), var(--secondary-glow)); }
         
-        .showcase-item:hover .showcase-icon {
-            transform: scale(1.1) rotate(-10deg);
-        }
-
-        .showcase-item h3 {
-            font-size: 1.4rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .showcase-item p {
-            color: var(--text-muted-color);
-        }
-
-        /* --- Final CTA Section --- */
-        #cta-final {
-            text-align: center;
-        }
-
-        #cta-final .subtitle {
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        /* --- Footer --- */
-        footer {
-            padding: 2rem 0;
-            text-align: center;
-            border-top: 1px solid var(--border-color);
-            margin-top: 4rem;
-        }
-
-        footer p {
-            color: var(--text-muted-color);
-            font-size: 0.9rem;
-        }
-
-        /* --- Responsive Design --- */
-        @media (max-width: 992px) {
-            #hero {
-                flex-direction: column;
-                text-align: center;
-            }
-            .hero-content {
-                order: 2;
-            }
-            .hero-icon-grid {
-                order: 1;
-                margin-bottom: 3rem;
-            }
-            .subtitle {
-                margin-left: auto;
-                margin-right: auto;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .section-title {
-                font-size: 2rem;
-            }
-            .main-headline {
-                font-size: 2.2rem;
-            }
-            header {
-                flex-direction: column;
-                gap: 1rem;
-            }
-             .hero-icon-grid {
-                gap: 1rem;
-            }
-            .hero-icon {
-                width: 80px;
-                height: 80px;
-                font-size: 2rem;
-            }
-        }
+        /* Mockup Content CSS */
+        .mock-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 1.5rem; text-align: center; }
+        .mock-social-quote { font-size: 1.8rem; font-weight: 600; text-align: center; text-shadow: 2px 2px 4px rgba(0,0,0,0.2); }
+        .mock-bar-chart-container { display: flex; gap: 0.8rem; height: 150px; align-items: flex-end; border-bottom: 2px solid #ddd; padding: 0 1rem; }
+        .mock-bar { width: 30px; background: var(--primary-glow); border-radius: 4px 4px 0 0; }
+        .mock-timeline-container { position: relative; padding-left: 2rem; height: 250px; }
+        .mock-timeline-container::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--border-color); }
+        .mock-timeline-item { position: relative; margin-bottom: 1.5rem; }
+        .mock-timeline-item::before { content: ''; position: absolute; left: -2.75rem; top: 0.3rem; width: 14px; height: 14px; border-radius: 50%; background: var(--accent-glow); border: 3px solid #182338;}
+        .mock-timeline-item h5 { font-weight: 600; } .mock-timeline-item p { font-size: 0.8rem; color: var(--text-secondary); }
+        .mock-grid { width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .mock-dam-card { padding: 1rem; border-radius: 8px; text-align: center; }
+        .mock-dam-card h5 { font-size: 1rem; margin-bottom: 0.2rem; } .mock-dam-card h3 { font-size: 1.8rem; }
+        .mock-progress-bar { height: 6px; background: rgba(255,255,255,0.2); border-radius: 3px; margin-top: 0.5rem; overflow: hidden; }
+        .mock-progress-bar div { height: 100%; width: 85%; background: white; }
+        .mock-price-card { padding: 1rem; border-radius: 8px; text-align: center; }
+        .mock-price-card h5 { font-size: 1.1rem; opacity: 0.8; } .mock-price-card h3 { font-size: 2rem; }
+        .mock-doughnut-chart-container { width: 150px; height: 150px; border-radius: 50%; display: grid; place-items: center; background: conic-gradient(from 0deg, var(--primary-glow) 0% 45%, var(--success-glow) 45% 75%, var(--warning-glow) 75% 100%); }
+        .mock-doughnut-chart-container::before { content: ''; width: 60%; height: 60%; background: #fff; border-radius: 50%; }
+        .mock-news-header { background: #c00; color: white; padding: 0.5rem 1rem; font-weight: 800; font-size: 1.3rem; margin-bottom: 1.5rem; display: inline-block; }
+        .mock-news-bullet { text-align: left; width: 100%; font-size: 1.1rem; line-height: 1.8; list-style: none; padding-left: 0; }
+        .mock-news-bullet li { margin-bottom: 0.5rem; padding-left: 1.5rem; position: relative; }
+        .mock-news-bullet li::before { content: '✓'; color: var(--accent-glow); position: absolute; left: 0; font-weight: bold; }
+        .mock-create-yours-icon { font-size: 5rem; margin-bottom: 1.5rem; }
+        
+        .section-title { text-align: center; font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem; }
+        .section-subtitle { text-align: center; font-size: 1.1rem; color: var(--text-secondary); max-width: 600px; margin: 0 auto 3rem auto; }
+        .infographic-gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1.5rem; }
+        .gallery-item { background: var(--card-bg); border: 1px solid var(--border-color); padding: 1.5rem; border-radius: 12px; text-align: center; transition: all 0.3s ease; }
+        .gallery-item:hover { transform: scale(1.05); background: rgba(255, 255, 255, 0.1); border-color: var(--primary-glow); }
+        .gallery-item .icon { font-size: 2.5rem; margin-bottom: 1rem; color: var(--accent-glow); }
+        .gallery-item h4 { font-size: 1rem; font-weight: 600; }
+        .how-it-works-steps { display: flex; justify-content: space-between; gap: 2rem; margin-top: 4rem; position: relative; }
+        .step { flex: 1; text-align: center; }
+        .step .icon-wrapper { width: 80px; height: 80px; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 50%; margin: 0 auto 1.5rem auto; display: flex; justify-content: center; align-items: center; font-size: 2rem; color: var(--success-glow); }
+        .step h3 { font-size: 1.2rem; margin-bottom: 0.5rem; }
+        .step p { color: var(--text-secondary); }
+        .faq-accordion { max-width: 700px; margin: 4rem auto 0 auto; }
+        .faq-item { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; margin-bottom: 1rem; overflow: hidden; }
+        .faq-question { padding: 1.5rem; font-weight: 600; font-size: 1.1rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        .faq-question i { transition: transform 0.3s ease; }
+        .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.5s ease-in-out; color: var(--text-secondary); }
+        .faq-answer p { padding: 0 1.5rem 1.5rem 1.5rem; border-top: 1px solid var(--border-color); padding-top: 1.5rem; }
+        .faq-item.active .faq-question i { transform: rotate(180deg); }
+        .faq-item.active .faq-answer { max-height: 200px; }
+        .final-cta { text-align: center; } .final-cta h2 { font-size: 2.2rem; } .final-cta p { margin-bottom: 2rem; }
+        .footer { text-align: center; padding: 2rem 0; margin-top: 2rem; border-top: 1px solid var(--border-color); color: var(--text-secondary); }
+        .scroll-reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+        .scroll-reveal.visible { opacity: 1; transform: translateY(0); }
+        
+        @media (max-width: 992px) { .hero-section { flex-direction: column; text-align: center; } .hero-content p { margin: 0 auto 2rem auto; } .hero-visual { margin-top: 4rem; perspective: none; } .visual-container { transform: none; width: 100%; height: 450px; } .how-it-works-steps { flex-direction: column; } }
+        @media (max-width: 576px) { .container { padding: 4rem 0; } .hero-content h1 { font-size: 2.5rem; } .main-header { padding: 1rem 5%; } .logo { font-size: 1.2rem; } }
     </style>
 </head>
 <body>
 
-    <div class="background-animation"></div>
+    <div class="aurora-bg">
+        <div class="aurora-blob blob1"></div>
+        <div class="aurora-blob blob2"></div>
+        <div class="aurora-blob blob3"></div>
+    </div>
 
-    <header class="container">
-        <a href="#" class="logo-link">
-            <i class="fas fa-chart-line"></i>
-            <span>AV AI Info Creator</span>
-        </a>
-        <nav>
-            <a href="creator.html" class="cta-button header-cta">Launch App</a>
-        </nav>
+    <header class="main-header">
+        <div class="logo"><i class="fas fa-pen-ruler"></i>AV AI Creator</div>
+        <a href="creator.html" class="cta-button">Launch Tool</a>
     </header>
-
+    
     <main>
-        <section id="hero" class="container">
-            <div class="hero-content">
-                <h1 class="main-headline">Create Stunning Infographics in Seconds</h1>
-                <p class="subtitle">
-                    Leverage the power of AI to transform your data and ideas into beautiful, shareable visuals. No design skills required.
-                </p>
-                <a href="creator.html" class="cta-button hero-cta">
-                    Start Creating for Free <i class="fas fa-arrow-right"></i>
-                </a>
-            </div>
-            <div class="hero-icon-grid">
-                <div class="hero-icon"><i class="fas fa-newspaper"></i></div>
-                <div class="hero-icon"><i class="fas fa-chart-bar"></i></div>
-                <div class="hero-icon"><i class="fas fa-timeline"></i></div>
-                <div class="hero-icon"><i class="fas fa-quote-right"></i></div>
-                <div class="hero-icon"><i class="fas fa-sitemap"></i></div>
-                <div class="hero-icon"><i class="fas fa-lightbulb"></i></div>
-            </div>
-        </section>
+        <div class="container">
+            <section class="hero-section">
+                <div class="hero-content scroll-reveal">
+                    <h1>Turn Raw Data into<br><span class="highlight">Stunning Visuals.</span> Instantly.</h1>
+                    <p>Generate beautiful, data-rich infographics for social media, news, and presentations in minutes. Powered by AI, designed for creativity. No design skills required.</p>
+                    <a href="creator.html" class="cta-button"><i class="fas fa-rocket"></i> Get Started for Free</a>
+                </div>
+                <div class="hero-visual scroll-reveal">
+                    <div class="visual-container">
+                        <div class="mock-infographic social"><p class="mock-social-quote">"ಕನಸುಗಳನ್ನು ನನಸಾಗಿಸಲು ಮೊದಲು ಕನಸು ಕಾಣಬೇಕು."<br>- ಎ.ಪಿ.ಜೆ. ಅಬ್ದುಲ್ ಕಲಾಂ</p></div>
+                        <div class="mock-infographic bar-chart"><h3 class="mock-title" style="color:#333">ಮಾಸಿಕ ಆದಾಯ</h3><div class="mock-bar-chart-container"><div class="mock-bar" style="height: 40%;"></div><div class="mock-bar" style="height: 75%; background: var(--secondary-glow);"></div><div class="mock-bar" style="height: 60%;"></div><div class="mock-bar" style="height: 90%; background: var(--secondary-glow);"></div></div></div>
+                        <div class="mock-infographic timeline"><h3 class="mock-title">ಯೋಜನೆಯ ಹಂತಗಳು</h3><div class="mock-timeline-container"><div class="mock-timeline-item"><h5>ಸಂಶೋಧನೆ</h5><p>2023, Q1</p></div><div class="mock-timeline-item"><h5>ವಿನ್ಯಾಸ</h5><p>2023, Q2</p></div><div class="mock-timeline-item"><h5>ಅಭಿವೃದ್ಧಿ</h5><p>2023, Q3</p></div></div></div>
+                        <div class="mock-infographic dam-levels"><h3 class="mock-title">ಜಲಾಶಯದ ಮಟ್ಟ</h3><div class="mock-grid"><div class="mock-dam-card" style="background: var(--success-glow);"><h5 style="color:black">ಕೆ.ಆರ್.ಎಸ್</h5><h3 style="color:black">85%</h3><div class="mock-progress-bar"><div></div></div></div><div class="mock-dam-card" style="background: var(--warning-glow);"><h5 style="color:black">ಕಬಿನಿ</h5><h3 style="color:black">62%</h3><div class="mock-progress-bar"><div style="width: 62%"></div></div></div></div></div>
+                        <div class="mock-infographic prices"><h3 class="mock-title">ಇಂದಿನ ಬೆಲೆ</h3><div class="mock-grid"><div class="mock-price-card" style="background: linear-gradient(45deg, #ffd700, #f1c40f);"><h5>ಚಿನ್ನ (24K)</h5><h3>₹72,500</h3></div><div class="mock-price-card" style="background: linear-gradient(45deg, #e0e0e0, #bdc3c7);"><h5>ಬೆಳ್ಳಿ (1 KG)</h5><h3>₹85,000</h3></div></div></div>
+                        <div class="mock-infographic doughnut-chart"><h3 class="mock-title" style="color:#333">ಮತ ಹಂಚಿಕೆ</h3><div class="mock-doughnut-chart-container"></div></div>
+                        <div class="mock-infographic news"><div class="mock-news-header">ಬ್ರೇಕಿಂಗ್ ನ್ಯೂಸ್</div><ul class="mock-news-bullet"><li>ನಗರದಲ್ಲಿ ಭಾರೀ ಮಳೆ, ಜನಜೀವನ ಅಸ್ತವ್ಯಸ್ತ.</li><li>ಹಲವು ಪ್ರದೇಶಗಳಲ್ಲಿ ವಿದ್ಯುತ್ ಸಂಪರ್ಕ ಕಡಿತ.</li><li>ಮುಂದಿನ 24 ಗಂಟೆಗಳ ಕಾಲ ರೆಡ್ ಅಲರ್ಟ್ ಘೋಷಣೆ.</li></ul></div>
+                        <div class="mock-infographic create-yours"><i class="fas fa-magic-wand-sparkles mock-create-yours-icon"></i><h3 class="mock-title">Create Yours Now</h3></div>
+                    </div>
+                </div>
+            </section>
+        </div>
 
-        <section id="features" class="container">
-            <h2 class="section-title">Why Choose AI Info Creator?</h2>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <i class="fas fa-robot feature-icon"></i>
-                    <h3>AI-Powered Content</h3>
-                    <p>Use the built-in AI assistant to generate ideas, write text, and get data for your infographics instantly.</p>
-                </div>
-                <div class="feature-card">
-                    <i class="fas fa-layer-group feature-icon"></i>
-                    <h3>15+ Versatile Templates</h3>
-                    <p>From news alerts and social media posts to complex charts and timelines, we have a template for every need.</p>
-                </div>
-                <div class="feature-card">
-                    <i class="fas fa-palette feature-icon"></i>
-                    <h3>Effortless Customization</h3>
-                    <p>Control every detail, including colors, fonts, layouts, and images, with our intuitive sidebar controls.</p>
-                </div>
-                 <div class="feature-card">
-                    <i class="fas fa-download feature-icon"></i>
-                    <h3>Instant High-Res Downloads</h3>
-                    <p>Export your creations as high-quality JPG or transparent PNG files, ready for web or print.</p>
-                </div>
+        <div class="container scroll-reveal">
+            <h2 class="section-title">What You Can Create</h2>
+            <p class="section-subtitle">A versatile toolkit to bring any idea to life. Your only limit is your imagination.</p>
+            <div class="infographic-gallery">
+                <div class="gallery-item"><div class="icon"><i class="fas fa-quote-right"></i></div><h4>Social Posts</h4></div>
+                <div class="gallery-item"><div class="icon"><i class="fas fa-newspaper"></i></div><h4>News Alerts</h4></div>
+                <div class="gallery-item"><div class="icon"><i class="fas fa-chart-bar"></i></div><h4>Data Charts</h4></div>
+                <div class="gallery-item"><div class="icon"><i class="fas fa-timeline"></i></div><h4>Timelines</h4></div>
+                <div class="gallery-item"><div class="icon"><i class="fas fa-list-ul"></i></div><h4>Lists & Steps</h4></div>
+                <div class="gallery-item"><div class="icon"><i class="fas fa-tags"></i></div><h4>Price Cards</h4></div>
             </div>
-        </section>
+        </div>
 
-        <section id="showcase" class="container">
-            <h2 class="section-title">Featured Templates</h2>
-            <div class="showcase-grid">
-                <div class="showcase-item">
-                    <div class="showcase-icon"><i class="fas fa-newspaper"></i></div>
-                    <h3>News Alerts</h3>
-                    <p>Create professional, broadcast-style news graphics for breaking stories and important updates.</p>
-                </div>
-                 <div class="showcase-item">
-                    <div class="showcase-icon"><i class="fas fa-chart-pie"></i></div>
-                    <h3>Data & Charts</h3>
-                    <p>Visualize your data with beautiful 3D-effect bar and pie charts that are easy to create and understand.</p>
-                </div>
-                <div class="showcase-item">
-                    <div class="showcase-icon"><i class="fas fa-timeline"></i></div>
-                    <h3>Timelines & Processes</h3>
-                    <p>Illustrate historical events, project milestones, or step-by-step guides with elegant flow graphics.</p>
-                </div>
-                 <div class="showcase-item">
-                    <div class="showcase-icon"><i class="fas fa-balance-scale"></i></div>
-                    <h3>Comparison Tables</h3>
-                    <p>Highlight the differences between products, plans, or ideas with clean, easy-to-read comparison cards.</p>
-                </div>
-            </div>
-        </section>
+        <div class="container scroll-reveal">
+             <h2 class="section-title">How It Works</h2>
+             <p class="section-subtitle">Creating professional infographics is as easy as one, two, three. No complex software, no learning curve.</p>
+             <div class="how-it-works-steps">
+                <div class="step"><div class="icon-wrapper"><i class="fas fa-hand-pointer"></i></div><h3>1. Select & Prompt</h3><p>Choose your infographic type and use the AI assistant to generate your content in seconds.</p></div>
+                <div class="step"><div class="icon-wrapper"><i class="fas fa-sliders"></i></div><h3>2. Customize</h3><p>Adjust fonts, colors, layouts, and backgrounds with a powerful, real-time visual editor.</p></div>
+                <div class="step"><div class="icon-wrapper"><i class="fas fa-download"></i></div><h3>3. Download</h3><p>Export your finished design as a high-quality, perfectly sized image, ready to be shared.</p></div>
+             </div>
+        </div>
         
-        <section id="cta-final" class="container">
-            <h2 class="section-title">Ready to Bring Your Ideas to Life?</h2>
-             <p class="subtitle">Your next viral infographic is just a click away.</p>
-            <a href="creator.html" class="cta-button hero-cta">Launch the Creator Studio</a>
-        </section>
-
+        <div class="container scroll-reveal">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <div class="faq-accordion">
+                <div class="faq-item"><div class="faq-question"><span>Is this tool completely free to use?</span><i class="fas fa-chevron-down"></i></div><div class="faq-answer"><p>Yes, the Info Creator tool is completely free. The AI content generation feature relies on external services which have generous free tiers, but may require your own free API key for extensive use.</p></div></div>
+                <div class="faq-item"><div class="faq-question"><span>Do I need to create an account or sign up?</span><i class="fas fa-chevron-down"></i></div><div class="faq-answer"><p>No account or sign-up is required. You can launch the tool and start creating immediately. All processing happens directly in your browser, ensuring your data remains private.</p></div></div>
+                <div class="faq-item"><div class="faq-question"><span>Can I generate content in Kannada?</span><i class="fas fa-chevron-down"></i></div><div class="faq-answer"><p>Absolutely! The integrated "AV Your Friend" AI assistant is specifically designed with detailed prompts to generate high-quality text, lists, and data directly in Kannada script.</p></div></div>
+                <div class="faq-item"><div class="faq-question"><span>Can I use the infographics for commercial purposes?</span><i class="fas fa-chevron-down"></i></div><div class="faq-answer"><p>Yes. The infographics you create are yours to use however you wish, including for commercial projects. You are responsible for ensuring any uploaded images or AI-generated content complies with copyright laws.</p></div></div>
+            </div>
+        </div>
+        
+        <div class="container scroll-reveal final-cta">
+            <h2>Ready to Bring Your Ideas to Life?</h2>
+            <p class="section-subtitle">Your next viral infographic is just one click away. No more blank pages, no more complicated tools.</p>
+            <a href="creator.html" class="cta-button"><i class="fas fa-bolt"></i> Start Designing Now</a>
+        </div>
     </main>
     
-    <footer>
-        <div class="container">
-            <p>© 2025 Avinash Vagarnal AI Creatives. All Rights Reserved.</p>
-        </div>
+    <footer class="footer">
+        <p>© 2025 Avinash Vagarnal AI Creatives. All Rights Reserved.</p>
     </footer>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const faqItems = document.querySelectorAll('.faq-item');
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                question.addEventListener('click', () => {
+                    const isActive = item.classList.contains('active');
+                    faqItems.forEach(i => i.classList.remove('active'));
+                    if (!isActive) {
+                        item.classList.add('active');
+                    }
+                });
+            });
+
+            const scrollObserver = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.scroll-reveal').forEach((el) => scrollObserver.observe(el));
+        });
+    </script>
 </body>
 </html>
