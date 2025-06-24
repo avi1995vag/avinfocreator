@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Anek+Kannada:wght@100;200;300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.1.0"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         :root {
@@ -221,7 +222,7 @@
         .news-bullet.bullet-circle, .news-bullet.bullet-square { width: 1.5em; height: 1.5em; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; }
         .news-bullet.bullet-circle { border-radius: 50%; }
         .news-bullet.bullet-square { border-radius: 4px; }
-        .bullet-separator { height: 1px; width: 100%; margin: 10px 0; }
+        .bullet-separator { height: 1px; width: 100%; }
         .list-item:last-child .bullet-separator { display: none; }
         .news-body-quote { text-align: left; padding: 20px 0; }
         .news-body-quote blockquote { font-weight: 700; line-height: 1.3; border-left: 5px solid var(--primary); padding-left: 20px; }
@@ -293,41 +294,70 @@
         .info-block-text h2 { margin-bottom: 6px; word-break: break-word; } 
         .info-block-text p { line-height: 1.5; word-break: break-word; } 
 
-        .timeline-vertical-container { position: relative; padding: 15px 0 15px 20px; display:flex; flex-direction:column; align-items:flex-start; width: 100%;}
-        .timeline-vertical-container::before { content: ''; position: absolute; left: 20px; top: 0; bottom: 0; width: 3px; background: var(--gradient); transform: translateX(-50%); border-radius: 2px; }
-        .timeline-vertical-item { display: flex; margin: 20px 0; position: relative; width: 100%; padding-left: 30px; }
-        .timeline-vertical-content { flex: 1; padding: 12px; background: var(--light); border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); min-width: 0; border-left: 3px solid var(--primary); }
-        .timeline-vertical-item:nth-child(even) .timeline-vertical-content { border-left-color: var(--secondary); }
-        .timeline-vertical-content h3 { word-break: break-word; color: var(--accent) !important; margin-bottom: 3px; text-transform: uppercase; letter-spacing: 0.5px;} 
-        .timeline-vertical-content h4 { word-break: break-word; margin-bottom: 5px; font-weight:600;} 
-        .timeline-vertical-content p { word-break: break-word; line-height: 1.4;} 
-        .timeline-vertical-content img { max-width: 100%; border-radius: 6px; margin-top: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .timeline-vertical-dot { width: 18px; height: 18px; border-radius: 50%; background: var(--light); border: 4px solid var(--primary); position: absolute; top: 15px; z-index: 2; box-shadow: 0 0 0 3px var(--light); left: 20px; transform: translateX(-50%);}
-        .timeline-vertical-item:nth-child(even) .timeline-vertical-dot { border-color: var(--secondary); }
+        /* Classic Vertical Timeline */
+        .timeline-classic-vertical-container { position: relative; padding: 15px 0 15px 20px; display:flex; flex-direction:column; align-items:flex-start; width: 100%;}
+        .timeline-classic-vertical-container::before { content: ''; position: absolute; left: 20px; top: 0; bottom: 0; width: 3px; background: var(--gradient); transform: translateX(-50%); border-radius: 2px; }
+        .timeline-classic-vertical-item { display: flex; margin: 20px 0; position: relative; width: 100%; padding-left: 30px; }
+        .timeline-classic-vertical-content { flex: 1; padding: 12px; background: var(--light); border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); min-width: 0; border-left: 3px solid var(--primary); }
+        .timeline-classic-vertical-item:nth-child(even) .timeline-classic-vertical-content { border-left-color: var(--secondary); }
+        .timeline-classic-vertical-content h3 { word-break: break-word; color: var(--accent) !important; margin-bottom: 3px; text-transform: uppercase; letter-spacing: 0.5px;} 
+        .timeline-classic-vertical-content h4 { word-break: break-word; margin-bottom: 5px; font-weight:600;} 
+        .timeline-classic-vertical-content p { word-break: break-word; line-height: 1.4;} 
+        .timeline-classic-vertical-content img { max-width: 100%; border-radius: 6px; margin-top: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .timeline-classic-vertical-dot { width: 18px; height: 18px; border-radius: 50%; background: var(--light); border: 4px solid var(--primary); position: absolute; top: 15px; z-index: 2; box-shadow: 0 0 0 3px var(--light); left: 20px; transform: translateX(-50%);}
+        .timeline-classic-vertical-item:nth-child(even) .timeline-classic-vertical-dot { border-color: var(--secondary); }
         
         .timeline-start-node, .timeline-end-node { text-align: center; font-weight: 600; padding: 8px 15px; border-radius: 25px; background: var(--light); border: 2px solid var(--primary); margin: 10px 0 10px 30px; display: inline-flex; align-items: center; gap: 8px; }
         .timeline-end-node { border-color: var(--secondary); }
         
-        .timeline-horizontal-wrapper { width:100%; overflow-x:auto; padding: 10px 0;}
-        .timeline-horizontal-container { display: flex; flex-direction: column; position: relative; padding: 30px 10px; min-width: fit-content; align-items: center; }
-        .timeline-horizontal-line { position: absolute; left: 0; right: 0; top: 50%; height: 3px; background: var(--gradient); transform: translateY(-50%); z-index: 1; min-width: 100%; border-radius: 2px;}
-        .timeline-horizontal-events { display: flex; position: relative; z-index: 2; padding: 0 15px; }
-        .timeline-horizontal-item { display: flex; flex-direction: column; align-items: center; min-width: 130px; margin: 0 10px; position:relative; }
-        .timeline-horizontal-dot { width: 16px; height: 16px; border-radius: 50%; background: var(--light); border: 3px solid var(--primary); margin-bottom: 8px; margin-top: 8px; z-index:3; box-shadow: 0 0 0 3px var(--light);}
-        .timeline-horizontal-content { background: var(--light); padding: 8px 10px; border-radius: 6px; box-shadow: 0 1px 6px rgba(0,0,0,0.1); text-align: center; width:100%; min-width: 0; border-top: 3px solid var(--primary); }
-        .timeline-horizontal-content img { max-width: 100%; border-radius: 4px; margin-top: 5px; }
-        .timeline-horizontal-item:nth-child(odd) .timeline-horizontal-content { margin-bottom: 25px; }
-        .timeline-horizontal-item:nth-child(even) .timeline-horizontal-content { margin-top: 25px; border-top-color: var(--secondary); }
-        .timeline-horizontal-item:nth-child(odd) .timeline-horizontal-dot { order: 2; }
-        .timeline-horizontal-item:nth-child(even) .timeline-horizontal-dot { order: -1; border-color: var(--secondary); }
-        .timeline-horizontal-content h3 { color: var(--accent) !important; margin-bottom: 2px; word-break: break-all; text-transform: uppercase;}
-        .timeline-horizontal-content h4 { margin-bottom: 3px; word-break: break-all; font-weight:600;} 
-        .timeline-horizontal-content p { color: var(--text-color) !important; opacity: 0.8; word-break: break-all; line-height: 1.3;} 
+        /* Classic Horizontal Timeline */
+        .timeline-classic-horizontal-wrapper { width:100%; overflow-x:auto; padding: 10px 0;}
+        .timeline-classic-horizontal-container { display: flex; flex-direction: column; position: relative; padding: 30px 10px; min-width: fit-content; align-items: center; }
+        .timeline-classic-horizontal-line { position: absolute; left: 0; right: 0; top: 50%; height: 3px; background: var(--gradient); transform: translateY(-50%); z-index: 1; min-width: 100%; border-radius: 2px;}
+        .timeline-classic-horizontal-events { display: flex; position: relative; z-index: 2; padding: 0 15px; }
+        .timeline-classic-horizontal-item { display: flex; flex-direction: column; align-items: center; min-width: 130px; margin: 0 10px; position:relative; }
+        .timeline-classic-horizontal-dot { width: 16px; height: 16px; border-radius: 50%; background: var(--light); border: 3px solid var(--primary); margin-bottom: 8px; margin-top: 8px; z-index:3; box-shadow: 0 0 0 3px var(--light);}
+        .timeline-classic-horizontal-content { background: var(--light); padding: 8px 10px; border-radius: 6px; box-shadow: 0 1px 6px rgba(0,0,0,0.1); text-align: center; width:100%; min-width: 0; border-top: 3px solid var(--primary); }
+        .timeline-classic-horizontal-content img { max-width: 100%; border-radius: 4px; margin-top: 5px; }
+        .timeline-classic-horizontal-item:nth-child(odd) .timeline-classic-horizontal-content { margin-bottom: 25px; }
+        .timeline-classic-horizontal-item:nth-child(even) .timeline-classic-horizontal-content { margin-top: 25px; border-top-color: var(--secondary); }
+        .timeline-classic-horizontal-item:nth-child(odd) .timeline-classic-horizontal-dot { order: 2; }
+        .timeline-classic-horizontal-item:nth-child(even) .timeline-classic-horizontal-dot { order: -1; border-color: var(--secondary); }
+        .timeline-classic-horizontal-content h3 { color: var(--accent) !important; margin-bottom: 2px; word-break: break-all; text-transform: uppercase;}
+        .timeline-classic-horizontal-content h4 { margin-bottom: 3px; word-break: break-all; font-weight:600;} 
+        .timeline-classic-horizontal-content p { color: var(--text-color) !important; opacity: 0.8; word-break: break-all; line-height: 1.3;} 
+
+        /* Modern Vertical Timeline */
+        .timeline-modern-vertical-container { position: relative; padding: 20px 0; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 20px; }
+        .timeline-modern-vertical-container::before { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 3px; background-color: var(--subtle-border); transform: translateX(-50%); border-radius: 2px; }
+        .timeline-modern-vertical-item { display: flex; justify-content: space-between; align-items: center; width: 100%; position: relative; }
+        .timeline-modern-vertical-item.item-right { flex-direction: row; }
+        .timeline-modern-vertical-item.item-left { flex-direction: row-reverse; }
+        .modern-timeline-dot { width: 16px; height: 16px; border-radius: 50%; background: var(--light); border: 3px solid var(--primary); flex-shrink: 0; z-index: 2; }
+        .modern-timeline-spacer { flex-basis: calc(50% - 8px); } /* 8px is half of dot width */
+        .modern-timeline-vertical-content { width: calc(50% - 40px); background: var(--light); padding: 15px; border-radius: 8px; box-shadow: 0 3px 10px rgba(0,0,0,0.1); position: relative; }
+        .item-left .modern-timeline-vertical-content { text-align: right; }
+        .modern-timeline-vertical-content::before { content: ''; position: absolute; top: 18px; height: 2px; width: 25px; background: var(--subtle-border); }
+        .item-left .modern-timeline-vertical-content::before { right: -25px; }
+        .item-right .modern-timeline-vertical-content::before { left: -25px; }
+        .modern-timeline-logo { max-width: 60px; max-height: 30px; object-fit: contain; margin-bottom: 8px; }
+        .item-left .modern-timeline-logo { float: right; margin-left: 10px;}
+        .item-right .modern-timeline-logo { float: left; margin-right: 10px;}
+
+        /* Modern Horizontal Timeline */
+        .timeline-modern-horizontal-container { display: flex; flex-direction: column; width: 100%; gap: 10px; }
+        .modern-horizontal-axis { display: flex; border-bottom: 3px solid var(--subtle-border); padding-bottom: 10px; width: 100%; }
+        .modern-horizontal-stop { flex: 1; display: flex; flex-direction: column; align-items: center; position: relative; gap: 8px; }
+        .modern-horizontal-stop::after { content: ''; position: absolute; bottom: -23px; width: 3px; height: 13px; background-color: var(--subtle-border); }
+        .modern-horizontal-year-box { padding: 5px 10px; border-radius: 6px; color: white; font-weight: 700; }
+        .modern-horizontal-icon-wrapper { width: 40px; height: 40px; display: flex; justify-content: center; align-items: center; border-radius: 50%; background: var(--light); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .modern-horizontal-icon-wrapper img { max-height: 24px; max-width: 24px; object-fit: contain; }
+        .modern-horizontal-content-area { display: flex; width: 100%; }
+        .modern-horizontal-content-box { flex: 1; padding: 15px; border-radius: 8px; text-align: center; border: 2px solid transparent; background: var(--light); margin: 0 5px; }
+        
         .chart-container { margin: 20px 0; padding: 15px; background: var(--light); border-radius: 8px; box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08); display: flex; flex-direction: column; width: 100%; max-width: 95%;}
         .chart-container h3.chart-title {text-align: center; margin-bottom: 15px; font-weight: 700;} 
         .chart-canvas-wrapper { position: relative; height: 250px; width: 100%; }
-        .chart-canvas-wrapper.is-3d canvas { filter: drop-shadow(4px 4px 8px rgba(0,0,0,0.2)); }
-        .dark-theme .chart-canvas-wrapper.is-3d canvas { filter: drop-shadow(4px 4px 8px rgba(0,0,0,0.4)); }
         .dam-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin: 15px 0; width: 100%;}
         .dam-card { padding: 15px; border-radius:10px; color:white; text-align:center; }
         .dam-name { font-weight:600; margin-bottom:5px; color:white !important;}
@@ -384,8 +414,8 @@
         .did-you-know-infographic .dyk-source-text { position: absolute; bottom: 20px; font-weight: 500; color: var(--global-small-text-color); opacity: 0.8; word-break: break-word; }
         
         .footer-bar { position: absolute; bottom: 0; left: 0; right: 0; width: 100%; display: flex; align-items: center; gap: 20px; background-color: white; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); }
-        .footer-logo { flex-shrink: 0; }
-        .footer-logo img { display: block; }
+        .footer-logo-container { flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+        .footer-logo-container img { display: block; max-width: 100%; max-height: 100%; }
         .footer-text { flex-grow: 1; display: flex; flex-direction: column; }
         .footer-text span { display: block; line-height: 1.3; }
         .footer-text .website-text { font-weight: 600; }
@@ -405,17 +435,110 @@
         #canvasZoomControls { display: flex; gap: 10px; align-items: center; padding: 10px; background: var(--light); border-radius: 8px; }
         #canvasZoomControls button { font-size: 14px; width: auto; min-width: 30px; height: 30px; border: none; background: var(--subtle-border); color: var(--text-color); border-radius: 6px; cursor: pointer; padding: 0 10px; }
         #canvasZoomDisplay { font-weight: 600; }
+        
         .accordion-item { border: 1px solid var(--subtle-border); border-radius: 8px; margin-bottom: 8px; background: var(--app-bg); }
         .accordion-header { background: var(--light); padding: 8px 12px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 600; border-radius: 8px 8px 0 0; }
         .accordion-header h3 { font-size: 1.1em; color: var(--primary); margin:0; padding:0; border:none; }
         .accordion-header.active { border-bottom: 1px solid var(--subtle-border); }
         .accordion-header i { transition: transform 0.3s ease; }
-        .accordion-header.active i { transform: rotate(180deg); }
+        .accordion-header.active i.fa-chevron-down { transform: rotate(180deg); }
         .accordion-content { padding: 12px; display: none; border-radius: 0 0 8px 8px; }
         .accordion-content.active { display: block; }
-        #aiAssistantOutputContainer { position: relative; margin-top: 10px; }
-        #aiAssistantOutput { min-height: 80px; background-color: color-mix(in srgb, var(--dark) 5%, transparent); }
-        #copyAiOutputBtn { position: absolute; top: 5px; right: 5px; font-size: 0.8em; padding: 4px 8px; }
+        
+        /* --- AV Your Friend MODAL STYLES --- */
+        #aiAssistantModal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            display: none; /* Changed by JS */
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .ai-modal-content {
+            background: var(--app-bg);
+            padding: 25px;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 1200px;
+            height: 90vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        }
+        .ai-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--subtle-border);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+            flex-shrink: 0;
+        }
+        .ai-modal-header h2 {
+            margin: 0;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .ai-modal-body {
+            flex-grow: 1;
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 20px;
+            overflow: hidden;
+        }
+        .ai-modal-controls, .ai-modal-interaction {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            height: 100%;
+        }
+        .ai-modal-interaction {
+            gap: 10px;
+        }
+        .ai-modal-controls .control-group, .ai-modal-interaction .control-group {
+            margin-bottom: 0;
+        }
+        .ai-modal-body textarea.control-input {
+            flex-grow: 1;
+            min-height: 150px;
+            font-size: 14px;
+            resize: vertical;
+        }
+        #aiModalOutput {
+            background-color: color-mix(in srgb, var(--dark) 5%, transparent);
+        }
+        .ai-modal-footer {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid var(--subtle-border);
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+        #aiApplyToTargetGroup {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        #aiApplyToTargetGroup label {
+            margin-bottom: 0;
+            flex-shrink: 0;
+        }
+        @media (max-width: 992px) {
+            .ai-modal-body {
+                grid-template-columns: 1fr;
+                overflow-y: auto;
+            }
+        }
         
         @media (max-width: 1200px) { .sidebar { width: 320px; } }
         @media (max-width: 992px) { 
@@ -468,54 +591,14 @@
             </div>
 
             <div class="sidebar-scroll-content">
-                <div class="accordion-item">
-                    <div class="accordion-header active"><h3><i class="fas fa-robot" style="margin-right: 8px;"></i>AI Assistant</h3><i class="fas fa-chevron-down"></i></div>
-                    <div class="accordion-content active">
-                        <div id="aiAlertContainer"></div>
-                        
-                        <div class="control-group">
-                            <label for="openRouterApiKey">OpenRouter API Key <small>(<a href="https://openrouter.ai/keys" target="_blank">Get one here</a>)</small></label>
-                            <input type="password" id="openRouterApiKey" class="control-input" placeholder="Enter your free or paid API key...">
-                            <small>Your key is only used in your browser and is not stored.</small>
-                        </div>
-                        <div class="control-group">
-                            <label for="aiModel">Choose a Model</label>
-                            <select id="aiModel" class="control-input">
-                                <option value="mistralai/mistral-7b-instruct:free" selected>Mistral 7B (Free)</option>
-                                <option value="nousresearch/nous-hermes-2-mixtral-8x7b-dpo:free">Nous Hermes 2 (Free)</option>
-                                <option value="meta-llama/llama-3-8b-instruct:free">Llama 3 8B (Free)</option>
-                                <option value="openai/gpt-3.5-turbo">OpenAI GPT-3.5 Turbo</option>
-                                <option value="google/gemini-flash-1.5">Google Gemini 1.5 Flash</option>
-                                <option value="anthropic/claude-3-haiku">Anthropic Claude 3 Haiku</option>
-                            </select>
-                        </div>
-                        <div class="control-group">
-                            <label for="aiPromptTemplate">Prompt Templates</label>
-                            <select id="aiPromptTemplate" class="control-input">
-                                <option value="" data-placeholder="e.g., Generate 4 bullet points about the benefits of solar power...">-- Select a Template --</option>
-                                <option value="Generate a short, inspiring quote about [TOPIC].">Social Post Quote</option>
-                                <option value="Generate 4 concise bullet points about the [EVENT/TOPIC]. Each point on a new line.">News/List Bullet Points</option>
-                                <option value="Generate a list of 4 titles and 4 matching descriptions for a Process Flow infographic about [PROCESS]. Format as: Title 1,Title 2,...\n---\nDescription 1,Description 2,...">Process Flow Content (CSV)</option>
-                                <option value="Generate 4 statistical values and their labels for [TOPIC]. Format as: Value1,Value2,...\n---\nLabel1,Label2,...">Statistical Data (CSV)</option>
-                                <option value="Generate comma-separated data for a bar chart showing [DATA DESCRIPTION]. Columns: [X-AXIS LABELS]. Values: [Y-AXIS VALUES]. Format as: Label1,Label2,...\n---\nValue1,Value2,...">Chart Data (CSV)</option>
-                                <option value="Generate 3-5 key-value pairs for a data table about [TOPIC]. Format as: Key: Value (each on a new line).">Key-Value Pairs for Table</option>
-                                <option value="Generate a list of 3-5 features for a [PRODUCT/PLAN]. Each on a new line.">Comparison Plan Features</option>
-                                <option value="Generate a simple organizational hierarchy starting with [TOP ROLE]. Use 2 spaces for indentation for each level.">Hierarchy Chart Text</option>
-                                <option value="Generate a short, interesting 'Did you know?' fact about [TOPIC].">"Did You Know?" Fact</option>
-                            </select>
-                        </div>
-                        <div class="control-group">
-                            <label for="aiPrompt">Your Prompt</label>
-                            <textarea id="aiPrompt" class="control-input" rows="3" placeholder="e.g., Generate 4 bullet points about the benefits of solar power..."></textarea>
-                        </div>
-                        <button id="generateWithAiBtn" class="btn btn-primary" style="width: 100%;"><i class="fas fa-magic"></i> Generate with AI</button>
-                        
-                        <div id="aiAssistantOutputContainer">
-                            <textarea id="aiAssistantOutput" class="control-input" rows="4" readonly placeholder="AI output will appear here..."></textarea>
-                            <button id="copyAiOutputBtn" class="btn btn-secondary" title="Copy Output"><i class="fas fa-copy"></i></button>
-                        </div>
-                    </div>
+                <!-- AV Your Friend Trigger Button -->
+                <div class="control-group">
+                    <button id="openAiAssistantBtn" class="btn btn-primary" style="width:100%; text-align: left; padding: 12px;">
+                        <i class="fas fa-robot" style="margin-right: 10px; font-size: 1.2em;"></i> AV Your Friend
+                    </button>
                 </div>
+                
+                <hr style="border: none; border-top: 1px solid var(--subtle-border); margin: 20px 0;">
 
                 <div class="control-group">
                     <label>Select Infographic Type</label>
@@ -528,6 +611,8 @@
                         <button class="infographic-type-btn control-input" data-type="timeline"><i class="fas fa-timeline"></i><span>Timeline</span></button>
                         <button class="infographic-type-btn control-input" data-type="barChart"><i class="fas fa-chart-bar"></i><span>Bar Chart</span></button>
                         <button class="infographic-type-btn control-input" data-type="pieChart"><i class="fas fa-chart-pie"></i><span>Pie Chart</span></button>
+                        <button class="infographic-type-btn control-input" data-type="doughnutChart"><i class="fas fa-circle-notch"></i><span>Doughnut</span></button>
+                        <button class="infographic-type-btn control-input" data-type="halfDoughnutChart"><i class="fas fa-tachometer-alt"></i><span>Gauge</span></button>
                         <button class="infographic-type-btn control-input" data-type="dams"><i class="fas fa-water"></i><span>Dam Levels</span></button>
                         <button class="infographic-type-btn control-input" data-type="prices"><i class="fas fa-tags"></i><span>Prices</span></button>
                         <button class="infographic-type-btn control-input" data-type="comparison"><i class="fas fa-balance-scale"></i><span>Comparison</span></button>
@@ -539,13 +624,18 @@
                 </div>
 
                 <div id="tabContentContainer">
-                    </div>
+                    <!-- Dynamic content will be injected here by JS -->
+                </div>
 
-                <h4>Global Settings</h4>
                 <div id="globalSettingsAccordion">
                     <div class="accordion-item">
-                        <div class="accordion-header active">Layout & Sizing <i class="fas fa-chevron-down"></i></div>
+                        <div class="accordion-header active">
+                            <h3>Global Settings</h3>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
                         <div class="accordion-content active">
+                            <div class="control-group"> <label>Data Separator for Multi-Value Fields</label> <select id="globalDataSeparator" class="control-input"> <option value=",">Comma (,)</option> <option value=";">Semicolon (;)</option> <option value="|">Pipe (|)</option> </select> </div>
+                            <h5>Layout & Sizing</h5>
                             <div class="control-group"> <label>Canvas Width (px)</label> <input type="number" class="control-input" id="canvasWidth" value="1080" step="10"> </div>
                             <div class="control-group"> <label>Canvas Height (px)</label> <input type="number" class="control-input" id="canvasHeight" value="1080" step="10"> </div>
                             <div class="control-group"> <label>Canvas Presets</label> <div class="tab-buttons" id="canvasPresetButtons" style="flex-wrap: wrap; gap: 3px; justify-content: flex-start;"> <button class="tab-btn preset-btn active" data-width="1080" data-height="1080">Insta Post (1:1)</button> <button class="tab-btn preset-btn" data-width="1080" data-height="1920">Story (9:16)</button> <button class="tab-btn preset-btn" data-width="1200" data-height="630">Facebook (1.91:1)</button> <button class="tab-btn preset-btn" data-width="1600" data-height="900">16:9 HD</button> <button class="tab-btn preset-btn" data-width="1000" data-height="1500">Pinterest (2:3)</button> <button class="tab-btn preset-btn" data-width="800" data-height="1000">Default</button> </div> </div>
@@ -559,7 +649,10 @@
                         </div>
                     </div>
                      <div class="accordion-item">
-                        <div class="accordion-header">Footer Bar <i class="fas fa-chevron-down"></i></div>
+                        <div class="accordion-header">
+                            <h3>Footer Bar</h3> 
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
                         <div class="accordion-content">
                             <div class="control-group"> <label><input type="checkbox" id="footerBarEnable" class="control-input" style="width:auto; margin-right: 5px;"> Add Footer Bar</label> </div>
                             <div id="footerBarControls" style="display:none;">
@@ -568,7 +661,11 @@
                                 <div class="control-group"> <label>Alignment</label> <select class="control-input" id="footerBarAlignment"> <option value="space-between" selected>Space Between</option> <option value="flex-start">Left</option> <option value="center">Center</option></select> </div>
                                 <div class="control-group"> <label>Logo Image URL</label> <input type="url" class="control-input" id="footerBarLogoUrl"></div>
                                 <div class="control-group"> <label>Upload Logo</label> <input type="file" class="control-input" id="footerBarLogoUpload" accept="image/*"></div>
-                                <div class="control-group"> <label>Logo Height (px)</label> <input type="number" class="control-input" id="footerBarLogoHeight" value="30" min="10" max="100"></div>
+                                <h6>Logo Sizing & Fit</h6>
+                                <div class="control-group"> <label>Logo Container Height (px)</label> <input type="number" class="control-input" id="footerBarLogoHeight" value="40" min="10" max="100"></div>
+                                <div class="control-group"> <label>Logo Container Width (px)</label> <input type="number" class="control-input" id="footerBarLogoWidth" value="120" min="10" max="300"></div>
+                                <div class="control-group"> <label>Logo Fit</label> <select class="control-input" id="footerBarLogoFit"><option value="contain" selected>Contain (Fit inside)</option><option value="cover">Cover (Fill & Crop)</option></select></div>
+                                <h6>Footer Text</h6>
                                 <div class="control-group"> <label>Website Text</label> <input type="text" class="control-input" id="footerBarWebsite" value="www.yoursite.com"></div>
                                 <div class="control-group"> <label>Hashtag Text</label> <input type="text" class="control-input" id="footerBarHashtag" value="#YourHashtag"></div>
                                 <div class="control-group"> <label>Text Size (px)</label> <input type="number" class="control-input" id="footerBarTextSize" value="14" min="6" max="100"></div>
@@ -599,6 +696,183 @@
         </div>
     </div>
     
+    <!-- AV Your Friend MODAL -->
+    <div id="aiAssistantModal" class="modal-overlay">
+        <div class="ai-modal-content">
+            <div class="ai-modal-header">
+                <h2><i class="fas fa-robot"></i> AV Your Friend</h2>
+                <button id="aiModalCloseBtn" class="modal-close-btn">&times;</button>
+            </div>
+            <div class="ai-modal-body">
+                <div class="ai-modal-controls">
+                    <div id="aiModalAlertContainer"></div>
+                    <div class="control-group">
+                        <label for="aiModalProvider">API Provider</label>
+                        <select id="aiModalProvider" class="control-input">
+                            <option value="openrouter" selected>OpenRouter.ai</option>
+                            <option value="gemini">Google Gemini</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label for="aiModalApiKey">API Key <small id="apiKeyHelpText">(<a href="https://openrouter.ai/keys" target="_blank">Get one</a>)</small></label>
+                        <input type="password" id="aiModalApiKey" class="control-input" placeholder="Enter your OpenRouter API key...">
+                    </div>
+                    <div class="control-group">
+                        <label for="aiModalModel">Choose a Model</label>
+                        <select id="aiModalModel" class="control-input">
+                            <optgroup label="OpenRouter Free Models" id="openrouterModels">
+                                <option value="google/gemini-2.0-flash-exp:free">Gemini 2.0 Flash Experimental</option>
+                                <option value="deepseek/deepseek-r1:free">DeepSeek R1</option>
+                                <option value="deepseek/deepseek-r1-0528:free">DeepSeek R1 0528</option>
+                                <option value="sarvamai/sarvam-m:free">Sarvam-M</option>
+                             </optgroup>
+                             <optgroup label="Google Gemini Models" id="geminiModels" style="display: none;">
+                                <option value="gemini-1.5-flash-latest">Gemini 1.5 Flash</option>
+                                <option value="gemini-1.5-pro-latest">Gemini 1.5 Pro</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                                 <div class="control-group">
+                        <label for="aiModalPromptTemplate">AI Prompt Templates (for Kannada Content)</label>
+                        <select id="aiModalPromptTemplate" class="control-input">
+                            <option value="" data-placeholder="e.g., Generate 4 bullet points about the benefits of solar power...">-- Select a Template --</option>
+                            
+                            <option value="Generate a short, powerful, and inspiring quote about [TOPIC].
+The entire response MUST be in Kannada script only. Finally, add a new line with 'Topic: [Your Topic in Kannada]'">
+                                Social Post: Quote
+                            </option>
+                            
+                            <option value="Generate 4 concise bullet points for a news alert about [EVENT/TOPIC]. Each point must be on a new line.
+The entire response MUST be in Kannada script only. Finally, add a new line with 'Topic: [Your Topic in Kannada]'">
+                                News/List: Bullet Points
+                            </option>
+                            
+                            <option value="Generate a single, powerful sentence that can be used as a quote about [EVENT/TOPIC] from the perspective of a [PERSONA, e.g., a Financial Analyst].
+The entire response MUST be in Kannada script only. Finally, add a new line with 'Topic: [Your Topic in Kannada]'">
+                                News: Quote Text
+                            </option>
+                            
+                            <option value="Generate content for a 4-step Process Flow infographic about [PROCESS].
+Provide the output in this exact format:
+Step1Title,Step2Title,Step3Title,Step4Title
+---
+Step1Description,Step2Description,Step3Description,Step4Description
+The entire response MUST be in Kannada script only. Finally, add a new line with 'Topic: [Your Topic in Kannada]'">
+                                Process Flow: Content
+                            </option>
+
+                            <option value="Generate 4 statistical data points and their corresponding labels for an infographic about [TOPIC].
+Provide the output in this exact format:
+Value1,Value2,Value3,Value4
+---
+Label1,Label2,Label3,Label4
+The entire response MUST be in Kannada script only. Finally, add a new line with 'Topic: [Your Topic in Kannada]'">
+                                Statistical: Data
+                            </option>
+                            
+                            <option value="Generate data for a 5-event timeline about the history of [TOPIC]. Include dates, titles, descriptions, and relevant Font Awesome icon classes.
+Provide the output in this exact 4-part format, separated by '---':
+Date1,Date2,Date3,Date4,Date5
+---
+Title1,Title2,Title3,Title4,Title5
+---
+Description1,Description2,Description3,Description4,Description5
+---
+fas fa-icon1,fas fa-icon2,fas fa-icon3,fas fa-icon4,fas fa-icon5
+The entire response MUST be in Kannada script only (except for the icon classes). Finally, add a new line with 'Topic: [Your Topic in Kannada]'">
+                                Timeline: Full Content
+                            </option>
+
+                            <option value="Generate data for a Bar or Pie chart showing [DATA_DESCRIPTION]. Provide 5 categories and their corresponding numerical values.
+Provide the output in this exact format:
+Category1,Category2,Category3,Category4,Category5
+---
+Value1,Value2,Value3,Value4,Value5
+The entire response MUST be in Kannada script only. Finally, add a new line with 'Topic: [Your Topic in Kannada]'">
+                                Chart: Data & Labels
+                            </option>
+
+                            <option value="Generate 4 rows of data for a 3-column table about [TOPIC]. The column headers are '[COLUMN_1_NAME]', '[COLUMN_2_NAME]', and '[COLUMN_3_NAME]'.
+Provide the output as 4 lines of comma-separated values, without the header row.
+The entire response MUST be in Kannada script only. Finally, add a new line with 'Topic: [Your Topic in Kannada]'">
+                                Text to Table: Tabular Data
+                            </option>
+                            
+                            <option value="Generate 5 key-value pairs for a vertical data table about [TOPIC].
+Provide the output in this exact format (each on a new line):
+Key1: Value1
+Key2: Value2
+...
+The entire response MUST be in Kannada script only. Finally, add a new line with 'Topic: [Your Topic in Kannada]'">
+                                Text to Table: Vertical Data
+                            </option>
+
+                            <option value="Generate a list of 5 compelling features for a [PRODUCT/PLAN_NAME] comparison plan. Each feature must be on a new line.
+The entire response MUST be in Kannada script only. Finally, add a new line with 'Topic: [Your Topic in Kannada]'">
+                                Comparison: Plan Features
+                            </option>
+
+                            <option value="Generate a simple 3-level organizational hierarchy for a [COMPANY_TYPE] company. Use 2 spaces for indentation for each level below the top role.
+The entire response MUST be in Kannada script only. Finally, add a new line with 'Topic: [Your Topic in Kannada]'">
+                                Hierarchy: Chart Text
+                            </option>
+
+                            <option value="For an infographic about [TOPIC], generate content for 4 list items. Include titles, descriptions, and relevant Font Awesome icons.
+Provide the output in this exact 3-part format, separated by '---':
+Title1,Title2,Title3,Title4
+---
+Description1,Description2,Description3,Description4
+---
+fas fa-icon1,fas fa-icon2,fas fa-icon3,fas fa-icon4
+The entire response MUST be in Kannada script only. Finally, add a new line with 'Topic: [Your Topic in Kannada]'">
+                                List: Full Content
+                            </option>
+                            
+                            <option value="Generate a short, surprising, and interesting 'Did you know?' fact about [TOPIC].
+The entire response MUST be in Kannada script only. Finally, add a new line with 'Topic: [Your Topic in Kannada]'">
+                                "Did You Know?": Fact
+                            </option>
+                            
+                            <option value="Write a 'Coming Up' announcement for an event named [EVENT_NAME]. Include a catchy header, a sub-header, a 2-sentence description, the date, and the time.
+Provide the output in this exact 5-part format, separated by '---':
+Header Text
+---
+Sub-Header Text
+---
+Two-sentence Description Text
+---
+Date
+---
+Time
+The entire response MUST be in Kannada script only. Finally, add a new line with 'Topic: [Your Topic in Kannada]'">
+                                Coming Up: Full Content
+                            </option>
+                        </select>
+                    </div>
+                    <button id="generateWithAiModalBtn" class="btn btn-primary" style="width: 100%;"><i class="fas fa-magic"></i> Generate with AI</button>
+                </div>
+                <div class="ai-modal-interaction">
+                    <div class="control-group" style="flex-grow: 1; display:flex; flex-direction:column;">
+                        <label for="aiModalPrompt">Your Prompt</label>
+                        <textarea id="aiModalPrompt" class="control-input" placeholder="e.g., Generate 4 bullet points about the benefits of solar power..."></textarea>
+                    </div>
+                    <div class="control-group" style="flex-grow: 1; display:flex; flex-direction:column;">
+                        <label for="aiModalOutput">AI Output</label>
+                        <textarea id="aiModalOutput" class="control-input" readonly placeholder="AI output will appear here..."></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="ai-modal-footer">
+                <div id="aiApplyToTargetGroup">
+                    <label for="aiApplyToTarget">Apply Output To:</label>
+                    <select id="aiApplyToTarget" class="control-input"></select>
+                </div>
+                <button id="copyAiOutputBtn" class="btn btn-secondary"><i class="fas fa-copy"></i> Copy</button>
+                <button id="applyAiOutputBtn" class="btn btn-success"><i class="fas fa-check"></i> Apply & Close</button>
+            </div>
+        </div>
+    </div>
+
     <div id="iconFinderModal" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header">
@@ -611,11 +885,12 @@
     </div>
 
     <div id="allTabContents" style="display: none;">
-        <!-- All your tab-content divs are here, unchanged from the original file. -->
-        <!-- I am omitting them here for brevity, but they should remain in your file. -->
+        <!-- All tab-content divs are dynamically populated from here -->
         <div id="commonSettingsTemplate" style="display: none;">
              <div class="accordion-item">
-                <div class="accordion-header">Fonts & Colors <i class="fas fa-chevron-down"></i></div>
+                <div class="accordion-header">
+                    Fonts & Colors <i class="fas fa-chevron-down"></i>
+                </div>
                 <div class="accordion-content">
                     <div class="control-group"> <label>Overall Font Weight</label> <select class="control-input" data-setting="fontWeight"> <option value="400">Normal</option> <option value="500">Medium</option> <option value="600">Semi Bold</option> <option value="700">Bold</option> <option value="800">Extra Bold</option> </select> </div>
                     <h5>Font Sizes (px)</h5>
@@ -632,7 +907,9 @@
                 </div>
             </div>
              <div class="accordion-item">
-                <div class="accordion-header">Background <i class="fas fa-chevron-down"></i></div>
+                <div class="accordion-header">
+                    Background <i class="fas fa-chevron-down"></i>
+                </div>
                 <div class="accordion-content">
                     <div class="control-group">
                         <label>Background Presets</label>
@@ -660,18 +937,25 @@
             </div>
         </div>
         <div class="tab-content" id="social"><div class="accordion-item"><div class="accordion-header active"><h3>Social Post Controls</h3><i class="fas fa-chevron-down"></i></div><div class="accordion-content active"><div class="control-group"> <label>Background Image URL</label> <input type="url" class="control-input" id="socialImageUrl" placeholder="https://images.unsplash.com/photo-1506744038136-46273834b3fb"> </div><div class="control-group"> <label>Upload Background Image</label> <input type="file" class="control-input" id="socialImageUpload" accept="image/*"></div><h6>Background Image Adjustments</h6><div class="control-group"> <label>Zoom (%)</label> <input type="range" class="control-input" id="socialBgZoom" min="50" max="300" value="100"> </div><div class="control-group"> <label>Position X (px)</label> <input type="number" class="control-input" id="socialBgPosX" value="0" step="5"> </div><div class="control-group"> <label>Position Y (px)</label> <input type="number" class="control-input" id="socialBgPosY" value="0" step="5"> </div><h6>Header Text Settings</h6><div class="control-group"> <label>Header Text</label> <input type="text" class="control-input" id="socialHeader" value="Inspirational Quote"> </div><div class="control-group"> <label>Font Size (px)</label> <input type="number" class="control-input" id="socialHeaderFontSize" value="42"> </div><div class="control-group"> <label>Text Color</label> <input type="color" class="control-input" id="socialHeaderTextColor" value="#FFFFFF"> </div><div class="control-group"> <label>Position X (px)</label> <input type="number" class="control-input" id="socialHeaderPosX" value="40"> </div><div class="control-group"> <label>Position Y (px)</label> <input type="number" class="control-input" id="socialHeaderPosY" value="400"> </div><h6>Info Text Settings</h6><div class="control-group"> <label>Information Text</label> <textarea class="control-input" id="socialInfoText" rows="3">"The only way to do great work is to love what you do." - Steve Jobs</textarea> </div><div class="control-group"> <label>Font Size (px)</label> <input type="number" class="control-input" id="socialInfoTextFontSize" value="24"> </div><div class="control-group"> <label>Text Color</label> <input type="color" class="control-input" id="socialInfoTextColor" value="#FFFFFF"> </div><div class="control-group"> <label>Position X (px)</label> <input type="number" class="control-input" id="socialInfoTextPosX" value="40"> </div><div class="control-group"> <label>Position Y (px)</label> <input type="number" class="control-input" id="socialInfoTextPosY" value="500"> </div><h6>Overlay & Effects</h6><div class="control-group"> <label>Background Overlay Color</label> <input type="color" class="control-input" id="socialOverlayColor" value="#000000"> </div><div class="control-group"> <label>Background Overlay Opacity</label> <input type="range" class="control-input" id="socialOverlayOpacity" min="0" max="1" step="0.05" value="0.4"> </div><div class="control-group"> <label style="display: flex; align-items: center; gap: 8px;"><input type="checkbox" id="socialTextShadow" class="control-input" checked style="width: auto;"> Add Text Shadow</label></div></div></div><div class="specific-settings-container"></div></div>
-        <div class="tab-content" id="newsAlert"><div class="accordion-item"><div class="accordion-header active"><h3>News Alert Controls</h3><i class="fas fa-chevron-down"></i></div><div class="accordion-content active"><h6>Layout & Style</h6><div class="control-group"> <label>Layout</label> <select class="control-input" id="newsLayoutType"> <option value="standard" selected>Standard</option> <option value="overlapping">Overlapping Header</option> </select> </div><div class="control-group"> <label>Content Type</label> <select class="control-input" id="newsLayout"> <option value="list" selected>Points / List</option> <option value="quote">Quote</option> </select> </div><h6>Header Bar</h6><div id="newsHeaderSettings"><div class="control-group"> <label>Header Style</label> <select class="control-input" id="newsHeaderStyle"> <option value="solid" selected>Solid Color</option> <option value="transparent">Transparent</option> <option value="underline">Underline</option> </select></div><div class="control-group"> <label>Header Color</label> <input type="color" class="control-input" id="newsTopBarColor" value="#c00000"> </div><div class="control-group"> <label>Header Bar Font Size (px)</label> <input type="number" class="control-input" id="newsHeaderBarFontSize" value="28"> </div><div class="control-group"> <label>Header Padding (Y-axis, px)</label> <input type="range" class="control-input" id="newsHeaderPadding" min="5" max="50" value="10"></div><div class="control-group"> <label>Header Text Alignment</label> <select class="control-input" id="newsHeaderTextAlignment"> <option value="flex-start" selected>Left</option> <option value="center">Center</option> <option value="space-between">Space Between</option></select> </div><div class="control-group"> <label>Header Text</label> <input type="text" class="control-input" id="newsTopBarText" value="BREAKING NEWS"> </div><div class="control-group"> <label>Header Text Case</label> <select class="control-input" id="newsHeaderTextCase"> <option value="uppercase" selected>UPPERCASE</option> <option value="titlecase">Title Case</option> <option value="none">Normal</option> </select> </div><div class="control-group"> <label>Header Image URL</label> <input type="url" class="control-input" id="newsHeaderImageUrl"></div><div class="control-group"> <label>Upload Header Image</label> <input type="file" class="control-input" id="newsHeaderImageUpload" accept="image/*"></div><div class="control-group"> <label>Header Image Height (px)</label> <input type="number" class="control-input" id="newsHeaderImageHeight" value="25" min="10" max="100"> </div><div class="control-group"> <label>Header Tagline</label> <input type="text" class="control-input" id="newsHeaderTagline" placeholder="e.g., #EarningsWithETNOW"> </div></div><h6>Main Content</h6><div class="control-group"> <label>Main Title Text</label> <input type="text" class="control-input" id="newsMainTitle" value="ISRAEL - IRAN WAR INTENSIFIES"> </div><div class="control-group"> <label>Main Title Font Size (px)</label> <input type="number" class="control-input" id="newsMainTitleFontSize" value="42"> </div><div class="control-group"> <label>Main Title BG Color</label> <input type="color" class="control-input" id="newsMainTitleBgColor" value="#f7b731"> </div><div class="control-group"> <label>Title Image URL</label> <input type="url" class="control-input" id="newsTitleImageUrl"></div><div class="control-group"> <label>Upload Title Image</label> <input type="file" class="control-input" id="newsTitleImageUpload" accept="image/*"></div><div class="control-group"> <label>Title Image Height (px)</label> <input type="number" class="control-input" id="newsTitleImageHeight" value="30" min="10" max="100"></div><div id="newsListSettings"><h6>List Layout Options</h6><div class="control-group"> <label>Bullet/Number Style</label> <select class="control-input" id="newsBulletStyle"> <option value="bullet">Standard Bullet (•)</option> <option value="check">Checkmark (✓)</option> <option value="arrow">Arrow (→)</option> <option value="number">Numbered (1.)</option> <option value="circle">Numbered in Circle</option> <option value="square">Numbered in Square</option></select></div><div class="control-group"> <label>Side Image Position</label> <select class="control-input" id="newsSideImagePosition"><option value="none">None</option><option value="left">Left</option><option value="right">Right</option></select></div><div class="control-group"> <label>Side Image Width (%)</label> <input type="range" class="control-input" id="newsSideImageSize" min="20" max="60" value="40"></div><div class="control-group"> <label>Side Image URL</label> <input type="url" class="control-input" id="newsSideImageUrl"></div><div class="control-group"> <label>Upload Side Image</label> <input type="file" class="control-input" id="newsSideImageUpload" accept="image/*"></div><div class="control-group"> <label>Side Image Zoom (%)</label> <input type="range" class="control-input" id="newsSideImageZoom" min="100" max="300" value="100"></div><h6>List Item Separator</h6><div class="control-group"> <label>Separator Style</label> <select class="control-input" id="newsListSeparatorType"><option value="none">None</option><option value="solid">Solid Line</option><option value="dotted">Dotted Line</option><option value="dashed">Dashed Line</option></select></div><div class="control-group"> <label>Separator Color</label> <input type="color" class="control-input" id="newsListSeparatorColor" value="#FFFFFF"></div><div class="control-group"> <label>Separator Thickness (px)</label> <input type="number" class="control-input" id="newsListSeparatorSize" value="1" min="1" max="10"></div><h6>List Content</h6><div class="control-group"> <label>Bullet Points <small>(One per line)</small></label> <textarea class="control-input" id="newsListPoints" rows="5">Israeli military says missiles launched from Iran towards Israel
+        <div class="tab-content" id="newsAlert"><div class="accordion-item"><div class="accordion-header active"><h3>News Alert Controls</h3><i class="fas fa-chevron-down"></i></div><div class="accordion-content active"><h6>Layout & Style</h6><div class="control-group"> <label>Layout</label> <select class="control-input" id="newsLayoutType"> <option value="standard" selected>Standard</option> <option value="overlapping">Overlapping Header</option> </select> </div><div class="control-group"> <label>Content Type</label> <select class="control-input" id="newsLayout"> <option value="list" selected>Points / List</option> <option value="quote">Quote</option> </select> </div><h6>Header Bar</h6><div id="newsHeaderSettings"><div class="control-group"> <label>Header Style</label> <select class="control-input" id="newsHeaderStyle"> <option value="solid" selected>Solid Color</option> <option value="transparent">Transparent</option> <option value="underline">Underline</option> </select></div><div class="control-group"> <label>Header Color</label> <input type="color" class="control-input" id="newsTopBarColor" value="#c00000"> </div><div class="control-group"> <label>Header Bar Font Size (px)</label> <input type="number" class="control-input" id="newsHeaderBarFontSize" value="28"> </div><div class="control-group"> <label>Header Padding (Y-axis, px)</label> <input type="range" class="control-input" id="newsHeaderPadding" min="5" max="50" value="10"></div><div class="control-group"> <label>Header Text Alignment</label> <select class="control-input" id="newsHeaderTextAlignment"> <option value="flex-start" selected>Left</option> <option value="center">Center</option> <option value="space-between">Space Between</option></select> </div><div class="control-group"> <label>Header Text</label> <input type="text" class="control-input" id="newsTopBarText" value="BREAKING NEWS"> </div><div class="control-group"> <label>Header Text Case</label> <select class="control-input" id="newsHeaderTextCase"> <option value="uppercase" selected>UPPERCASE</option> <option value="titlecase">Title Case</option> <option value="none">Normal</option> </select> </div><div class="control-group"> <label>Header Image URL</label> <input type="url" class="control-input" id="newsHeaderImageUrl"></div><div class="control-group"> <label>Upload Header Image</label> <input type="file" class="control-input" id="newsHeaderImageUpload" accept="image/*"></div><div class="control-group"> <label>Header Image Height (px)</label> <input type="number" class="control-input" id="newsHeaderImageHeight" value="25" min="10" max="100"> </div><div class="control-group"> <label>Header Tagline</label> <input type="text" class="control-input" id="newsHeaderTagline" placeholder="e.g., #EarningsWithETNOW"> </div></div><h6>Main Content</h6><div class="control-group"> <label>Main Title Text</label> <input type="text" class="control-input" id="newsMainTitle" value="ISRAEL - IRAN WAR INTENSIFIES"> </div><div class="control-group"> <label>Main Title Font Size (px)</label> <input type="number" class="control-input" id="newsMainTitleFontSize" value="42"> </div><div class="control-group"> <label>Main Title BG Color</label> <input type="color" class="control-input" id="newsMainTitleBgColor" value="#f7b731"> </div><div class="control-group"> <label>Space Below Main Title (px)</label> <input type="number" class="control-input" id="newsMainTitleMarginBottom" value="15" min="0"> </div><div class="control-group"> <label>Title Image URL</label> <input type="url" class="control-input" id="newsTitleImageUrl"></div><div class="control-group"> <label>Upload Title Image</label> <input type="file" class="control-input" id="newsTitleImageUpload" accept="image/*"></div><div class="control-group"> <label>Title Image Height (px)</label> <input type="number" class="control-input" id="newsTitleImageHeight" value="30" min="10" max="100"></div><div id="newsListSettings"><h6>List Layout Options</h6><div class="control-group"> <label>Bullet/Number Style</label> <select class="control-input" id="newsBulletStyle"> <option value="bullet">Standard Bullet (•)</option> <option value="check">Checkmark (✓)</option> <option value="arrow">Arrow (→)</option> <option value="number">Numbered (1.)</option> <option value="circle">Numbered in Circle</option> <option value="square">Numbered in Square</option></select></div><div class="control-group"> <label>Side Image Position</label> <select class="control-input" id="newsSideImagePosition"><option value="none">None</option><option value="left">Left</option><option value="right">Right</option></select></div><div class="control-group"> <label>Side Image Width (%)</label> <input type="range" class="control-input" id="newsSideImageSize" min="20" max="60" value="40"></div><div class="control-group"> <label>Side Image URL</label> <input type="url" class="control-input" id="newsSideImageUrl"></div><div class="control-group"> <label>Upload Side Image</label> <input type="file" class="control-input" id="newsSideImageUpload" accept="image/*"></div><div class="control-group"> <label>Side Image Zoom (%)</label> <input type="range" class="control-input" id="newsSideImageZoom" min="100" max="300" value="100"></div><h6>List Item Separator</h6><div class="control-group"> <label>Separator Style</label> <select class="control-input" id="newsListSeparatorType"><option value="none">None</option><option value="solid">Solid Line</option><option value="dotted">Dotted Line</option><option value="dashed">Dashed Line</option></select></div><div class="control-group"> <label>Separator Color</label> <input type="color" class="control-input" id="newsListSeparatorColor" value="#FFFFFF"></div><div class="control-group"> <label>Separator Thickness (px)</label> <input type="number" class="control-input" id="newsListSeparatorSize" value="1" min="1" max="10"></div><div class="control-group"> <label>Space Between Items (px)</label> <input type="number" class="control-input" id="newsListItemSpacing" value="10" min="0"> </div><h6>List Content</h6><div class="control-group"> <label>Bullet Points <small>(One per line)</small></label> <textarea class="control-input" id="newsListPoints" rows="5">Israeli military says missiles launched from Iran towards Israel
 several explosions heard over Tel Aviv
 Interceptions seen in sky over Jerusalem
 Multiple explosions heard in Central Israel</textarea> </div></div><div id="newsQuoteSettings" style="display: none;"><h6>Quote Layout Options</h6><div class="control-group"> <label style="display: flex; align-items: center; gap: 8px;"><input type="checkbox" id="newsQuoteHeaderEnable" class="control-input" checked style="width: auto;"> Show Header Bar</label></div><div class="control-group"> <label>Quote Text</label> <textarea class="control-input" id="newsQuoteText" rows="4">"Trump's bold decision to target Iran's nuclear facilities will change history."</textarea> </div><h6>Attribution</h6><div class="control-group"> <label>Attribution Name</label> <input type="text" class="control-input" id="newsQuoteAttribution" value="BENJAMIN NETANYAHU"> </div><div class="control-group"> <label>Name Font Size (px)</label> <input type="number" class="control-input" id="newsQuoteAttributionFontSize" value="22"> </div><div class="control-group"> <label>Name Color</label> <input type="color" class="control-input" id="newsQuoteAttributionColor" value="#FFFFFF"> </div><div class="control-group"> <label>Attribution Designation</label> <input type="text" class="control-input" id="newsQuoteDesignation" value="Israeli PM"> </div><div class="control-group"> <label>Designation Font Size (px)</label> <input type="number" class="control-input" id="newsQuoteDesignationFontSize" value="18"> </div><div class="control-group"> <label>Designation Color</label> <input type="color" class="control-input" id="newsQuoteDesignationColor" value="#FFFFFF"> </div><div class="control-group"> <label>Attribution Alignment</label> <select class="control-input" id="newsQuoteAttributionAlignment"><option value="flex-start" selected>Left</option><option value="center">Center</option><option value="flex-end">Right</option></select></div><div class="control-group"> <label>Margin Top (px)</label> <input type="range" class="control-input" id="newsQuoteAttributionMarginTop" min="0" max="100" value="20"></div><div class="control-group"> <label>Person Image Shape</label> <select class="control-input" id="newsPersonImageShape"><option value="circle" selected>Circle</option><option value="square">Square</option></select></div><div class="control-group"> <label>Person Image Size (px)</label> <input type="number" class="control-input" id="newsPersonImageSize" value="100" min="50" max="300"></div><div class="control-group"> <label>Person Image URL</label> <input type="url" class="control-input" id="newsPersonImageUrl"></div><div class="control-group"> <label>Upload Person Image</label> <input type="file" class="control-input" id="newsPersonImageUpload" accept="image/*"></div></div><h6>Background Overlay & Source</h6><div class="control-group"> <label>Subtle Background Pattern</label> <select class="control-input" id="newsBgPattern"> <option value="none" selected>None</option> <option value="dots">Dots</option> <option value="lines">Lines</option></select></div><div class="control-group"> <label>Overlay Color</label> <input type="color" class="control-input" id="newsOverlayColor" value="#000000"> </div><div class="control-group"> <label>Overlay Opacity</label> <input type="range" class="control-input" id="newsOverlayOpacity" min="0" max="1" step="0.05" value="0.6"> </div><div class="control-group"> <label>Source Text <small>(e.g., Agencies)</small></label> <input type="text" class="control-input" id="newsSourceText" value="(Agencies)"> </div></div></div><div class="specific-settings-container"></div></div>
-        <div class="tab-content" id="process"><div class="accordion-item"><div class="accordion-header active"><h3>Process Flow Controls</h3><i class="fas fa-chevron-down"></i></div><div class="accordion-content active"><div class="control-group"> <label>Section Header</label> <input type="text" class="control-input" id="processSectionTitle" value="Our Workflow"> </div><div class="control-group"> <label>Step Titles <small>(CSV)</small></label> <textarea class="control-input" id="processStepTitlesCSV" rows="2">Discovery,Design,Development,Deployment</textarea> </div><div class="control-group"> <label>Step Descriptions <small>(CSV)</small></label> <textarea class="control-input" id="processStepDescsCSV" rows="3">Research & planning phase.,Wireframing & UI design concepts.,Coding & building the application.,Final testing & official launch.</textarea> </div><div class="control-group"> <label>Step Icon <small>(FA class or text, CSV)</small></label><div class="icon-search-row"><input type="text" class="control-input" id="processStepIconsCSV" placeholder="fas fa-search,fas fa-palette,..." value="fas fa-search,fas fa-palette,fas fa-code,fas fa-rocket"><button class="btn btn-secondary find-icon-btn" data-target-input="processStepIconsCSV" title="Find Icon"><i class="fas fa-search"></i></button></div><div id="processStepIconsCSV-suggestions" class="icon-suggestions"></div></div></div></div><div class="specific-settings-container"></div></div>
-        <div class="tab-content" id="statistical"><div class="accordion-item"><div class="accordion-header active"><h3>Statistical Controls</h3><i class="fas fa-chevron-down"></i></div><div class="accordion-content active"><div class="control-group"> <label>Section Header</label> <input type="text" class="control-input" id="statSectionTitle" value="Key Performance Indicators"> </div><div class="control-group"> <label>Stat Values <small>(CSV)</small></label> <textarea class="control-input" id="statValuesCSV" rows="2">85%,2.5M,150+,9.2/10</textarea> </div><div class="control-group"> <label>Stat Labels <small>(CSV)</small></label> <textarea class="control-input" id="statLabelsCSV" rows="2">Success Rate,Active Users,Countries Reached,Avg. Rating</textarea> </div></div></div><div class="specific-settings-container"></div></div>
+        <div class="tab-content" id="process"><div class="accordion-item"><div class="accordion-header active"><h3>Process Flow Controls</h3><i class="fas fa-chevron-down"></i></div><div class="accordion-content active"><div class="control-group"> <label>Section Header</label> <input type="text" class="control-input" id="processSectionTitle" value="Our Workflow"> </div><div class="control-group"> <label>Step Titles <small>(using global separator)</small></label> <textarea class="control-input" id="processStepTitlesCSV" rows="2">Discovery,Design,Development,Deployment</textarea> </div><div class="control-group"> <label>Step Descriptions <small>(using global separator)</small></label> <textarea class="control-input" id="processStepDescsCSV" rows="3">Research & planning phase.,Wireframing & UI design concepts.,Coding & building the application.,Final testing & official launch.</textarea> </div><div class="control-group"> <label>Step Icon <small>(FA class or text, using global separator)</small></label><div class="icon-search-row"><input type="text" class="control-input" id="processStepIconsCSV" placeholder="fas fa-search,fas fa-palette,..." value="fas fa-search,fas fa-palette,fas fa-code,fas fa-rocket"><button class="btn btn-secondary find-icon-btn" data-target-input="processStepIconsCSV" title="Find Icon"><i class="fas fa-search"></i></button></div><div id="processStepIconsCSV-suggestions" class="icon-suggestions"></div></div></div></div><div class="specific-settings-container"></div></div>
+        <div class="tab-content" id="statistical"><div class="accordion-item"><div class="accordion-header active"><h3>Statistical Controls</h3><i class="fas fa-chevron-down"></i></div><div class="accordion-content active"><div class="control-group"> <label>Section Header</label> <input type="text" class="control-input" id="statSectionTitle" value="Key Performance Indicators"> </div><div class="control-group"> <label>Stat Values <small>(using global separator)</small></label> <textarea class="control-input" id="statValuesCSV" rows="2">85%,2.5M,150+,9.2/10</textarea> </div><div class="control-group"> <label>Stat Labels <small>(using global separator)</small></label> <textarea class="control-input" id="statLabelsCSV" rows="2">Success Rate,Active Users,Countries Reached,Avg. Rating</textarea> </div></div></div><div class="specific-settings-container"></div></div>
         <div class="tab-content" id="textToTable"><div class="accordion-item"><div class="accordion-header active"><h3>Text to Table Controls</h3><i class="fas fa-chevron-down"></i></div><div class="accordion-content active"><div class="control-group"> <label>Section Header</label> <input type="text" class="control-input" id="tableSectionTitle" value="Data Overview"> </div><div class="control-group"><label for="tableInputText">Input Text Data:</label><textarea id="tableInputText" class="control-input" rows="5" placeholder="Paste text here. Use tabs, commas, or vertical format."></textarea></div><div class="control-group"><label for="tableDataFormat">Data Format:</label><select id="tableDataFormat" class="control-input"><option value="tabular">Tabular (Columns)</option><option value="vertical">Vertical (Key: Value)</option></select></div><div class="control-group" id="tableSeparatorGroup"><label for="tableSeparator">Column Separator:</label><select id="tableSeparator" class="control-input"><option value="\t">Tab</option><option value=",">Comma (,)</option><option value="|">Pipe (|)</option><option value=";">Semicolon (;)</option></select></div><div class="control-group" id="tableVerticalOptions" style="display: none;"><label for="tableFieldSeparator">Field-Value Separator:</label><select id="tableFieldSeparator" class="control-input"><option value=" : ">Space-Colon-Space</option><option value=":">Colon</option><option value=" - ">Space-Dash-Space</option><option value="=">Equals</option></select></div><div class="control-group" id="tableHasHeaderGroup"><label style="display: flex; align-items: center; gap: 8px;"><input type="checkbox" id="tableHasHeader" class="control-input" checked style="width: auto;"> First row is header </label></div><h6>Table Styling</h6><div class="control-group"> <label>Header BG Color</label> <input type="color" class="control-input" id="tableHeaderBgColor" value="#f2f2f2"> </div><div class="control-group"> <label>Header Text Color</label> <input type="color" class="control-input" id="tableHeaderTextColor" value="#333333"> </div><div class="control-group"> <label>Odd Row BG Color</label> <input type="color" class="control-input" id="tableOddRowBgColor" value="#ffffff"> </div><div class="control-group"> <label>Even Row BG Color</label> <input type="color" class="control-input" id="tableEvenRowBgColor" value="#f9f9f9"> </div><div class="control-group"> <label>Border Color</label> <input type="color" class="control-input" id="tableBorderColor" value="#dddddd"> </div><div class="control-group"> <label>Body Text Color</label> <input type="color" class="control-input" id="tableBodyTextColor" value="#333333"> </div><div class="control-group"><button class="btn btn-success" onclick="copyGeneratedTable()" style="width: 100%;"><i class="fas fa-copy"></i> Copy Table for Pasting</button></div><div id="tableAlertContainer"></div></div></div><div class="specific-settings-container"></div></div>
         <div class="tab-content" id="informational"><div class="accordion-item"><div class="accordion-header active"><h3>Informational Controls</h3><i class="fas fa-chevron-down"></i></div><div class="accordion-content active"><div class="control-group"> <label>Section Header</label> <input type="text" class="control-input" id="infoSectionTitle" value="Important Information"> </div><div class="control-group"> <label>Number of Info Blocks (1-5)</label> <input type="number" class="control-input" id="infoBlockCount" value="1" min="1" max="5"> </div><div id="infoBlockControlsContainer"></div></div></div><div class="specific-settings-container"></div></div>
-        <div class="tab-content" id="timeline"><div class="accordion-item"><div class="accordion-header active"><h3>Timeline Controls</h3><i class="fas fa-chevron-down"></i></div><div class="accordion-content active"><div class="control-group"> <label>Section Header</label> <input type="text" class="control-input" id="timelineSectionTitle" value="Project Milestones"> </div><div class="control-group"> <label>Layout Type</label> <select class="control-input" id="timelineLayoutType"> <option value="vertical">Vertical (Simplified)</option> <option value="horizontal">Horizontal (Scrollable)</option> </select> </div><h6>Creative Nodes</h6><div class="control-group"> <label><input type="checkbox" id="timelineShowStartEnd" class="control-input" style="width:auto; margin-right: 5px;" checked> Show Start/End Nodes</label> </div><div class="control-group"> <label>Start Point Text</label> <input type="text" class="control-input" id="timelineStartText" value=""> </div><div class="control-group"> <label>Start Point Icon (e.g., fas fa-rocket)</label> <input type="text" class="control-input" id="timelineStartIcon" value="fas fa-rocket"> </div><div class="control-group"> <label>End Point Text</label> <input type="text" class="control-input" id="timelineEndText" value=""> </div><div class="control-group"> <label>End Point Icon (e.g., fas fa-flag-checkered)</label> <input type="text" class="control-input" id="timelineEndIcon" value="fas fa-flag-checkered"> </div><h6>Timeline Events</h6><div class="control-group"> <label>Event Dates/Subtitles <small>(CSV)</small></label> <textarea class="control-input" id="timelineEventDatesCSV" rows="2">2020,Q1 '21,Jan '22,Dec '23</textarea> </div><div class="control-group"> <label>Event Titles <small>(CSV)</small></label> <textarea class="control-input" id="timelineEventTitlesCSV" rows="2">Foundation,Product Launch,Version 2.0,Global Expansion</textarea> </div><div class="control-group"> <label>Event Descriptions <small>(CSV)</small></label> <textarea class="control-input" id="timelineEventDescsCSV" rows="3">Company officially established and initial funding secured.,Our flagship product is introduced to the market.,Major update with new features and improved performance.,Services expanded to new international regions.</textarea> </div><div class="control-group"> <label>Event Image URLs <small>(CSV, optional)</small></label> <textarea class="control-input" id="timelineEventImagesCSV" rows="2" placeholder="URL 1, URL 2,..."></textarea> </div></div></div><div class="specific-settings-container"></div></div>
-        <div class="tab-content" id="barChart"><div class="accordion-item"><div class="accordion-header active"><h3>Bar Chart Controls</h3><i class="fas fa-chevron-down"></i></div><div class="accordion-content active"><div class="control-group"> <label style="display: flex; align-items: center; gap: 8px;"><input type="checkbox" id="barChart3dEffect" class="control-input" style="width: auto;" checked> Enable 3D Effect</label></div><div class="control-group"> <label>3D Depth</label> <input type="range" class="control-input" id="barChart3dDepth" min="2" max="15" value="8"> </div><div class="control-group"> <label>Section Header (Optional)</label> <input type="text" class="control-input" id="barChartSectionTitle" value="Data Analysis"> </div><div class="control-group"> <label>Chart Title</label> <input type="text" class="control-input" id="barChartTitle" value="Monthly Revenue (₹ Lakhs)"> </div><div class="control-group"> <label>Chart Height (px)</label> <input type="number" class="control-input" id="barChartHeight" value="250"> </div><div class="control-group"> <label>Legend Position</label> <select class="control-input" id="barChartLegendPos"><option value="top">Top</option><option value="bottom" selected>Bottom</option><option value="left">Left</option><option value="right">Right</option><option value="hidden">Hidden</option></select> </div><div class="control-group"> <label>Legend Font Size (px)</label> <input type="number" class="control-input" id="barChartLegendFontSize" value="12"> </div><div class="control-group"> <label>Data Labels <small>(CSV)</small></label> <input type="text" class="control-input" id="barChartLabelsCSV" value="Jan,Feb,Mar,Apr,May,Jun"> </div><div class="control-group"> <label>Data Values <small>(CSV)</small></label> <input type="text" class="control-input" id="barChartDataCSV" value="120,190,150,250,220,300"> </div></div></div><div class="specific-settings-container"></div></div>
-        <div class="tab-content" id="pieChart"><div class="accordion-item"><div class="accordion-header active"><h3>Pie Chart Controls</h3><i class="fas fa-chevron-down"></i></div><div class="accordion-content active"><div class="control-group"> <label style="display: flex; align-items: center; gap: 8px;"><input type="checkbox" id="pieChart3dEffect" class="control-input" style="width: auto;" checked> Enable 3D Effect</label></div><div class="control-group"> <label>3D Depth</label> <input type="range" class="control-input" id="pieChart3dDepth" min="5" max="25" value="12"> </div><div class="control-group"> <label>Section Header (Optional)</label> <input type="text" class="control-input" id="pieChartSectionTitle" value="Distribution Data"> </div><div class="control-group"> <label>Chart Title</label> <input type="text" class="control-input" id="pieChartUserTitle" value="User Demographics (%)"> </div><div class="control-group"> <label>Chart Height (px)</label> <input type="number" class="control-input" id="pieChartHeight" value="250"> </div><div class="control-group"> <label>Legend Position</label> <select class="control-input" id="pieChartLegendPos"><option value="top">Top</option><option value="bottom" selected>Bottom</option><option value="left">Left</option><option value="right">Right</option><option value="hidden">Hidden</option></select> </div><div class="control-group"> <label>Legend Font Size (px)</label> <input type="number" class="control-input" id="pieChartLegendFontSize" value="12"> </div><div class="control-group"> <label>Data Labels <small>(CSV)</small></label> <input type="text" class="control-input" id="pieChartLabelsCSV" value="Mobile,Desktop,Tablet,Other"> </div><div class="control-group"> <label>Data Values <small>(CSV)</small></label> <input type="text" class="control-input" id="pieChartDataCSV" value="60,25,10,5"> </div></div></div><div class="specific-settings-container"></div></div>
-        <div class="tab-content" id="comparison"><div class="accordion-item"><div class="accordion-header active"><h3>Comparison Controls</h3><i class="fas fa-chevron-down"></i></div><div class="accordion-content active"><div class="control-group"> <label>Section Header</label> <input type="text" class="control-input" id="compareSectionTitle" value="Choose Your Plan"> </div><h4>Item 1</h4><div class="control-group"> <label>Header</label> <input type="text" class="control-input" id="compareItem1Title" value="Basic Plan"> </div><div class="control-group"> <label>Sub-Header/Price</label> <input type="text" class="control-input" id="compareItem1Price" value="₹999 / month"> </div><div class="control-group"> <label>Features <small>(CSV)</small></label> <textarea class="control-input" id="compareItem1FeaturesCSV" rows="2">5 Projects,10GB Storage,Email Support,Community Access</textarea> </div><h4>Item 2</h4><div class="control-group"> <label>Header</label> <input type="text" class="control-input" id="compareItem2Title" value="Pro Plan"> </div><div class="control-group"> <label>Sub-Header/Price</label> <input type="text" class="control-input" id="compareItem2Price" value="₹1999 / month"> </div><div class="control-group"> <label>Features <small>(CSV)</small></label> <textarea class="control-input" id="compareItem2FeaturesCSV" rows="2">Unlimited Projects,100GB Storage,Priority Support,API Access,Advanced Analytics</textarea> </div></div></div><div class="specific-settings-container"></div></div>
+        <div class="tab-content" id="timeline"><div class="accordion-item"><div class="accordion-header active"><h3>Timeline Controls</h3><i class="fas fa-chevron-down"></i></div><div class="accordion-content active"><div class="control-group"> <label>Section Header</label> <input type="text" class="control-input" id="timelineSectionTitle" value="History of Popular Social Media Platforms"> </div><div class="control-group"> <label>Style</label> <select class="control-input" id="timelineLayoutType"> <option value="modern-vertical">Modern Vertical</option> <option value="modern-horizontal">Modern Horizontal</option> <option value="classic-vertical">Classic Vertical</option> <option value="classic-horizontal">Classic Horizontal</option> </select> </div><h6>Creative Nodes (Classic Layouts)</h6><div class="control-group"> <label><input type="checkbox" id="timelineShowStartEnd" class="control-input" style="width:auto; margin-right: 5px;" checked> Show Start/End Nodes</label> </div><div class="control-group"> <label>Start Point Text</label> <input type="text" class="control-input" id="timelineStartText" value=""> </div><div class="control-group"> <label>Start Point Icon (e.g., fas fa-rocket)</label> <input type="text" class="control-input" id="timelineStartIcon" value="fas fa-rocket"> </div><div class="control-group"> <label>End Point Text</label> <input type="text" class="control-input" id="timelineEndText" value=""> </div><div class="control-group"> <label>End Point Icon (e.g., fas fa-flag-checkered)</label> <input type="text" class="control-input" id="timelineEndIcon" value="fas fa-flag-checkered"> </div><h6>Timeline Events</h6><div class="control-group"><label>Event Logo/Image Size (px) <small>(for Modern styles)</small></label><input type="number" class="control-input" id="timelineModernImageSize" value="30"></div><div class="control-group"> <label>Event Dates/Subtitles <small>(using global separator)</small></label> <textarea class="control-input" id="timelineEventDatesCSV" rows="2">2002,2004,2005,2006,2007,2010</textarea> </div><div class="control-group"> <label>Event Titles <small>(using global separator)</small></label> <textarea class="control-input" id="timelineEventTitlesCSV" rows="2">LinkedIn,Facebook,YouTube,Twitter,Tumblr,Pinterest</textarea> </div><div class="control-group"> <label>Event Descriptions <small>(using global separator)</small></label> <textarea class="control-input" id="timelineEventDescsCSV" rows="3">A business- and employment-oriented social networking service that operates via websites and mobile apps.
+An online social media and social networking service based in Menlo Park, California.
+First large-scale video sharing website that makes it easy to watch videos online.
+A service for friends, family, and coworkers to communicate and stay connected through the exchange of quick, frequent messages.
+Lets you effortlessly share anything. Post text, photos, quotes, links, music, and videos from your browser, phone, desktop, email.
+A visual bookmarking tool that helps you discover and save creative ideas.</textarea> </div><div class="control-group"> <label>Event Image URLs (for Logos/Icons) <small>(using global separator)</small></label> <textarea class="control-input" id="timelineEventImagesCSV" rows="2" placeholder="URL 1, URL 2,...">https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/LinkedIn_logo_initials.png/600px-LinkedIn_logo_initials.png,https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/2021_Facebook_icon.svg/2048px-2021_Facebook_icon.svg.png,https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/YouTube_full-color_icon_%282017%29.svg/1024px-YouTube_full-color_icon_%282017%29.svg.png,https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Logo_of_Twitter.svg/512px-Logo_of_Twitter.svg.png,https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Tumblr_logo.svg/1280px-Tumblr_logo.svg.png,https://upload.wikimedia.org/wikipedia/commons/0/08/Pinterest-logo.png</textarea> </div></div></div><div class="specific-settings-container"></div></div>
+        <div class="tab-content" id="barChart"><div class="accordion-item"><div class="accordion-header active"><h3>Bar Chart Controls</h3><i class="fas fa-chevron-down"></i></div><div class="accordion-content active"><h6>Chart Style</h6><div class="control-group"> <label>Chart Height (px)</label> <input type="number" class="control-input" id="barChartHeight" value="250"> </div><h6>Chart Content</h6><div class="control-group"> <label>Section Header (Optional)</label> <input type="text" class="control-input" id="barChartSectionTitle" value="Data Analysis"> </div><div class="control-group"> <label>Chart Title</label> <input type="text" class="control-input" id="barChartTitle" value="Monthly Revenue (₹ Lakhs)"> </div><div class="control-group"> <label>Legend Position</label> <select class="control-input" id="barChartLegendPos"><option value="top">Top</option><option value="bottom" selected>Bottom</option><option value="left">Left</option><option value="right">Right</option><option value="hidden">Hidden</option></select> </div><div class="control-group"> <label>Legend Font Size (px)</label> <input type="number" class="control-input" id="barChartLegendFontSize" value="12"> </div><h6>Data Labels (On Chart)</h6><div class="control-group"><label><input type="checkbox" id="barChartDataLabelsEnable" class="control-input" style="width:auto; margin-right:5px;" checked> Enable Data Labels</label></div><div class="control-group"><label>Label Font Size (px)</label><input type="number" class="control-input" id="barChartDataLabelFontSize" value="12"></div><div class="control-group"><label>Label Color</label><input type="color" class="control-input" id="barChartDataLabelColor" value="#FFFFFF"></div><div class="control-group"><label>Label BG Color</label><input type="color" class="control-input" id="barChartDataLabelBgColor" value="#2c3e50"></div><div class="control-group"><label>Label BG Radius (px)</label><input type="number" class="control-input" id="barChartDataLabelRadius" value="4"></div><h6>Chart Data</h6><div class="control-group"> <label>Data Labels <small>(using global separator)</small></label> <input type="text" class="control-input" id="barChartLabelsCSV" value="Jan,Feb,Mar,Apr,May,Jun"> </div><div class="control-group"> <label>Data Values <small>(using global separator)</small></label> <input type="text" class="control-input" id="barChartDataCSV" value="120,190,150,250,220,300"> </div></div></div><div class="specific-settings-container"></div></div>
+        <div class="tab-content" id="pieChart"><div class="accordion-item"><div class="accordion-header active"><h3>Pie Chart Controls</h3><i class="fas fa-chevron-down"></i></div><div class="accordion-content active"><h6>Chart Style</h6><div class="control-group"> <label style="display: flex; align-items: center; gap: 8px;"><input type="checkbox" id="pieChart3dEffect" class="control-input" style="width: auto;" checked> Enable 3D Effect</label></div><div class="control-group"> <label>3D Depth</label> <input type="range" class="control-input" id="pieChart3dDepth" min="5" max="25" value="12"> </div><h6>Chart Content</h6><div class="control-group"> <label>Section Header (Optional)</label> <input type="text" class="control-input" id="pieChartSectionTitle" value="Distribution Data"> </div><div class="control-group"> <label>Chart Title</label> <input type="text" class="control-input" id="pieChartUserTitle" value="User Demographics (%)"> </div><div class="control-group"> <label>Chart Height (px)</label> <input type="number" class="control-input" id="pieChartHeight" value="250"> </div><div class="control-group"> <label>Legend Position</label> <select class="control-input" id="pieChartLegendPos"><option value="top">Top</option><option value="bottom" selected>Bottom</option><option value="left">Left</option><option value="right">Right</option><option value="hidden">Hidden</option></select> </div><div class="control-group"> <label>Legend Font Size (px)</label> <input type="number" class="control-input" id="pieChartLegendFontSize" value="12"> </div><h6>Data Labels (On Chart)</h6><div class="control-group"><label><input type="checkbox" id="pieChartDataLabelsEnable" class="control-input" style="width:auto; margin-right:5px;" checked> Enable Data Labels</label></div><div class="control-group"><label>Label Font Size (px)</label><input type="number" class="control-input" id="pieChartDataLabelFontSize" value="12"></div><div class="control-group"><label>Label Color</label><input type="color" class="control-input" id="pieChartDataLabelColor" value="#FFFFFF"></div><div class="control-group"><label>Label BG Color</label><input type="color" class="control-input" id="pieChartDataLabelBgColor" value="#2c3e50"></div><div class="control-group"><label>Label BG Radius (px)</label><input type="number" class="control-input" id="pieChartDataLabelRadius" value="4"></div><h6>Chart Data</h6><div class="control-group"> <label>Data Labels <small>(using global separator)</small></label> <input type="text" class="control-input" id="pieChartLabelsCSV" value="Mobile,Desktop,Tablet,Other"> </div><div class="control-group"> <label>Data Values <small>(using global separator)</small></label> <input type="text" class="control-input" id="pieChartDataCSV" value="60,25,10,5"> </div></div></div><div class="specific-settings-container"></div></div>
+        <div class="tab-content" id="doughnutChart"><div class="accordion-item"><div class="accordion-header active"><h3>Doughnut Chart Controls</h3><i class="fas fa-chevron-down"></i></div><div class="accordion-content active"><h6>Chart Style</h6><div class="control-group"> <label>Doughnut Thickness (%)</label> <input type="range" class="control-input" id="doughnutChartThickness" min="10" max="90" value="50"> </div><h6>Chart Content</h6><div class="control-group"> <label>Section Header (Optional)</label> <input type="text" class="control-input" id="doughnutChartSectionTitle" value="Market Share"> </div><div class="control-group"> <label>Chart Title</label> <input type="text" class="control-input" id="doughnutChartUserTitle" value="Browser Usage"> </div><div class="control-group"> <label>Chart Height (px)</label> <input type="number" class="control-input" id="doughnutChartHeight" value="250"> </div><div class="control-group"> <label>Legend Position</label> <select class="control-input" id="doughnutChartLegendPos"><option value="top">Top</option><option value="bottom">Bottom</option><option value="left" selected>Left</option><option value="right">Right</option><option value="hidden">Hidden</option></select> </div><div class="control-group"> <label>Legend Font Size (px)</label> <input type="number" class="control-input" id="doughnutChartLegendFontSize" value="12"> </div><h6>Data Labels (On Chart)</h6><div class="control-group"><label><input type="checkbox" id="doughnutChartDataLabelsEnable" class="control-input" style="width:auto; margin-right:5px;" checked> Enable Data Labels</label></div><div class="control-group"><label>Label Font Size (px)</label><input type="number" class="control-input" id="doughnutChartDataLabelFontSize" value="12"></div><div class="control-group"><label>Label Color</label><input type="color" class="control-input" id="doughnutChartDataLabelColor" value="#FFFFFF"></div><div class="control-group"><label>Label BG Color</label><input type="color" class="control-input" id="doughnutChartDataLabelBgColor" value="#2c3e50"></div><div class="control-group"><label>Label BG Radius (px)</label><input type="number" class="control-input" id="doughnutChartDataLabelRadius" value="4"></div><h6>Chart Data</h6><div class="control-group"> <label>Data Labels <small>(using global separator)</small></label> <input type="text" class="control-input" id="doughnutChartLabelsCSV" value="Chrome,Safari,Firefox,Edge"> </div><div class="control-group"> <label>Data Values <small>(using global separator)</small></label> <input type="text" class="control-input" id="doughnutChartDataCSV" value="65,18,5,12"> </div></div></div><div class="specific-settings-container"></div></div>
+        <div class="tab-content" id="halfDoughnutChart"><div class="accordion-item"><div class="accordion-header active"><h3>Gauge / Half Pie Controls</h3><i class="fas fa-chevron-down"></i></div><div class="accordion-content active"><h6>Chart Content</h6><div class="control-group"> <label>Section Header (Optional)</label> <input type="text" class="control-input" id="halfDoughnutChartSectionTitle" value="Performance Meter"> </div><div class="control-group"> <label>Chart Title</label> <input type="text" class="control-input" id="halfDoughnutChartUserTitle" value="Server Load"> </div><div class="control-group"> <label>Chart Height (px)</label> <input type="number" class="control-input" id="halfDoughnutChartHeight" value="200"> </div><h6>Chart Style & Legend</h6><div class="control-group"> <label>Legend Position</label> <select class="control-input" id="halfDoughnutChartLegendPos"><option value="top">Top</option><option value="bottom" selected>Bottom</option><option value="left">Left</option><option value="right">Right</option><option value="hidden">Hidden</option></select></div><div class="control-group"> <label>Legend Font Size (px)</label> <input type="number" class="control-input" id="halfDoughnutChartLegendFontSize" value="12"></div><h6>Chart Data</h6><div class="control-group"> <label>Data Labels <small>(using global separator)</small></label> <input type="text" class="control-input" id="halfDoughnutChartLabelsCSV" value="CPU,Memory,Disk"></div><div class="control-group"> <label>Data Values <small>(using global separator)</small></label> <input type="text" class="control-input" id="halfDoughnutChartDataCSV" value="45,30,15"></div></div></div><div class="specific-settings-container"></div></div>
+        <div class="tab-content" id="comparison"><div class="accordion-item"><div class="accordion-header active"><h3>Comparison Controls</h3><i class="fas fa-chevron-down"></i></div><div class="accordion-content active"><div class="control-group"> <label>Section Header</label> <input type="text" class="control-input" id="compareSectionTitle" value="Choose Your Plan"> </div><h4>Item 1</h4><div class="control-group"> <label>Header</label> <input type="text" class="control-input" id="compareItem1Title" value="Basic Plan"> </div><div class="control-group"> <label>Sub-Header/Price</label> <input type="text" class="control-input" id="compareItem1Price" value="₹999 / month"> </div><div class="control-group"> <label>Features <small>(using global separator)</small></label> <textarea class="control-input" id="compareItem1FeaturesCSV" rows="2">5 Projects,10GB Storage,Email Support,Community Access</textarea> </div><h4>Item 2</h4><div class="control-group"> <label>Header</label> <input type="text" class="control-input" id="compareItem2Title" value="Pro Plan"> </div><div class="control-group"> <label>Sub-Header/Price</label> <input type="text" class="control-input" id="compareItem2Price" value="₹1999 / month"> </div><div class="control-group"> <label>Features <small>(using global separator)</small></label> <textarea class="control-input" id="compareItem2FeaturesCSV" rows="2">Unlimited Projects,100GB Storage,Priority Support,API Access,Advanced Analytics</textarea> </div></div></div><div class="specific-settings-container"></div></div>
         <div class="tab-content" id="hierarchical"><div class="accordion-item"><div class="accordion-header active"><h3>Hierarchy Controls</h3><i class="fas fa-chevron-down"></i></div><div class="accordion-content active"><div class="control-group"> <label>Section Header</label> <input type="text" class="control-input" id="hierarchySectionTitle" value="Organizational Chart"> </div><div class="control-group"> <label>Hierarchy Data <small>(Indent with 2 spaces for children)</small></label><textarea class="control-input" id="hierarchyData" rows="8">CEO
   CTO
     Lead Engineer
@@ -682,9 +966,9 @@ Multiple explosions heard in Central Israel</textarea> </div></div><div id="news
     Operations Manager
   CMO
     Marketing Head</textarea></div></div></div><div class="specific-settings-container"></div></div>
-        <div class="tab-content" id="list"><div class="accordion-item"><div class="accordion-header active"><h3>List Controls</h3><i class="fas fa-chevron-down"></i></div><div class="accordion-content active"><div class="control-group"> <label>Section Header</label> <input type="text" class="control-input" id="listSectionTitle" value="Key Advantages"> </div><div class="control-group"> <label>Item Titles <small>(CSV)</small></label> <textarea class="control-input" id="listItemTitlesCSV" rows="2" placeholder="Title 1,Title 2,...">Innovative Solutions,Expert Team,Client-Centric Focus,Proven Results</textarea> </div><div class="control-group"> <label>Item Descriptions <small>(CSV)</small></label> <textarea class="control-input" id="listItemDescsCSV" rows="3" placeholder="Desc 1,Desc 2,...">Cutting-edge technology and approaches.,Highly skilled and experienced professionals.,We prioritize your needs and goals above all.,A track record of delivering successful outcomes.</textarea> </div><div class="control-group"> <label>Item Icons <small>(Optional CSV: FA class or text)</small></label> <div class="icon-search-row"><input type="text" class="control-input" id="listItemIconsCSV" rows="1" placeholder="fas fa-lightbulb,fas fa-users,..." value="fas fa-lightbulb,fas fa-users,fas fa-bullseye,fas fa-chart-line"><button class="btn btn-secondary find-icon-btn" data-target-input="listItemIconsCSV" title="Find Icon"><i class="fas fa-search"></i></button></div></div></div></div><div class="specific-settings-container"></div></div>
+        <div class="tab-content" id="list"><div class="accordion-item"><div class="accordion-header active"><h3>List Controls</h3><i class="fas fa-chevron-down"></i></div><div class="accordion-content active"><h6>Content</h6><div class="control-group"> <label>Section Header</label> <input type="text" class="control-input" id="listSectionTitle" value="Key Advantages"> </div><div class="control-group"> <label>Item Titles <small>(using global separator)</small></label> <textarea class="control-input" id="listItemTitlesCSV" rows="2" placeholder="Title 1,Title 2,...">Innovative Solutions,Expert Team,Client-Centric Focus,Proven Results</textarea> </div><div class="control-group"> <label>Item Descriptions <small>(using global separator)</small></label> <textarea class="control-input" id="listItemDescsCSV" rows="3" placeholder="Desc 1,Desc 2,...">Cutting-edge technology and approaches.,Highly skilled and experienced professionals.,We prioritize your needs and goals above all.,A track record of delivering successful outcomes.</textarea> </div><div class="control-group"> <label>Item Icons <small>(Optional, using global separator: FA class or text)</small></label> <div class="icon-search-row"><input type="text" class="control-input" id="listItemIconsCSV" rows="1" placeholder="fas fa-lightbulb,fas fa-users,..." value="fas fa-lightbulb,fas fa-users,fas fa-bullseye,fas fa-chart-line"><button class="btn btn-secondary find-icon-btn" data-target-input="listItemIconsCSV" title="Find Icon"><i class="fas fa-search"></i></button></div></div><h6>Styling</h6><div class="control-group"><label>Icon Color</label><input type="color" class="control-input" id="listItemIconColor" value="#667eea"></div></div></div><div class="specific-settings-container"></div></div>
         <div class="tab-content" id="didYouKnow"><div class="accordion-item"><div class="accordion-header active"><h3>Did You Know? Controls</h3><i class="fas fa-chevron-down"></i></div><div class="accordion-content active"><div class="control-group"> <label>Main Header</label> <input type="text" class="control-input" id="didYouKnowMainHeader" value="Did You Know?"> </div><div class="control-group"> <label>Image URL</label> <input type="url" class="control-input" id="didYouKnowImageUrl"></div><div class="control-group"> <label>Upload Image</label> <input type="file" class="control-input" id="didYouKnowImageUpload" accept="image/*"></div><div class="control-group"> <label>Fact / Information Text</label> <textarea class="control-input" id="didYouKnowFact" rows="3">The human brain has a memory capacity which is the equivalent of more than four terabytes on a hard drive.</textarea> </div><div class="control-group"> <label>Source Text</label> <input type="text" class="control-input" id="didYouKnowSource" value="Source: Scientific American"> </div></div></div><div class="specific-settings-container"></div></div>
-        <div class="tab-content" id="dams"><div class="accordion-item"><div class="accordion-header active"><h3>Dam Levels Controls</h3><i class="fas fa-chevron-down"></i></div><div class="accordion-content active"><div class="control-group"> <label>Section Header</label> <input type="text" class="control-input" id="damSectionTitle" value="Reservoir Status"> </div><div class="control-group"><label>Card Color Logic</label><select id="damColorLogic" class="control-input"><option value="performance" selected>Performance Based (G/Y/R)</option><option value="cycle">Cycle Theme Colors</option><option value="shuffle">Shuffle Theme Colors</option></select></div><div class="control-group"> <label>Level Font Size (px)</label> <input type="number" class="control-input" id="damLevelFontSize" value="36"> </div><div class="control-group"> <label>Card Width (px)</label> <input type="number" class="control-input" id="damCardWidth" value="150"> </div><div class="control-group"> <label>Dam Names <small>(CSV)</small></label> <textarea class="control-input" id="damNamesCSV" rows="2">KRS Dam,Kabini Reservoir,Hemavathi Dam</textarea> </div><div class="control-group"> <label>Present Levels <small>(CSV)</small></label> <textarea class="control-input" id="damPresentLevelsCSV" rows="2" placeholder="100,80,110">100,80,110</textarea> </div><div class="control-group"> <label>Max Capacities <small>(CSV)</small></label> <textarea class="control-input" id="damMaxCapacitiesCSV" rows="2" placeholder="124.8,98.5,129.6">124.8,98.5,129.6</textarea> </div><div class="control-group"><label class="control-label">Unit of Measurement</label><select class="control-input" id="damUnitOfMeasure"><option value="TMC">TMC</option><option value="Feet">Feet</option><option value="Meters">Meters</option><option value="GL">GL (Giga Litres)</option></select></div><div class="control-group"> <label>Progress Bar Label</label> <input type="text" class="control-input" id="damProgressLabel" value="Current Storage"> </div></div></div><div class="specific-settings-container"></div></div>
+        <div class="tab-content" id="dams"><div class="accordion-item"><div class="accordion-header active"><h3>Dam Levels Controls</h3><i class="fas fa-chevron-down"></i></div><div class="accordion-content active"><div class="control-group"> <label>Section Header</label> <input type="text" class="control-input" id="damSectionTitle" value="Reservoir Status"> </div><div class="control-group"><label>Card Color Logic</label><select id="damColorLogic" class="control-input"><option value="performance" selected>Performance Based (G/Y/R)</option><option value="cycle">Cycle Theme Colors</option><option value="shuffle">Shuffle Theme Colors</option></select></div><div class="control-group"> <label>Level Font Size (px)</label> <input type="number" class="control-input" id="damLevelFontSize" value="36"> </div><div class="control-group"> <label>Card Width (px)</label> <input type="number" class="control-input" id="damCardWidth" value="150"> </div><div class="control-group"> <label>Dam Names <small>(using global separator)</small></label> <textarea class="control-input" id="damNamesCSV" rows="2">KRS Dam,Kabini Reservoir,Hemavathi Dam</textarea> </div><div class="control-group"> <label>Present Levels <small>(using global separator)</small></label> <textarea class="control-input" id="damPresentLevelsCSV" rows="2" placeholder="100,80,110">100,80,110</textarea> </div><div class="control-group"> <label>Max Capacities <small>(using global separator)</small></label> <textarea class="control-input" id="damMaxCapacitiesCSV" rows="2" placeholder="124.8,98.5,129.6">124.8,98.5,129.6</textarea> </div><div class="control-group"><label class="control-label">Unit of Measurement</label><select class="control-input" id="damUnitOfMeasure"><option value="TMC">TMC</option><option value="Feet">Feet</option><option value="Meters">Meters</option><option value="GL">GL (Giga Litres)</option></select></div><div class="control-group"> <label>Progress Bar Label</label> <input type="text" class="control-input" id="damProgressLabel" value="Current Storage"> </div></div></div><div class="specific-settings-container"></div></div>
         <div class="tab-content" id="prices"><div class="accordion-item"><div class="accordion-header active"><h3>Prices Controls</h3><i class="fas fa-chevron-down"></i></div><div class="accordion-content active"><div class="control-group"> <label>Section Header</label> <input type="text" class="control-input" id="priceSectionTitle" value="Precious Metal Prices"> </div><div class="control-group"><label>Card Color Logic</label><select id="priceColorLogic" class="control-input"><option value="default" selected>Default Gradients</option><option value="cycle">Cycle Theme Colors</option><option value="shuffle">Shuffle Theme Colors</option></select></div><div class="control-group"> <label>Card Width (px)</label> <input type="number" class="control-input" id="priceCardWidth" value="180"> </div><h4>Item 1 (e.g., Gold 24K)</h4><div class="control-group"> <label>Label</label> <input type="text" class="control-input" id="priceItem1Label" value="24K Gold"> </div><div class="control-group"> <label>Rate (₹)</label> <input type="number" class="control-input" id="priceItem1Rate" value="72500"> </div><div class="control-group"> <label>Unit</label> <input type="text" class="control-input" id="priceItem1Unit" value="per 10 grams"> </div><h4>Item 2 (e.g., Gold 22K)</h4><div class="control-group"> <label>Label</label> <input type="text" class="control-input" id="priceItem2Label" value="22K Gold"> </div><div class="control-group"> <label>Rate (₹)</label> <input type="number" class="control-input" id="priceItem2Rate" value="68300"> </div><div class="control-group"> <label>Unit</label> <input type="text" class="control-input" id="priceItem2Unit" value="per 10 grams"> </div><h4>Item 3 (e.g., Silver)</h4><div class="control-group"> <label>Label</label> <input type="text" class="control-input" id="priceItem3Label" value="Silver"> </div><div class="control-group"> <label>Rate (₹)</label> <input type="number" class="control-input" id="priceItem3Rate" value="85500"> </div><div class="control-group"> <label>Unit</label> <input type="text" class="control-input" id="priceItem3Unit" value="per kilogram"> </div><div class="control-group"> <label>Update Info Label</label> <input type="text" class="control-input" id="priceUpdateLabel" value="Last updated: Today"> </div></div></div><div class="specific-settings-container"></div></div>
         <div class="tab-content" id="comingUp"><div class="accordion-item"><div class="accordion-header active"><h3>Coming Up Controls</h3><i class="fas fa-chevron-down"></i></div><div class="accordion-content active"><div class="control-group"> <label>Image URL</label> <input type="url" class="control-input" id="comingUpImageUrl" placeholder="https://placehold.co/600x300/667eea/white?text=Event+Image"> </div><div class="control-group"> <label>Upload Image</label> <input type="file" class="control-input" id="comingUpImageUpload" accept="image/*"></div><div class="control-group"> <label>Image Position</label> <select class="control-input" id="comingUpImagePosition"><option value="top" selected>Image Top, Text Below</option><option value="bottom">Text Top, Image Below</option><option value="left">Image Left, Text Right</option><option value="right">Text Left, Image Right</option><option value="background">Image as Background, Text Overlay</option></select></div><div class="control-group"> <label>Header</label> <input type="text" class="control-input" id="comingUpHeader" value="Exciting Event Ahead!"> </div><div class="control-group"> <label>Sub-Header</label> <input type="text" class="control-input" id="comingUpSubHeader" value="Don't Miss Out"> </div><div class="control-group"> <label>Information Text</label> <textarea class="control-input" id="comingUpInfoText" rows="3">Join us for an amazing experience. More details to follow soon. This will be a game-changer!</textarea> </div><div class="control-group"> <label>Date</label> <input type="text" class="control-input" id="comingUpDate" value="October 26, 2025"> </div><div class="control-group"> <label>Time</label> <input type="text" class="control-input" id="comingUpTime" value="7:00 PM IST"> </div></div></div><div class="specific-settings-container"></div></div>
     </div>
@@ -692,12 +976,16 @@ Multiple explosions heard in Central Israel</textarea> </div></div><div id="news
     <script>
         // --- UTILITY AND HELPER FUNCTIONS ---
         const uploadedImageCache = {};
-        function parseCSV(str) { if (!str || typeof str !== 'string') return []; return str.split(',').map(item => item.trim()).filter(item => item !== ""); }
+        function parseMultiValue(str) {
+            if (!str || typeof str !== 'string') return [];
+            const separator = getElementValue('globalDataSeparator', ',');
+            return str.split(separator).map(item => item.trim()).filter(item => item !== "");
+        }
         function getElementValue(id, defaultValue = '') { const element = document.getElementById(id); if (!element) return defaultValue; if (element.type === 'checkbox') return element.checked; if (element.type === 'file') { if (element.files && element.files[0] && uploadedImageCache[id]) { return uploadedImageCache[id]; } else if (uploadedImageCache[id] && (!element.files || element.files.length === 0)) { return uploadedImageCache[id]; } else if (element.files && element.files.length === 0 && element.dataset.lastUrl) { return element.dataset.lastUrl; } } return element.value !== "" ? element.value : defaultValue; }
         function getElementIntValue(id, defaultValue = 0) { const val = getElementValue(id, defaultValue.toString()); if (typeof val === 'boolean') return val ? 1 : 0; const parsed = parseInt(val); return isNaN(parsed) ? defaultValue : parsed; }
         function getElementFloatValue(elementIdOrValue, defaultValue = 0.0) { let valStr; if (typeof elementIdOrValue === 'string' && document.getElementById(elementIdOrValue)) { valStr = document.getElementById(elementIdOrValue).value; } else { valStr = String(elementIdOrValue); } if (valStr === null || typeof valStr === 'undefined' || valStr.trim() === "" || valStr.toLowerCase() === "undefined") return defaultValue; const floatVal = parseFloat(valStr.trim()); return isNaN(floatVal) ? defaultValue : floatVal; }
         function sanitizeHTML(text) { if (typeof text !== 'string') text = String(text); const temp = document.createElement('div'); temp.textContent = text; return temp.innerHTML; }
-        function createIconHTML(iconClass) { if (!iconClass || typeof iconClass !== 'string') return ''; const sanitizedClass = sanitizeHTML(iconClass.trim()); return `<i class="${sanitizedClass}"></i>`;}
+        function createIconHTML(iconClass, color) { if (!iconClass || typeof iconClass !== 'string') return ''; const sanitizedClass = sanitizeHTML(iconClass.trim()); const style = color ? `style="color: ${color} !important;"` : ''; return `<i class="${sanitizedClass}" ${style}></i>`;}
         function hexToRgba(hex, alpha) {
             hex = hex.replace('#', '');
             const r = parseInt(hex.length == 3 ? hex.slice(0, 1).repeat(2) : hex.slice(0, 2), 16);
@@ -726,11 +1014,13 @@ Multiple explosions heard in Central Israel</textarea> </div></div><div id="news
         let currentTab = 'social';
         let barChartInstance = null;
         let pieChartInstance = null;
+        let doughnutChartInstance = null;
+        let halfDoughnutChartInstance = null;
         let shuffledThemeColors = [];
         let debounceTimer;
         let currentCanvasScale = 1.0;
 
-        // --- CANVAS SIZING AND ZOOM (FINALIZED) ---
+        // --- CANVAS SIZING AND ZOOM ---
         function applyCanvasScale(scale) {
             const canvas = document.getElementById('infographicCanvas');
             const zoomDisplay = document.getElementById('canvasZoomDisplay');
@@ -742,7 +1032,7 @@ Multiple explosions heard in Central Israel</textarea> </div></div><div id="news
         
         function fitCanvasToContainer() {
             const canvas = document.getElementById('infographicCanvas');
-            const container = document.getElementById('main-content');
+            const container = document.querySelector('.main-content');
             if (!canvas || !container) return;
             const containerWidth = container.clientWidth - 40; 
             const containerHeight = container.clientHeight - 40;
@@ -759,19 +1049,22 @@ Multiple explosions heard in Central Israel</textarea> </div></div><div id="news
             const sidebar = document.querySelector('.sidebar');
             
             sidebar.addEventListener('click', (e) => {
-                const button = e.target.closest('button');
-                if (!button) {
-                     const header = e.target.closest('.accordion-header');
-                     if (header) {
-                         const content = header.nextElementSibling;
-                         header.classList.toggle('active');
-                         content.classList.toggle('active');
-                         content.style.display = content.classList.contains('active') ? 'block' : 'none';
-                     }
-                    return;
+                const target = e.target;
+
+                const header = target.closest('.accordion-header');
+                if (header) {
+                    header.classList.toggle('active');
+                    const content = header.nextElementSibling;
+                    if(content) content.classList.toggle('active');
+                    return; 
                 }
 
-                if (button.classList.contains('infographic-type-btn')) {
+                const button = target.closest('button');
+                if (!button) return;
+
+                if (button.id === 'openAiAssistantBtn') {
+                    openAiAssistantModal();
+                } else if (button.classList.contains('infographic-type-btn')) {
                     currentTab = button.dataset.type;
                     document.querySelectorAll('#infographicTypeSelectorGrid .infographic-type-btn').forEach(btn => btn.classList.remove('active'));
                     button.classList.add('active');
@@ -792,9 +1085,10 @@ Multiple explosions heard in Central Israel</textarea> </div></div><div id="news
                     const targetInput = document.getElementById(button.dataset.target);
                     const icon = button.dataset.icon;
                     if(targetInput) {
-                        const values = parseCSV(targetInput.value);
+                        const values = parseMultiValue(targetInput.value);
                         values[button.dataset.index] = icon;
-                        targetInput.value = values.join(', ');
+                        const separator = getElementValue('globalDataSeparator', ',');
+                        targetInput.value = values.join(`${separator} `);
                         generateInfographic();
                     }
                 } else if (button.id === 'zoomInBtn') {
@@ -921,10 +1215,11 @@ Multiple explosions heard in Central Israel</textarea> </div></div><div id="news
                 case 'process': generateProcessInfographic(contentDiv, fontStyles, layoutStyles); break;
                 case 'statistical': generateStatisticalInfographic(contentDiv, fontStyles, layoutStyles); break;
                 case 'textToTable': generateTableInfographic(contentDiv, fontStyles, layoutStyles); break;
-                case 'informational': generateInformationalInfographic(contentDiv, fontStyles, layoutStyles); break;
                 case 'timeline': generateTimelineInfographic(contentDiv, fontStyles, layoutStyles); break;
                 case 'barChart': generateBarChartInfographic(contentDiv, fontStyles, layoutStyles); break;
                 case 'pieChart': generatePieChartInfographic(contentDiv, fontStyles, layoutStyles); break;
+                case 'doughnutChart': generateDoughnutChartInfographic(contentDiv, fontStyles, layoutStyles); break;
+                case 'halfDoughnutChart': generateHalfDoughnutChartInfographic(contentDiv, fontStyles, layoutStyles); break;
                 case 'dams': generateDamInfographic(contentDiv, fontStyles, layoutStyles); break;
                 case 'prices': generatePriceInfographic(contentDiv, fontStyles, layoutStyles); break;
                 case 'comparison': generateComparisonInfographic(contentDiv, fontStyles, layoutStyles); break;
@@ -1040,17 +1335,22 @@ Multiple explosions heard in Central Israel</textarea> </div></div><div id="news
             const headerPadding = getElementValue('newsHeaderPadding', '10') + 'px';
             const mainTitle = sanitizeHTML(getElementValue('newsMainTitle'));
             const mainTitleBg = getElementValue('newsMainTitleBgColor');
+            const mainTitleMarginBottom = getElementValue('newsMainTitleMarginBottom', '15') + 'px';
             const contentType = getElementValue('newsLayout', 'list');
             let bodyHtml = '';
 
             if (contentType === 'list') {
                 const points = getElementValue('newsListPoints').split('\n').filter(p => p.trim() !== '');
                 const bulletStyle = getElementValue('newsBulletStyle');
+                const itemSpacing = getElementValue('newsListItemSpacing', '10') + 'px';
                 const separatorType = getElementValue('newsListSeparatorType');
                 const separatorColor = getElementValue('newsListSeparatorColor');
                 const separatorSize = getElementValue('newsListSeparatorSize') + 'px';
-                let separatorCss = 'display: none;';
-                if (separatorType !== 'none') separatorCss = `border-bottom: ${separatorSize} ${separatorType} ${separatorColor};`;
+
+                let separatorCss = `margin: ${itemSpacing} 0;`;
+                if (separatorType !== 'none') {
+                    separatorCss += ` border-bottom: ${separatorSize} ${separatorType} ${separatorColor};`;
+                }
 
                 let listItems = '';
                 points.forEach((p, i) => {
@@ -1086,7 +1386,6 @@ Multiple explosions heard in Central Israel</textarea> </div></div><div id="news
                 const personImgSize = getElementValue('newsPersonImageSize', '100') + 'px';
                 const personImgShape = getElementValue('newsPersonImageShape', 'circle');
 
-                // NEW: Get attribution styling
                 const attrFontSize = getElementValue('newsQuoteAttributionFontSize', '22') + 'px';
                 const attrColor = getElementValue('newsQuoteAttributionColor', '#FFFFFF');
                 const desigFontSize = getElementValue('newsQuoteDesignationFontSize', '18') + 'px';
@@ -1125,7 +1424,7 @@ Multiple explosions heard in Central Israel</textarea> </div></div><div id="news
             }
              finalHtml += `
                 <div class="news-content-area">
-                    <div class="news-main-title" style="background-color: ${mainTitleBg}; font-size: ${mainTitleFontSize};">
+                    <div class="news-main-title" style="background-color: ${mainTitleBg}; font-size: ${mainTitleFontSize}; margin-bottom: ${mainTitleMarginBottom};">
                          ${titleImage ? `<img src="${sanitizeHTML(titleImage)}" style="height: ${titleImageHeight};">` : ''}
                          <span>${mainTitle}</span>
                     </div>
@@ -1138,9 +1437,9 @@ Multiple explosions heard in Central Israel</textarea> </div></div><div id="news
         function generateProcessInfographic(contentDiv, f, l) {
             const sectionTitle = getElementValue('processSectionTitle');
             let html = createSectionTitle(sectionTitle, f, l);
-            const titles = parseCSV(getElementValue('processStepTitlesCSV'));
-            const descs = parseCSV(getElementValue('processStepDescsCSV'));
-            const icons = parseCSV(getElementValue('processStepIconsCSV'));
+            const titles = parseMultiValue(getElementValue('processStepTitlesCSV'));
+            const descs = parseMultiValue(getElementValue('processStepDescsCSV'));
+            const icons = parseMultiValue(getElementValue('processStepIconsCSV'));
             const maxItems = Math.max(titles.length, descs.length, icons.length);
 
             if (maxItems > 0) {
@@ -1166,8 +1465,8 @@ Multiple explosions heard in Central Israel</textarea> </div></div><div id="news
         function generateStatisticalInfographic(contentDiv, f, l) {
             const sectionTitle = getElementValue('statSectionTitle');
             let html = createSectionTitle(sectionTitle, f, l);
-            const values = parseCSV(getElementValue('statValuesCSV'));
-            const labels = parseCSV(getElementValue('statLabelsCSV'));
+            const values = parseMultiValue(getElementValue('statValuesCSV'));
+            const labels = parseMultiValue(getElementValue('statLabelsCSV'));
             const maxItems = Math.max(values.length, labels.length);
 
             if (maxItems > 0) {
@@ -1225,70 +1524,89 @@ Multiple explosions heard in Central Israel</textarea> </div></div><div id="news
 
         function generateTimelineInfographic(contentDiv, f, l) {
             const sectionTitle = getElementValue('timelineSectionTitle');
-            const layout = getElementValue('timelineLayoutType', 'vertical');
-            let html = createSectionTitle(sectionTitle, f, l);
+            const style = getElementValue('timelineLayoutType', 'modern-vertical');
+            contentDiv.innerHTML = createSectionTitle(sectionTitle, f, l);
 
-            const showStartEnd = getElementValue('timelineShowStartEnd', true);
-            const startText = sanitizeHTML(getElementValue('timelineStartText', ''));
-            const startIcon = getElementValue('timelineStartIcon', '');
-            const endText = sanitizeHTML(getElementValue('timelineEndText', ''));
-            const endIcon = getElementValue('timelineEndIcon', '');
-
-            const dates = parseCSV(getElementValue('timelineEventDatesCSV'));
-            const titles = parseCSV(getElementValue('timelineEventTitlesCSV'));
-            const descs = parseCSV(getElementValue('timelineEventDescsCSV'));
-            const images = parseCSV(getElementValue('timelineEventImagesCSV'));
+            const dates = parseMultiValue(getElementValue('timelineEventDatesCSV'));
+            const titles = parseMultiValue(getElementValue('timelineEventTitlesCSV'));
+            const descs = parseMultiValue(getElementValue('timelineEventDescsCSV'));
+            const images = parseMultiValue(getElementValue('timelineEventImagesCSV'));
             const maxItems = Math.max(dates.length, titles.length, descs.length, images.length);
+            if (maxItems === 0) return;
 
-            if (maxItems === 0) { contentDiv.innerHTML = html; return; }
-            
-            let startNodeHtml = '';
-            if (showStartEnd && (startText || startIcon)) {
-                const iconContent = createIconHTML(startIcon);
-                startNodeHtml = `<div class="timeline-start-node" style="font-size:${f.paragraphFontSize};">${iconContent}<span>${startText}</span></div>`;
-            }
-            let endNodeHtml = '';
-             if (showStartEnd && (endText || endIcon)) {
-                const iconContent = createIconHTML(endIcon);
-                endNodeHtml = `<div class="timeline-end-node" style="font-size:${f.paragraphFontSize};">${iconContent}<span>${endText}</span></div>`;
-            }
+            const rootStyles = getComputedStyle(document.documentElement);
+            const themeColors = [ rootStyles.getPropertyValue('--primary').trim(), rootStyles.getPropertyValue('--success').trim(), rootStyles.getPropertyValue('--accent').trim(), rootStyles.getPropertyValue('--secondary').trim(), rootStyles.getPropertyValue('--warning').trim(), rootStyles.getPropertyValue('--danger').trim() ];
 
-            if (layout === 'vertical') {
-                html += `<div class="timeline-vertical-container">${startNodeHtml}`;
-                for (let i = 0; i < maxItems; i++) {
-                    const imageHtml = images[i] ? `<img src="${sanitizeHTML(images[i])}" alt="${sanitizeHTML(titles[i] || 'Timeline image')}">` : '';
-                    html += `
-                        <div class="timeline-vertical-item">
-                            <div class="timeline-vertical-dot"></div>
-                            <div class="timeline-vertical-content">
-                                <h3 style="font-size:${f.smallTextFontSize};">${sanitizeHTML(dates[i] || '')}</h3>
-                                <h4 style="font-size:${f.headerFontSize}; margin-bottom:${l.subHeaderMarginBottom};">${sanitizeHTML(titles[i] || 'Event Title')}</h4>
-                                <p style="font-size:${f.paragraphFontSize}; line-height:${l.paragraphLineHeight};">${sanitizeHTML(descs[i] || 'Event description.')}</p>
-                                ${imageHtml}
-                            </div>
-                        </div>`;
+            let html = '';
+
+            if (style.startsWith('classic')) {
+                const showStartEnd = getElementValue('timelineShowStartEnd', true);
+                const startText = sanitizeHTML(getElementValue('timelineStartText', ''));
+                const startIcon = getElementValue('timelineStartIcon', '');
+                const endText = sanitizeHTML(getElementValue('timelineEndText', ''));
+                const endIcon = getElementValue('timelineEndIcon', '');
+                
+                let startNodeHtml = (showStartEnd && (startText || startIcon)) ? `<div class="timeline-start-node" style="font-size:${f.paragraphFontSize};">${createIconHTML(startIcon)}<span>${startText}</span></div>` : '';
+                let endNodeHtml = (showStartEnd && (endText || endIcon)) ? `<div class="timeline-end-node" style="font-size:${f.paragraphFontSize};">${createIconHTML(endIcon)}<span>${endText}</span></div>` : '';
+
+                if (style === 'classic-vertical') {
+                    html += `<div class="timeline-classic-vertical-container">${startNodeHtml}`;
+                    for (let i = 0; i < maxItems; i++) {
+                        const imageHtml = images[i] ? `<img src="${sanitizeHTML(images[i])}" alt="${sanitizeHTML(titles[i] || 'Timeline image')}">` : '';
+                        html += `<div class="timeline-classic-vertical-item"><div class="timeline-classic-vertical-dot"></div><div class="timeline-classic-vertical-content"><h3 style="font-size:${f.smallTextFontSize};">${sanitizeHTML(dates[i] || '')}</h3><h4 style="font-size:${f.headerFontSize}; margin-bottom:${l.subHeaderMarginBottom};">${sanitizeHTML(titles[i] || 'Event Title')}</h4><p style="font-size:${f.paragraphFontSize}; line-height:${l.paragraphLineHeight};">${sanitizeHTML(descs[i] || 'Event description.')}</p>${imageHtml}</div></div>`;
+                    }
+                    html += `${endNodeHtml}</div>`;
+                } else { // classic-horizontal
+                    html += `<div class="timeline-classic-horizontal-wrapper"><div class="timeline-classic-horizontal-container">${startNodeHtml}<div class="timeline-classic-horizontal-line"></div><div class="timeline-classic-horizontal-events">`;
+                    for (let i = 0; i < maxItems; i++) {
+                        const imageHtml = images[i] ? `<img src="${sanitizeHTML(images[i])}" alt="${sanitizeHTML(titles[i] || 'Timeline image')}">` : '';
+                        html += `<div class="timeline-classic-horizontal-item"><div class="timeline-classic-horizontal-dot"></div><div class="timeline-classic-horizontal-content"><h3 style="font-size:${f.smallTextFontSize};">${sanitizeHTML(dates[i] || '')}</h3><h4 style="font-size:${Math.max(12, parseFloat(f.paragraphFontSize))}px; margin-bottom:${l.subHeaderMarginBottom};">${sanitizeHTML(titles[i] || 'Event')}</h4><p style="font-size:${Math.max(10, parseFloat(f.smallTextFontSize))}px; line-height:${l.paragraphLineHeight};">${sanitizeHTML(descs[i] || 'Desc.')}</p>${imageHtml}</div></div>`;
+                    }
+                    html += `</div>${endNodeHtml}</div></div>`;
                 }
-                html += `${endNodeHtml}</div>`;
-            } else { // Horizontal
-                html += `<div class="timeline-horizontal-wrapper"><div class="timeline-horizontal-container">${startNodeHtml}`;
-                html += '<div class="timeline-horizontal-line"></div><div class="timeline-horizontal-events">';
+            } else if (style === 'modern-vertical') {
+                const modernImageSize = getElementIntValue('timelineModernImageSize', 30) + 'px';
+                html += `<div class="timeline-modern-vertical-container">`;
                 for (let i = 0; i < maxItems; i++) {
-                    const imageHtml = images[i] ? `<img src="${sanitizeHTML(images[i])}" alt="${sanitizeHTML(titles[i] || 'Timeline image')}">` : '';
-                    html += `
-                        <div class="timeline-horizontal-item">
-                             <div class="timeline-horizontal-dot"></div>
-                             <div class="timeline-horizontal-content">
-                                <h3 style="font-size:${f.smallTextFontSize};">${sanitizeHTML(dates[i] || '')}</h3>
-                                <h4 style="font-size:${Math.max(12, parseFloat(f.paragraphFontSize))}px; margin-bottom:${l.subHeaderMarginBottom};">${sanitizeHTML(titles[i] || 'Event')}</h4>
-                                <p style="font-size:${Math.max(10, parseFloat(f.smallTextFontSize))}px; line-height:${l.paragraphLineHeight};">${sanitizeHTML(descs[i] || 'Desc.')}</p>
-                                ${imageHtml}
-                            </div>
-                        </div>`;
+                    const sideClass = (i % 2 === 0) ? 'item-right' : 'item-left';
+                    const dotColor = themeColors[i % themeColors.length];
+                    const imageHtml = images[i] ? `<img class="modern-timeline-logo" style="max-height:${modernImageSize};" src="${sanitizeHTML(images[i])}" alt="${sanitizeHTML(titles[i] || '')}">` : '';
+                    html += `<div class="timeline-modern-vertical-item ${sideClass}">
+                                <div class="modern-timeline-spacer"></div>
+                                <div class="modern-timeline-dot" style="border-color:${dotColor};"></div>
+                                <div class="modern-timeline-vertical-content">
+                                    ${imageHtml}
+                                    <h3 style="font-size:${f.headerFontSize}; margin-bottom:${l.subHeaderMarginBottom}; color:${dotColor} !important;">${sanitizeHTML(dates[i] || '')} ${sanitizeHTML(titles[i] || '')}</h3>
+                                    <p style="font-size:${f.paragraphFontSize}; line-height:${l.paragraphLineHeight};">${sanitizeHTML(descs[i] || '')}</p>
+                                </div>
+                             </div>`;
                 }
-                html += '</div>';
-                html += `${endNodeHtml}</div></div>`;
+                html += `</div>`;
+            } else if (style === 'modern-horizontal') {
+                const modernImageSize = getElementIntValue('timelineModernImageSize', 24) + 'px';
+                html += `<div class="timeline-modern-horizontal-container">`;
+                let axisHtml = '<div class="modern-horizontal-axis">';
+                let contentHtml = '<div class="modern-horizontal-content-area">';
+
+                for (let i = 0; i < maxItems; i++) {
+                    const color = themeColors[i % themeColors.length];
+                    const imageHtml = images[i] ? `<img style="max-height:${modernImageSize}; max-width:${modernImageSize};" src="${sanitizeHTML(images[i])}" alt="${sanitizeHTML(titles[i] || '')}">` : '';
+                    
+                    axisHtml += `<div class="modern-horizontal-stop">
+                                    <div class="modern-horizontal-year-box" style="background-color:${color}; font-size:${f.headerFontSize};">${sanitizeHTML(dates[i] || '')}</div>
+                                    <div class="modern-horizontal-icon-wrapper">${imageHtml}</div>
+                                 </div>`;
+                    
+                    contentHtml += `<div class="modern-horizontal-content-box" style="border-color:${color};">
+                                        <h4 style="font-size:${f.headerFontSize}; color:${color} !important; margin-bottom:${l.subHeaderMarginBottom};">${sanitizeHTML(titles[i] || '')}</h4>
+                                        <p style="font-size:${f.paragraphFontSize}; line-height:${l.paragraphLineHeight};">${sanitizeHTML(descs[i] || '')}</p>
+                                    </div>`;
+                }
+                axisHtml += '</div>';
+                contentHtml += '</div>';
+                html += axisHtml + contentHtml + `</div>`;
             }
-            contentDiv.innerHTML = html;
+            contentDiv.innerHTML += html;
         }
 
         function generateBarChartInfographic(contentDiv, f, l) {
@@ -1296,15 +1614,14 @@ Multiple explosions heard in Central Israel</textarea> </div></div><div id="news
             let html = createSectionTitle(sectionTitle, f, l);
             const chartTitle = sanitizeHTML(getElementValue('barChartTitle', 'Bar Chart'));
             const chartHeight = getElementIntValue('barChartHeight', 250);
-            const labels = parseCSV(getElementValue('barChartLabelsCSV'));
-            const data = parseCSV(getElementValue('barChartDataCSV')).map(Number);
+            const labels = parseMultiValue(getElementValue('barChartLabelsCSV'));
+            const data = parseMultiValue(getElementValue('barChartDataCSV')).map(Number);
             const chartId = 'barChartCanvas';
-            const enable3d = getElementValue('barChart3dEffect');
-
+            
             html += `
                 <div class="chart-container">
                     <h3 class="chart-title" style="font-size: ${f.headerFontSize};">${chartTitle}</h3>
-                    <div class="chart-canvas-wrapper ${enable3d ? 'is-3d' : ''}" style="height: ${chartHeight}px;">
+                    <div class="chart-canvas-wrapper" style="height: ${chartHeight}px;">
                         <canvas id="${chartId}"></canvas>
                     </div>
                 </div>`;
@@ -1317,20 +1634,59 @@ Multiple explosions heard in Central Israel</textarea> </div></div><div id="news
             let html = createSectionTitle(sectionTitle, f, l);
             const chartTitle = sanitizeHTML(getElementValue('pieChartUserTitle', 'Pie Chart'));
             const chartHeight = getElementIntValue('pieChartHeight', 250);
-            const labels = parseCSV(getElementValue('pieChartLabelsCSV'));
-            const data = parseCSV(getElementValue('pieChartDataCSV')).map(Number);
+            const labels = parseMultiValue(getElementValue('pieChartLabelsCSV'));
+            const data = parseMultiValue(getElementValue('pieChartDataCSV')).map(Number);
             const chartId = 'pieChartCanvas';
-            const enable3d = getElementValue('pieChart3dEffect');
-
+            
             html += `
                 <div class="chart-container">
                     <h3 class="chart-title" style="font-size: ${f.headerFontSize};">${chartTitle}</h3>
-                    <div class="chart-canvas-wrapper ${enable3d ? 'is-3d' : ''}" style="height: ${chartHeight}px;">
+                    <div class="chart-canvas-wrapper" style="height: ${chartHeight}px;">
                         <canvas id="${chartId}"></canvas>
                     </div>
                 </div>`;
             contentDiv.innerHTML = html;
             createPieChart(chartId, labels, data, chartTitle);
+        }
+
+        function generateDoughnutChartInfographic(contentDiv, f, l) {
+            const sectionTitle = getElementValue('doughnutChartSectionTitle');
+            let html = createSectionTitle(sectionTitle, f, l);
+            const chartTitle = sanitizeHTML(getElementValue('doughnutChartUserTitle', 'Doughnut Chart'));
+            const chartHeight = getElementIntValue('doughnutChartHeight', 250);
+            const labels = parseMultiValue(getElementValue('doughnutChartLabelsCSV'));
+            const data = parseMultiValue(getElementValue('doughnutChartDataCSV')).map(Number);
+            const chartId = 'doughnutChartCanvas';
+            
+            html += `
+                <div class="chart-container">
+                    <h3 class="chart-title" style="font-size: ${f.headerFontSize};">${chartTitle}</h3>
+                    <div class="chart-canvas-wrapper" style="height: ${chartHeight}px;">
+                        <canvas id="${chartId}"></canvas>
+                    </div>
+                </div>`;
+            contentDiv.innerHTML = html;
+            createDoughnutChart(chartId, labels, data, chartTitle);
+        }
+        
+        function generateHalfDoughnutChartInfographic(contentDiv, f, l) {
+            const sectionTitle = getElementValue('halfDoughnutChartSectionTitle');
+            let html = createSectionTitle(sectionTitle, f, l);
+            const chartTitle = sanitizeHTML(getElementValue('halfDoughnutChartUserTitle', 'Gauge Chart'));
+            const chartHeight = getElementIntValue('halfDoughnutChartHeight', 200);
+            const labels = parseMultiValue(getElementValue('halfDoughnutChartLabelsCSV'));
+            const data = parseMultiValue(getElementValue('halfDoughnutChartDataCSV')).map(Number);
+            const chartId = 'halfDoughnutChartCanvas';
+
+            html += `
+                <div class="chart-container">
+                     <h3 class="chart-title" style="font-size: ${f.headerFontSize};">${chartTitle}</h3>
+                    <div class="chart-canvas-wrapper" style="height: ${chartHeight}px;">
+                        <canvas id="${chartId}"></canvas>
+                    </div>
+                </div>`;
+            contentDiv.innerHTML = html;
+            createHalfDoughnutChart(chartId, labels, data, chartTitle);
         }
 
         function generateComparisonInfographic(contentDiv, f, l) {
@@ -1341,7 +1697,7 @@ Multiple explosions heard in Central Israel</textarea> </div></div><div id="news
             for(let i = 1; i <= 2; i++) {
                 const title = sanitizeHTML(getElementValue(`compareItem${i}Title`, `Item ${i}`));
                 const price = sanitizeHTML(getElementValue(`compareItem${i}Price`, `Price ${i}`));
-                const features = parseCSV(getElementValue(`compareItem${i}FeaturesCSV`));
+                const features = parseMultiValue(getElementValue(`compareItem${i}FeaturesCSV`));
                 
                 let featuresHtml = '<ul>';
                 features.forEach(feature => {
@@ -1431,9 +1787,10 @@ Multiple explosions heard in Central Israel</textarea> </div></div><div id="news
         function generateListInfographic(contentDiv, f, l) {
             const sectionTitle = getElementValue('listSectionTitle');
             let html = createSectionTitle(sectionTitle, f, l);
-            const titles = parseCSV(getElementValue('listItemTitlesCSV'));
-            const descs = parseCSV(getElementValue('listItemDescsCSV'));
-            const icons = parseCSV(getElementValue('listItemIconsCSV'));
+            const titles = parseMultiValue(getElementValue('listItemTitlesCSV'));
+            const descs = parseMultiValue(getElementValue('listItemDescsCSV'));
+            const icons = parseMultiValue(getElementValue('listItemIconsCSV'));
+            const iconColor = getElementValue('listItemIconColor', '#667eea');
             const maxItems = Math.max(titles.length, descs.length);
 
             if (maxItems > 0) {
@@ -1441,7 +1798,7 @@ Multiple explosions heard in Central Israel</textarea> </div></div><div id="news
                     const title = sanitizeHTML(titles[i] || `Item ${i + 1}`);
                     const desc = sanitizeHTML(descs[i] || 'Description missing.');
                     const iconRaw = icons[i] || 'fas fa-check';
-                    const icon = createIconHTML(iconRaw);
+                    const icon = createIconHTML(iconRaw, iconColor);
 
                     html += `
                         <div class="list-infographic-item">
@@ -1542,104 +1899,208 @@ Multiple explosions heard in Central Israel</textarea> </div></div><div id="news
             }
         }
         
+        function createChartGradient(ctx, color) {
+            const gradient = ctx.createLinearGradient(0, 0, 0, ctx.canvas.height);
+            gradient.addColorStop(0, color);
+            gradient.addColorStop(1, shadeHexColor(color, -0.2));
+            return gradient;
+        }
+
+        function getDatalabelsConfig(prefix) {
+            return {
+                display: getElementValue(`${prefix}DataLabelsEnable`, true),
+                color: getElementValue(`${prefix}DataLabelColor`, '#FFFFFF'),
+                backgroundColor: hexToRgba(getElementValue(`${prefix}DataLabelBgColor`, '#2c3e50'), 0.75),
+                borderRadius: getElementIntValue(`${prefix}DataLabelRadius`, 4),
+                padding: { top: 2, bottom: 2, left: 4, right: 4 },
+                font: {
+                    family: "'Anek Kannada', sans-serif",
+                    size: getElementIntValue(`${prefix}DataLabelFontSize`, 12),
+                    weight: '600'
+                }
+            };
+        }
+
         function createBarChart(canvasId, labels, data, label) {
             const ctx = document.getElementById(canvasId)?.getContext('2d');
-            if (ctx) {
-                if (barChartInstance) barChartInstance.destroy();
-                const isDark = document.body.classList.contains('dark-theme');
-                const gridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
-                const textColor = isDark ? '#e1e9f1' : '#2c3e50';
-                const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim();
-                const secondaryColor = getComputedStyle(document.documentElement).getPropertyValue('--secondary').trim();
-                const legendPos = getElementValue('barChartLegendPos', 'bottom');
-                const legendFontSize = getElementIntValue('barChartLegendFontSize', 12);
-                const enable3d = getElementValue('barChart3dEffect');
-                const depth = getElementIntValue('barChart3dDepth', 8);
+            if (!ctx) return;
+            if (barChartInstance) barChartInstance.destroy();
 
-                Chart.defaults.color = textColor;
-                barChartInstance = new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: labels,
-                        datasets: [{
-                            label: label,
-                            data: data,
-                            backgroundColor: data.map((d, i) => i % 2 === 0 ? primaryColor + 'E6' : secondaryColor + 'E6'),
-                            borderColor: data.map((d, i) => i % 2 === 0 ? primaryColor : secondaryColor),
-                            borderWidth: 1,
-                            borderRadius: 4
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: { y: { beginAtZero: true, grid: { color: gridColor } }, x: { grid: { color: gridColor } } },
-                        plugins: { 
-                            faked3D: { enabled: enable3d, depth: depth },
-                            legend: { 
-                                display: legendPos !== 'hidden', 
-                                position: legendPos,
-                                labels: { font: { size: legendFontSize } }
-                            } 
-                        }
+            const isDark = document.body.classList.contains('dark-theme');
+            const gridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
+            const textColor = isDark ? '#e1e9f1' : '#2c3e50';
+            const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim();
+            const secondaryColor = getComputedStyle(document.documentElement).getPropertyValue('--secondary').trim();
+            const legendPos = getElementValue('barChartLegendPos', 'bottom');
+            const legendFontSize = getElementIntValue('barChartLegendFontSize', 12);
+            
+            const backgroundColors = data.map((d, i) => createChartGradient(ctx, i % 2 === 0 ? primaryColor : secondaryColor));
+            const datalabelsConfig = getDatalabelsConfig('barChart');
+
+            Chart.defaults.font.family = "'Anek Kannada', sans-serif";
+            
+            barChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: label,
+                        data: data,
+                        backgroundColor: backgroundColors,
+                        borderWidth: 0,
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: { y: { beginAtZero: true, grid: { color: gridColor }, ticks: { color: textColor } }, x: { grid: { color: gridColor }, ticks: { color: textColor } } },
+                    plugins: { 
+                        datalabels: { ...datalabelsConfig, anchor: 'end', align: 'end' },
+                        legend: { 
+                            display: legendPos !== 'hidden', 
+                            position: legendPos,
+                            labels: { color: textColor, font: { size: legendFontSize, family: "'Anek Kannada', sans-serif" } }
+                        } 
                     }
-                });
-            }
+                }
+            });
         }
         function createPieChart(canvasId, labels, data, label) {
             const ctx = document.getElementById(canvasId)?.getContext('2d');
-            if (ctx) {
-                if (pieChartInstance) pieChartInstance.destroy();
-                const isDark = document.body.classList.contains('dark-theme');
-                const textColor = isDark ? '#e1e9f1' : '#2c3e50';
-                const rootStyles = getComputedStyle(document.documentElement);
-                const legendPos = getElementValue('pieChartLegendPos', 'bottom');
-                const legendFontSize = getElementIntValue('pieChartLegendFontSize', 12);
-                const enable3d = getElementValue('pieChart3dEffect');
-                const depth = getElementIntValue('pieChart3dDepth', 12);
+            if (!ctx) return;
+            if (pieChartInstance) pieChartInstance.destroy();
+            const isDark = document.body.classList.contains('dark-theme');
+            const textColor = isDark ? '#e1e9f1' : '#2c3e50';
+            const rootStyles = getComputedStyle(document.documentElement);
+            const legendPos = getElementValue('pieChartLegendPos', 'bottom');
+            const legendFontSize = getElementIntValue('pieChartLegendFontSize', 12);
+            const enable3d = getElementValue('pieChart3dEffect');
+            const depth = getElementIntValue('pieChart3dDepth', 12);
 
-                const baseColors = [
-                    rootStyles.getPropertyValue('--primary').trim(),
-                    rootStyles.getPropertyValue('--secondary').trim(),
-                    rootStyles.getPropertyValue('--accent').trim(),
-                    rootStyles.getPropertyValue('--success').trim(),
-                    rootStyles.getPropertyValue('--warning').trim(),
-                    rootStyles.getPropertyValue('--danger').trim()
-                ];
-                
-                Chart.defaults.color = textColor;
-                pieChartInstance = new Chart(ctx, {
-                    type: 'pie',
-                    data: {
-                        labels: labels,
-                        datasets: [{ label: label, data: data, backgroundColor: baseColors, borderWidth: 2, borderColor: isDark ? '#1a1d2e' : '#fff' }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: { 
-                            pie3D: { enabled: enable3d, depth: depth },
-                            legend: { 
-                                display: legendPos !== 'hidden', 
-                                position: legendPos, 
-                                labels: { 
-                                    color: textColor,
-                                    font: { size: legendFontSize }
-                                } 
-                            } 
+            const baseColors = [ rootStyles.getPropertyValue('--primary').trim(), rootStyles.getPropertyValue('--secondary').trim(), rootStyles.getPropertyValue('--accent').trim(), rootStyles.getPropertyValue('--success').trim(), rootStyles.getPropertyValue('--warning').trim(), rootStyles.getPropertyValue('--danger').trim() ];
+            const backgroundColors = baseColors.map(color => createChartGradient(ctx, color));
+            const datalabelsConfig = getDatalabelsConfig('pieChart');
+
+            Chart.defaults.font.family = "'Anek Kannada', sans-serif";
+            const total = data.reduce((a, b) => a + b, 0);
+
+            pieChartInstance = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{ label: label, data: data, backgroundColor: backgroundColors, borderWidth: 2, borderColor: isDark ? '#1a1d2e' : '#fff' }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        pie3D: { enabled: enable3d, depth: depth },
+                        datalabels: { ...datalabelsConfig, formatter: (value, context) => { const percentage = total > 0 ? ((value / total) * 100).toFixed(0) : 0; return `${value} (${percentage}%)`; }},
+                        legend: { 
+                            display: legendPos !== 'hidden', 
+                            position: legendPos, 
+                            labels: { color: textColor, font: { size: legendFontSize, family: "'Anek Kannada', sans-serif" } } 
+                        } 
+                    }
+                }
+            });
+        }
+
+        function createDoughnutChart(canvasId, labels, data, label) {
+            const ctx = document.getElementById(canvasId)?.getContext('2d');
+            if (!ctx) return;
+            if (doughnutChartInstance) doughnutChartInstance.destroy();
+            const isDark = document.body.classList.contains('dark-theme');
+            const textColor = isDark ? '#e1e9f1' : '#2c3e50';
+            const rootStyles = getComputedStyle(document.documentElement);
+            const legendPos = getElementValue('doughnutChartLegendPos', 'left');
+            const legendFontSize = getElementIntValue('doughnutChartLegendFontSize', 12);
+            const thickness = getElementIntValue('doughnutChartThickness', 50);
+            
+            const baseColors = [ rootStyles.getPropertyValue('--primary').trim(), rootStyles.getPropertyValue('--secondary').trim(), rootStyles.getPropertyValue('--accent').trim(), rootStyles.getPropertyValue('--success').trim(), rootStyles.getPropertyValue('--warning').trim(), rootStyles.getPropertyValue('--danger').trim() ];
+            const backgroundColors = baseColors.map(color => createChartGradient(ctx, color));
+            const datalabelsConfig = getDatalabelsConfig('doughnutChart');
+            
+            Chart.defaults.font.family = "'Anek Kannada', sans-serif";
+            const total = data.reduce((a, b) => a + b, 0);
+
+            doughnutChartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{ label: label, data: data, backgroundColor: backgroundColors, borderWidth: 2, borderColor: isDark ? '#1a1d2e' : '#fff' }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: `${thickness}%`,
+                    plugins: { 
+                        datalabels: { ...datalabelsConfig, formatter: (value, context) => { const percentage = total > 0 ? ((value / total) * 100).toFixed(0) : 0; return `${percentage}%`; } },
+                        legend: { 
+                            display: legendPos !== 'hidden', 
+                            position: legendPos, 
+                            labels: { color: textColor, font: { size: legendFontSize, family: "'Anek Kannada', sans-serif" } } 
+                        } 
+                    }
+                }
+            });
+        }
+        
+        function createHalfDoughnutChart(canvasId, labels, data, chartTitle) {
+            const ctx = document.getElementById(canvasId)?.getContext('2d');
+            if (!ctx) return;
+            if (halfDoughnutChartInstance) halfDoughnutChartInstance.destroy();
+
+            const isDark = document.body.classList.contains('dark-theme');
+            const textColor = isDark ? '#e1e9f1' : '#2c3e50';
+            const rootStyles = getComputedStyle(document.documentElement);
+            const legendPos = getElementValue('halfDoughnutChartLegendPos', 'bottom');
+            const legendFontSize = getElementIntValue('halfDoughnutChartLegendFontSize', 12);
+
+            const baseColors = [ rootStyles.getPropertyValue('--primary').trim(), rootStyles.getPropertyValue('--secondary').trim(), rootStyles.getPropertyValue('--accent').trim(), rootStyles.getPropertyValue('--success').trim(), rootStyles.getPropertyValue('--warning').trim(), rootStyles.getPropertyValue('--danger').trim() ];
+            const backgroundColors = baseColors.map(color => createChartGradient(ctx, color));
+            
+            Chart.defaults.font.family = "'Anek Kannada', sans-serif";
+
+            halfDoughnutChartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: chartTitle,
+                        data: data,
+                        backgroundColor: backgroundColors,
+                        borderWidth: 2,
+                        borderColor: isDark ? '#1a1d2e' : '#fff',
+                        circumference: 180,
+                        rotation: -90,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '50%',
+                    plugins: {
+                        datalabels: { display: false },
+                        legend: { 
+                            display: legendPos !== 'hidden', 
+                            position: legendPos,
+                            labels: { color: textColor, font: { size: legendFontSize, family: "'Anek Kannada', sans-serif" } }
                         }
                     }
-                });
-            }
+                }
+            });
         }
+        
         function generateDamInfographic(contentDiv, f, l) {
             const sectionTitle = getElementValue('damSectionTitle', 'Dam Levels');
             let html = createSectionTitle(sectionTitle, f, l);
             const cardWidth = getElementIntValue('damCardWidth', 150);
             html += `<div class="dam-grid" style="grid-template-columns: repeat(auto-fit, minmax(${cardWidth}px, 1fr));">`;
-            const names = parseCSV(getElementValue('damNamesCSV'));
-            const levels = parseCSV(getElementValue('damPresentLevelsCSV'));
-            const capacities = parseCSV(getElementValue('damMaxCapacitiesCSV'));
+            const names = parseMultiValue(getElementValue('damNamesCSV'));
+            const levels = parseMultiValue(getElementValue('damPresentLevelsCSV'));
+            const capacities = parseMultiValue(getElementValue('damMaxCapacitiesCSV'));
             const unit = getElementValue('damUnitOfMeasure', 'TMC');
             const progressLabel = getElementValue('damProgressLabel', 'Storage');
             const levelFontSize = getElementValue('damLevelFontSize', '36');
@@ -1736,7 +2197,9 @@ Multiple explosions heard in Central Israel</textarea> </div></div><div id="news
             const textColor = getElementValue('footerBarTextColor', '#2c3e50');
             const alignment = getElementValue('footerBarAlignment', 'space-between');
             const logoSrc = getElementValue('footerBarLogoUpload') || getElementValue('footerBarLogoUrl');
-            const logoHeight = getElementValue('footerBarLogoHeight', '30') + 'px';
+            const logoHeight = getElementValue('footerBarLogoHeight', '40') + 'px';
+            const logoWidth = getElementValue('footerBarLogoWidth', '120') + 'px';
+            const logoFit = getElementValue('footerBarLogoFit', 'contain');
             const websiteText = sanitizeHTML(getElementValue('footerBarWebsite', ''));
             const hashtagText = sanitizeHTML(getElementValue('footerBarHashtag', ''));
             const textSize = getElementValue('footerBarTextSize', '14') + 'px';
@@ -1752,7 +2215,7 @@ Multiple explosions heard in Central Israel</textarea> </div></div><div id="news
             let leftContent = '';
             let rightContent = '';
 
-            const logoHtml = logoSrc ? `<div class="footer-logo"><img src="${sanitizeHTML(logoSrc)}" style="height:${logoHeight};"></div>` : '';
+            const logoHtml = logoSrc ? `<div class="footer-logo-container" style="height:${logoHeight}; width:${logoWidth};"><img src="${sanitizeHTML(logoSrc)}" style="object-fit:${logoFit};"></div>` : '';
             const textHtml = `<div class="footer-text" style="font-size:${textSize};">
                                 ${websiteText ? `<span class="website-text">${websiteText}</span>` : ''}
                                 ${hashtagText ? `<span class="hashtag-text">${hashtagText}</span>` : ''}
@@ -1820,7 +2283,7 @@ Multiple explosions heard in Central Israel</textarea> </div></div><div id="news
 
             } catch (err) {
                 console.error("html2canvas failed:", err);
-                showAlert("Download Failed. If using external images, they may be blocked by browser security (CORS). Try uploading the image from your computer instead.", "danger", "tableAlertContainer");
+                showAlert("Download Failed. If using external images, they may be blocked by browser security (CORS). Try uploading the image from your computer instead.", "danger", "aiModalAlertContainer");
             } finally {
                 originalElement.style.transform = originalTransform;
                 downloadBtn.innerHTML = originalText;
@@ -1850,7 +2313,7 @@ Multiple explosions heard in Central Israel</textarea> </div></div><div id="news
             });
         }
         
-        const SETTINGS_KEY = 'avAiInfoCreatorSettings_v2'; // Updated key for new settings
+        const SETTINGS_KEY = 'avAiInfoCreatorSettings_v6';
 
         function saveSettings() {
             const saveBtn = document.getElementById('saveBtn');
@@ -1860,8 +2323,7 @@ Multiple explosions heard in Central Israel</textarea> </div></div><div id="news
             const settings = {};
             document.querySelectorAll('.control-input').forEach(el => {
                 if (el.type === 'file') return;
-                // Don't save the API key to localStorage
-                if (el.id === 'openRouterApiKey') return;
+                if (el.id === 'aiModalApiKey') return;
                 settings[el.id] = (el.type === 'checkbox') ? el.checked : el.value;
             });
 
@@ -1911,7 +2373,7 @@ Multiple explosions heard in Central Israel</textarea> </div></div><div id="news
         // --- ICON FINDER ---
         let currentIconTargetInput = null;
         const allIcons = [
-            {class: 'fas fa-search', keywords: 'search find magnify discover glass'}, {class: 'fas fa-home', keywords: 'home house building address'}, {class: 'fas fa-cog', keywords: 'settings gear options configuration'}, {class: 'fas fa-cogs', keywords: 'settings configuration setup build process gears'}, {class: 'fas fa-trash-alt', keywords: 'delete remove trash bin garbage'}, {class: 'fas fa-edit', keywords: 'edit modify write pencil'}, {class: 'fas fa-check', keywords: 'check done complete success yes ok tick'}, {class: 'fas fa-times', keywords: 'close delete remove no exit x cross'}, {class: 'fas fa-plus', keywords: 'add new create plus'}, {class: 'fas fa-minus', keywords: 'remove delete less minus'}, {class: 'fas fa-info-circle', keywords: 'info information details help circle'}, {class: 'fas fa-question-circle', keywords: 'question help support query circle'}, {class: 'fas fa-exclamation-triangle', keywords: 'warning alert error danger triangle attention'}, {class: 'fas fa-bell', keywords: 'notification alert alarm bell reminder'}, {class: 'fas fa-calendar-alt', keywords: 'date schedule event time calendar day month'}, {class: 'fas fa-clock', keywords: 'time clock schedule timer watch'}, {class: 'fas fa-power-off', keywords: 'power on off shutdown'}, {class: 'fas fa-sync-alt', keywords: 'refresh reload sync rotate cycle'}, {class: 'fas fa-link', keywords: 'url link website connect chain'}, {class: 'fas fa-paperclip', keywords: 'attachment attach file'}, {class: 'fas fa-lock', keywords: 'lock secure password private'}, {class: 'fas fa-unlock', keywords: 'unlock open public'}, {class: 'fas fa-print', keywords: 'print printer paper'}, {class: 'fas fa-bars', keywords: 'menu hamburger navigation list'}, {class: 'fas fa-ellipsis-v', keywords: 'menu more options dots vertical'}, {class: 'fas fa-ellipsis-h', keywords: 'menu more options dots horizontal'}, {class: 'fas fa-grip-lines', keywords: 'drag handle reorder move'}, {class: 'fas fa-user', keywords: 'person user profile account member'}, {class: 'fas fa-users', keywords: 'team people users community group'}, {class: 'fas fa-user-tie', keywords: 'ceo manager boss professional business person corporate'}, {class: 'fas fa-envelope', keywords: 'email message mail contact letter'}, {class: 'fas fa-phone', keywords: 'call contact phone support telephone'}, {class: 'fas fa-comment', keywords: 'comment message chat bubble feedback'}, {class: 'fas fa-comments', keywords: 'comments messages chat discussion feedback'}, {class: 'fas fa-quote-right', keywords: 'quote social post citation'}, {class: 'fas fa-share-alt', keywords: 'share connect social network'}, {class: 'fas fa-bullhorn', keywords: 'announcement broadcast loud speaker mega phone'}, {class: 'fas fa-briefcase', keywords: 'work business portfolio project case suitcase'}, {class: 'fas fa-building', keywords: 'building company office apartment headquarters'}, {class: 'fas fa-handshake', keywords: 'deal partnership agreement meeting handshake'}, {class: 'fas fa-dollar-sign', keywords: 'money dollar currency finance price cash'}, {class: 'fas fa-rupee-sign', keywords: 'money rupee currency finance price cash india'}, {class: 'fas fa-piggy-bank', keywords: 'savings money finance bank piggy'}, {class: 'fas fa-credit-card', keywords: 'card payment purchase checkout credit plastic'}, {class: 'fas fa-receipt', keywords: 'invoice bill receipt transaction'}, {class: 'fas fa-shopping-cart', keywords: 'cart buy purchase shopping e-commerce'}, {class: 'fas fa-tags', keywords: 'tags labels price pricing sale'}, {class: 'fas fa-balance-scale', keywords: 'balance scale compare comparison justice law'}, {class: 'fas fa-lightbulb', keywords: 'idea innovation solution suggestion light bulb'}, {class: 'fas fa-award', keywords: 'award prize achievement quality winner trophy'}, {class: 'fas fa-trophy', keywords: 'trophy award winner prize achievement champion'}, {class: 'fas fa-bullseye', keywords: 'target goal focus mission objective aim'}, {class: 'fas fa-network-wired', keywords: 'network wired hierarchy connect sitemap'}, {class: 'fas fa-sitemap', keywords: 'sitemap hierarchy organization chart flow process'}, {class: 'fas fa-chart-bar', keywords: 'chart graph analytics data bar stats report'}, {class: 'fas fa-chart-pie', keywords: 'chart graph analytics data pie stats report'}, {class: 'fas fa-chart-line', keywords: 'chart graph analytics data line stats report trend growth'}, {class: 'fas fa-chart-area', keywords: 'chart graph analytics data area stats report'}, {class: 'fas fa-table-list', keywords: 'table grid data spreadsheet'}, {class: 'fas fa-list-ul', keywords: 'list bullet points checklist order'}, {class: 'fas fa-percentage', keywords: 'percent stats discount sale'}, {class: 'fas fa-folder', keywords: 'folder directory file'}, {class: 'fas fa-folder-open', keywords: 'folder directory file open'}, {class: 'fas fa-file', keywords: 'file document page text'}, {class: 'fas fa-file-alt', keywords: 'file document page text paper'}, {class: 'fas fa-file-pdf', keywords: 'pdf document file'}, {class: 'fas fa-file-word', keywords: 'word document doc docx file'}, {class: 'fas fa-file-excel', keywords: 'excel spreadsheet xls xlsx file'}, {class: 'fas fa-file-powerpoint', keywords: 'powerpoint presentation ppt pptx file'}, {class: 'fas fa-file-image', keywords: 'image picture photo file'}, {class: 'fas fa-file-code', keywords: 'code programming file'}, {class: 'fas fa-download', keywords: 'download save import'}, {class: 'fas fa-upload', keywords: 'upload export send'}, {class: 'fas fa-camera', keywords: 'photo picture image camera'}, {class: 'fas fa-image', keywords: 'photo picture image'}, {class: 'fas fa-video', keywords: 'video movie film camera record'}, {class: 'fas fa-music', keywords: 'music sound audio note song'}, {class: 'fas fa-play', keywords: 'play start run video audio'}, {class: 'fas fa-pause', keywords: 'pause stop hold wait'}, {class: 'fas fa-stop', keywords: 'stop end finish square'}, {class: 'fas fa-map-marker-alt', keywords: 'location place address map pin marker'}, {class: 'fas fa-map', keywords: 'map location travel destination'}, {class: 'fas fa-globe', keywords: 'world globe earth planet global international'}, {class: 'fas fa-plane', keywords: 'plane travel flight airport'}, {class: 'fas fa-car', keywords: 'car vehicle automotive travel transport'}, {class: 'fas fa-train', keywords: 'train railway subway travel transport'}, {class: 'fas fa-ship', keywords: 'ship boat sea travel ocean transport'}, {class: 'fas fa-flag', keywords: 'flag country nation report'}, {class: 'fas fa-flag-checkered', keywords: 'finish goal end race'}, {class: 'fas fa-palette', keywords: 'design art color style paint'}, {class: 'fas fa-paint-brush', keywords: 'paint brush art creative design'}, {class: 'fas fa-magic', keywords: 'magic wizard trick fantasy'}, {class: 'fas fa-pen', keywords: 'write edit pen signature'}, {class: 'fas fa-ruler', keywords: 'measure ruler design plan'}, {class: 'fas fa-vector-square', keywords: 'design shape box vector'}, {class: 'fas fa-code', keywords: 'code develop development programming engineer html css js'}, {class: 'fas fa-terminal', keywords: 'console command line terminal code'}, {class: 'fas fa-database', keywords: 'database data storage server'}, {class: 'fas fa-server', keywords: 'server network storage data'}, {class: 'fas fa-mobile-alt', keywords: 'phone mobile device call screen'}, {class: 'fas fa-laptop', keywords: 'computer laptop device pc'}, {class: 'fas fa-desktop', keywords: 'computer monitor screen device pc'}, {class: 'fas fa-rocket', keywords: 'launch deploy deployment start mission'}, {class: 'fas fa-water', keywords: 'water liquid dam level rain drop'}, {class: 'fas fa-leaf', keywords: 'leaf nature plant eco green'}, {class: 'fas fa-tree', keywords: 'tree forest nature plant park'}, {class: 'fas fa-fire', keywords: 'fire flame hot burn'}, {class: 'fas fa-sun', keywords: 'sun light weather day bright'}, {class: 'fas fa-moon', keywords: 'moon night dark sky'}, {class: 'fas fa-cloud', keywords: 'cloud weather sky'}, {class: 'fas fa-heartbeat', keywords: 'health heartbeat pulse medical'}, {class: 'fas fa-pills', keywords: 'medicine pills drugs pharmacy'}, {class: 'fas fa-first-aid', keywords: 'first aid medical cross health'}, {class: 'fas fa-stethoscope', keywords: 'doctor medical health stethoscope'}, {class: 'fas fa-newspaper', keywords: 'news paper article press media'}, {class: 'fas fa-timeline', keywords: 'timeline history chronology'}, {class: 'fas fa-graduation-cap', keywords: 'education learning school student university'}, {class: 'fas fa-book', keywords: 'book read library story education'}, {class: 'fas fa-wrench', keywords: 'tool fix repair settings wrench'}, {class: 'fab fa-facebook', keywords: 'brand social facebook'}, {class: 'fab fa-twitter', keywords: 'brand social twitter'}, {class: 'fab fa-instagram', keywords: 'brand social instagram'}, {class: 'fab fa-linkedin', keywords: 'brand social linkedin'}, {class: 'fab fa-youtube', keywords: 'brand social video youtube'}, {class: 'fab fa-whatsapp', keywords: 'brand social message whatsapp'}, {class: 'fab fa-github', keywords: 'brand code github programming'}, {class: 'fab fa-slack', keywords: 'brand communication chat slack'}, {class: 'fab fa-google', keywords: 'brand search google'}, {class: 'fab fa-apple', keywords: 'brand tech apple'}, {class: 'fab fa-microsoft', keywords: 'brand tech microsoft windows'}, {class: 'fab fa-android', keywords: 'brand tech android mobile'},
+            {class:'fas fa-search',keywords:'search find magnify discover glass'},{class:'fas fa-home',keywords:'home house building address'},{class:'fas fa-cog',keywords:'settings gear options configuration'},{class:'fas fa-cogs',keywords:'settings configuration setup build process gears'},{class:'fas fa-trash-alt',keywords:'delete remove trash bin garbage'},{class:'fas fa-edit',keywords:'edit modify write pencil'},{class:'fas fa-check',keywords:'check done complete success yes ok tick'},{class:'fas fa-times',keywords:'close delete remove no exit x cross'},{class:'fas fa-plus',keywords:'add new create plus'},{class:'fas fa-minus',keywords:'remove delete less minus'},{class:'fas fa-info-circle',keywords:'info information details help circle'},{class:'fas fa-question-circle',keywords:'question help support query circle'},{class:'fas fa-exclamation-triangle',keywords:'warning alert error danger triangle attention'},{class:'fas fa-bell',keywords:'notification alert alarm bell reminder'},{class:'fas fa-calendar-alt',keywords:'date schedule event time calendar day month'},{class:'fas fa-clock',keywords:'time clock schedule timer watch'},{class:'fas fa-power-off',keywords:'power on off shutdown'},{class:'fas fa-sync-alt',keywords:'refresh reload sync rotate cycle'},{class:'fas fa-link',keywords:'url link website connect chain'},{class:'fas fa-paperclip',keywords:'attachment attach file'},{class:'fas fa-lock',keywords:'lock secure password private'},{class:'fas fa-unlock',keywords:'unlock open public'},{class:'fas fa-print',keywords:'print printer paper'},{class:'fas fa-bars',keywords:'menu hamburger navigation list'},{class:'fas fa-ellipsis-v',keywords:'menu more options dots vertical'},{class:'fas fa-ellipsis-h',keywords:'menu more options dots horizontal'},{class:'fas fa-grip-lines',keywords:'drag handle reorder move'},{class:'fas fa-user',keywords:'person user profile account member'},{class:'fas fa-users',keywords:'team people users community group'},{class:'fas fa-user-tie',keywords:'ceo manager boss professional business person corporate'},{class:'fas fa-envelope',keywords:'email message mail contact letter'},{class:'fas fa-phone',keywords:'call contact phone support telephone'},{class:'fas fa-comment',keywords:'comment message chat bubble feedback'},{class:'fas fa-comments',keywords:'comments messages chat discussion feedback'},{class:'fas fa-quote-right',keywords:'quote social post citation'},{class:'fas fa-share-alt',keywords:'share connect social network'},{class:'fas fa-bullhorn',keywords:'announcement broadcast loud speaker mega phone'},{class:'fas fa-briefcase',keywords:'work business portfolio project case suitcase'},{class:'fas fa-building',keywords:'building company office apartment headquarters'},{class:'fas fa-handshake',keywords:'deal partnership agreement meeting handshake'},{class:'fas fa-dollar-sign',keywords:'money dollar currency finance price cash'},{class:'fas fa-rupee-sign',keywords:'money rupee currency finance price cash india'},{class: 'fas fa-euro-sign', keywords: 'money euro currency finance price cash europe'},{class: 'fas fa-pound-sign', keywords: 'money pound currency finance price cash uk'},{class: 'fas fa-yen-sign', keywords: 'money yen currency finance price cash japan'},{class:'fas fa-piggy-bank',keywords:'savings money finance bank piggy'},{class:'fas fa-credit-card',keywords:'card payment purchase checkout credit plastic'},{class:'fas fa-receipt',keywords:'invoice bill receipt transaction'},{class:'fas fa-shopping-cart',keywords:'cart buy purchase shopping e-commerce'},{class:'fas fa-tags',keywords:'tags labels price pricing sale'},{class:'fas fa-balance-scale',keywords:'balance scale compare comparison justice law'},{class:'fas fa-lightbulb',keywords:'idea innovation solution suggestion light bulb'},{class:'fas fa-award',keywords:'award prize achievement quality winner trophy'},{class:'fas fa-trophy',keywords:'trophy award winner prize achievement champion'},{class:'fas fa-bullseye',keywords:'target goal focus mission objective aim'},{class:'fas fa-network-wired',keywords:'network wired hierarchy connect sitemap'},{class:'fas fa-sitemap',keywords:'sitemap hierarchy organization chart flow process'},{class:'fas fa-chart-bar',keywords:'chart graph analytics data bar stats report'},{class:'fas fa-chart-pie',keywords:'chart graph analytics data pie stats report'},{class:'fas fa-chart-line',keywords:'chart graph analytics data line stats report trend growth'},{class:'fas fa-chart-area',keywords:'chart graph analytics data area stats report'},{class:'fas fa-table-list',keywords:'table grid data spreadsheet'},{class:'fas fa-list-ul',keywords:'list bullet points checklist order'},{class:'fas fa-percentage',keywords:'percent stats discount sale'},{class:'fas fa-folder',keywords:'folder directory file'},{class:'fas fa-folder-open',keywords:'folder directory file open'},{class:'fas fa-file',keywords:'file document page text'},{class:'fas fa-file-alt',keywords:'file document page text paper'},{class:'fas fa-file-pdf',keywords:'pdf document file'},{class:'fas fa-file-word',keywords:'word document doc docx file'},{class:'fas fa-file-excel',keywords:'excel spreadsheet xls xlsx file'},{class:'fas fa-file-powerpoint',keywords:'powerpoint presentation ppt pptx file'},{class:'fas fa-file-image',keywords:'image picture photo file'},{class:'fas fa-file-code',keywords:'code programming file'},{class:'fas fa-download',keywords:'download save import'},{class:'fas fa-upload',keywords:'upload export send'},{class:'fas fa-camera',keywords:'photo picture image camera'},{class:'fas fa-image',keywords:'photo picture image'},{class:'fas fa-video',keywords:'video movie film camera record'},{class:'fas fa-music',keywords:'music sound audio note song'},{class:'fas fa-play',keywords:'play start run video audio'},{class:'fas fa-pause',keywords:'pause stop hold wait'},{class:'fas fa-stop',keywords:'stop end finish square'},{class:'fas fa-map-marker-alt',keywords:'location place address map pin marker'},{class:'fas fa-map',keywords:'map location travel destination'},{class:'fas fa-globe',keywords:'world globe earth planet global international'},{class:'fas fa-plane',keywords:'plane travel flight airport'},{class:'fas fa-car',keywords:'car vehicle automotive travel transport'},{class:'fas fa-train',keywords:'train railway subway travel transport'},{class:'fas fa-ship',keywords:'ship boat sea travel ocean transport'},{class:'fas fa-flag',keywords:'flag country nation report'},{class:'fas fa-flag-checkered',keywords:'finish goal end race'},{class:'fas fa-palette',keywords:'design art color style paint'},{class:'fas fa-paint-brush',keywords:'paint brush art creative design'},{class:'fas fa-magic',keywords:'magic wizard trick fantasy'},{class:'fas fa-pen',keywords:'write edit pen signature'},{class:'fas fa-ruler',keywords:'measure ruler design plan'},{class:'fas fa-vector-square',keywords:'design shape box vector'},{class:'fas fa-code',keywords:'code develop development programming engineer html css js'},{class:'fas fa-terminal',keywords:'console command line terminal code'},{class:'fas fa-database',keywords:'database data storage server'},{class:'fas fa-server',keywords:'server network storage data'},{class:'fas fa-mobile-alt',keywords:'phone mobile device call screen'},{class:'fas fa-laptop',keywords:'computer laptop device pc'},{class:'fas fa-desktop',keywords:'computer monitor screen device pc'},{class:'fas fa-rocket',keywords:'launch deploy deployment start mission'},{class:'fas fa-water',keywords:'water liquid dam level rain drop'},{class:'fas fa-leaf',keywords:'leaf nature plant eco green'},{class:'fas fa-tree',keywords:'tree forest nature plant park'},{class:'fas fa-fire',keywords:'fire flame hot burn'},{class:'fas fa-sun',keywords:'sun light weather day bright'},{class:'fas fa-moon',keywords:'moon night dark sky'},{class:'fas fa-cloud',keywords:'cloud weather sky'},{class:'fas fa-heartbeat',keywords:'health heartbeat pulse medical'},{class:'fas fa-pills',keywords:'medicine pills drugs pharmacy'},{class:'fas fa-first-aid',keywords:'first aid medical cross health'},{class:'fas fa-stethoscope',keywords:'doctor medical health stethoscope'},{class:'fas fa-newspaper',keywords:'news paper article press media'},{class:'fas fa-timeline',keywords:'timeline history chronology'},{class:'fas fa-graduation-cap',keywords:'education learning school student university'},{class:'fas fa-book',keywords:'book read library story education'},{class:'fas fa-wrench',keywords:'tool fix repair settings wrench'},{class: 'fas fa-flag-usa', keywords: 'flag country usa america united states'},{class: 'fas fa-shield-alt', keywords: 'security shield protect defense'},{class: 'fas fa-robot', keywords: 'ai robot bot technology automation'},{class: 'fas fa-brain', keywords: 'brain mind intelligence ai knowledge'},{class:'fab fa-facebook',keywords:'brand social facebook'},{class:'fab fa-twitter',keywords:'brand social twitter'},{class:'fab fa-instagram',keywords:'brand social instagram'},{class:'fab fa-linkedin',keywords:'brand social linkedin'},{class:'fab fa-youtube',keywords:'brand social video youtube'},{class:'fab fa-whatsapp',keywords:'brand social message whatsapp'},{class:'fab fa-github',keywords:'brand code github programming'},{class:'fab fa-slack',keywords:'brand communication chat slack'},{class:'fab fa-google',keywords:'brand search google'},{class:'fab fa-apple',keywords:'brand tech apple'},{class:'fab fa-microsoft',keywords:'brand tech microsoft windows'},{class:'fab fa-android',keywords:'brand tech android mobile'},{class:'fab fa-amazon',keywords:'brand e-commerce shopping amazon'},{class:'fab fa-paypal',keywords:'brand payment finance paypal'},{class:'fab fa-spotify',keywords:'brand music audio spotify'},{class:'fab fa-discord',keywords:'brand chat communication discord'},{class:'fab fa-tiktok',keywords:'brand social video tiktok'},{class:'fab fa-telegram',keywords:'brand social message telegram'},{class:'fab fa-pinterest',keywords:'brand social pinterest'},{class:'fab fa-reddit',keywords:'brand social reddit'},{class:'fab fa-snapchat',keywords:'brand social snapchat'},{class:'fab fa-aws',keywords:'brand tech cloud server aws amazon web services'},{class: 'far fa-circle', keywords: 'shape circle outline'},{class: 'far fa-square', keywords: 'shape square outline'},{class: 'far fa-star', keywords: 'shape star outline rating favorite'},{class: 'far fa-heart', keywords: 'shape heart outline love like favorite'},{class: 'far fa-comment', keywords: 'shape comment outline bubble chat'},
         ];
 
         function openIconFinder(targetInputId) {
@@ -1929,12 +2391,11 @@ Multiple explosions heard in Central Israel</textarea> </div></div><div id="news
             const resultsContainer = document.getElementById('iconFinderResults');
             resultsContainer.innerHTML = '';
             const lowerQuery = query.toLowerCase().trim();
-            if (lowerQuery === '') {
-                // Show a default set if search is empty
-                allIcons.slice(0, 50).forEach(icon => renderIconItem(icon, resultsContainer));
-                return;
-            }
-            const filteredIcons = allIcons.filter(icon => icon.keywords.includes(lowerQuery));
+            
+            const filteredIcons = lowerQuery === '' 
+                ? allIcons.slice(0, 100)
+                : allIcons.filter(icon => icon.keywords.includes(lowerQuery) || icon.class.includes(lowerQuery));
+            
             filteredIcons.forEach(icon => renderIconItem(icon, resultsContainer));
         }
 
@@ -1951,10 +2412,11 @@ Multiple explosions heard in Central Israel</textarea> </div></div><div id="news
                 const isCSV = currentIconTargetInput.id.includes('CSV');
                 if (isCSV) {
                     const currentValue = currentIconTargetInput.value.trim();
+                    const separator = getElementValue('globalDataSeparator', ',');
                     if (currentValue === '') {
                         currentIconTargetInput.value = iconClass;
                     } else {
-                        currentIconTargetInput.value = `${currentValue}, ${iconClass}`;
+                        currentIconTargetInput.value = `${currentValue}${separator} ${iconClass}`;
                     }
                 } else {
                     currentIconTargetInput.value = iconClass;
@@ -1965,7 +2427,7 @@ Multiple explosions heard in Central Israel</textarea> </div></div><div id="news
         }
         
         function suggestIconsForProcess() {
-            const titles = parseCSV(getElementValue('processStepTitlesCSV'));
+            const titles = parseMultiValue(getElementValue('processStepTitlesCSV'));
             const container = document.getElementById('processStepIconsCSV-suggestions');
             if(!container) return;
             container.innerHTML = '';
@@ -1993,68 +2455,136 @@ Multiple explosions heard in Central Israel</textarea> </div></div><div id="news
             });
         }
 
-        // --- OPENROUTER AI INTEGRATION (MODIFIED) ---
-        async function callOpenRouterAPI() {
-            const apiKey = getElementValue('openRouterApiKey');
-            const model = getElementValue('aiModel');
-            const promptText = getElementValue('aiPrompt');
-            const outputArea = document.getElementById('aiAssistantOutput');
-            const generateBtn = document.getElementById('generateWithAiBtn');
+        // --- AV Your Friend MODAL LOGIC ---
+        function openAiAssistantModal() {
+            const modal = document.getElementById('aiAssistantModal');
+            modal.style.display = 'flex';
+            populateAiTargetDropdown();
+        }
+
+        function closeAiAssistantModal() {
+            const modal = document.getElementById('aiAssistantModal');
+            modal.style.display = 'none';
+        }
+
+        function updateAiProviderUI() {
+            const provider = document.getElementById('aiModalProvider').value;
+            const apiKeyInput = document.getElementById('aiModalApiKey');
+            const apiKeyHelp = document.getElementById('apiKeyHelpText');
+            const openrouterModels = document.getElementById('openrouterModels');
+            const geminiModels = document.getElementById('geminiModels');
+            const modelSelect = document.getElementById('aiModalModel');
+
+            openrouterModels.style.display = 'none';
+            geminiModels.style.display = 'none';
+
+            if (provider === 'gemini') {
+                apiKeyInput.placeholder = 'Enter your Google AI Studio API key...';
+                apiKeyHelp.innerHTML = '(<a href="https://aistudio.google.com/app/apikey" target="_blank">Get one</a>)';
+                geminiModels.style.display = 'block';
+                modelSelect.value = 'gemini-1.5-flash-latest';
+            } else { // openrouter
+                apiKeyInput.placeholder = 'Enter your OpenRouter API key...';
+                apiKeyHelp.innerHTML = '(<a href="https://openrouter.ai/keys" target="_blank">Get one</a>)';
+                openrouterModels.style.display = 'block';
+                modelSelect.value = 'google/gemini-2.0-flash-exp:free';
+            }
+        }
+        
+        function populateAiTargetDropdown() {
+            const targetSelect = document.getElementById('aiApplyToTarget');
+            targetSelect.innerHTML = '';
+
+            const activeTabContent = document.getElementById(currentTab);
+            if (!activeTabContent) return;
+            activeTabContent.querySelectorAll('input[type="text"], input[type="url"], input[type="number"], textarea').forEach(input => {
+                const label = input.closest('.control-group')?.querySelector('label');
+                if (label && input.id) {
+                    const labelText = label.cloneNode(true);
+                    labelText.querySelectorAll('small, .icon-search-row').forEach(el => el.remove());
+                    let cleanLabel = labelText.textContent.trim() || input.id;
+                    if (cleanLabel.length > 40) cleanLabel = cleanLabel.substring(0, 37) + '...';
+
+                    const option = document.createElement('option');
+                    option.value = input.id;
+                    option.textContent = cleanLabel;
+                    targetSelect.appendChild(option);
+                }
+            });
+        }
+
+        function applyAiOutput() {
+            const targetId = getElementValue('aiApplyToTarget');
+            const outputText = getElementValue('aiModalOutput');
+            const targetElement = document.getElementById(targetId);
+
+            if (targetElement) {
+                targetElement.value = outputText;
+                targetElement.dispatchEvent(new Event('input', { bubbles: true }));
+                closeAiAssistantModal();
+            } else {
+                showAlert('Could not find the target field to apply text.', 'danger', 'aiModalAlertContainer');
+            }
+        }
+        
+        async function callAiAPI() {
+            const apiKey = getElementValue('aiModalApiKey');
+            const provider = getElementValue('aiModalProvider');
+            const model = getElementValue('aiModalModel');
+            const promptText = getElementValue('aiModalPrompt');
+            const outputArea = document.getElementById('aiModalOutput');
+            const generateBtn = document.getElementById('generateWithAiModalBtn');
             const originalBtnText = generateBtn.innerHTML;
 
-            if (!apiKey) {
-                showAlert("Please enter your OpenRouter API key.", "danger", "aiAlertContainer");
-                return;
-            }
-            if (!promptText) {
-                showAlert("Please enter a prompt for the AI.", "warning", "aiAlertContainer");
-                return;
-            }
+            if (!apiKey) { showAlert("Please enter your API key.", "danger", "aiModalAlertContainer"); return; }
+            if (!promptText) { showAlert("Please enter a prompt for the AI.", "warning", "aiModalAlertContainer"); return; }
 
             generateBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
             generateBtn.disabled = true;
             outputArea.value = "Thinking...";
 
+            let apiUrl, headers, body;
+
             try {
-                const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${apiKey}`,
-                        'Content-Type': 'application/json',
-                        'HTTP-Referer': 'https://github.com/avinash-vagarnal/ai-info-creator', // Replace with your site or localhost
-                        'X-Title': 'AV AI Info Creator' // Replace with your app name
-                    },
-                    body: JSON.stringify({
-                        model: model,
-                        messages: [
-                            { "role": "user", "content": promptText }
-                        ]
-                    })
-                });
+                 if (provider === 'gemini') {
+                    apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+                    headers = { 'Content-Type': 'application/json' };
+                    body = JSON.stringify({ contents: [{ parts: [{ "text": promptText }] }] });
+                } else { // openrouter
+                    apiUrl = "https://openrouter.ai/api/v1/chat/completions";
+                    headers = { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json', 'HTTP-Referer': 'https://github.com/avinash-vagarnal/ai-info-creator', 'X-Title': 'AV AI Info Creator' };
+                    body = JSON.stringify({ model: model, messages: [{ "role": "user", "content": promptText }] });
+                }
+
+                const response = await fetch(apiUrl, { method: 'POST', headers: headers, body: body });
 
                 if (!response.ok) {
                     const errorData = await response.json();
-                    throw new Error(`API Error (${response.status}): ${errorData.error.message || response.statusText}`);
+                    const errorMsg = errorData.error?.message || response.statusText;
+                    throw new Error(`API Error (${response.status}): ${errorMsg}`);
                 }
 
                 const data = await response.json();
-                const resultText = data.choices[0].message.content;
+                let resultText = '';
+                if(provider === 'gemini') {
+                    resultText = data.candidates[0].content.parts[0].text;
+                } else { // openrouter
+                    resultText = data.choices[0].message.content;
+                }
                 outputArea.value = resultText;
-
             } catch (error) {
                 console.error("AI API Error:", error);
                 outputArea.value = `Error: ${error.message}`;
-                showAlert(error.message, "danger", "aiAlertContainer");
+                showAlert(error.message, "danger", "aiModalAlertContainer");
             } finally {
                 generateBtn.innerHTML = originalBtnText;
                 generateBtn.disabled = false;
             }
         }
         
-        // --- 3D CHART PLUGINS ---
-        const faked3DBarPlugin = { id: 'faked3D', afterDatasetsDraw(chart, args, options) { if (!options.enabled) return; const { ctx, data, chartArea: { top, bottom, left, right }, scales: { x, y } } = chart; ctx.save(); const depth = options.depth || 5; data.datasets.forEach((dataset, i) => { const meta = chart.getDatasetMeta(i); if (!meta.hidden) { meta.data.forEach((element, index) => { const { x: xPos, y: yPos, base, width } = element; let color = dataset.backgroundColor[index]; if (typeof color !== 'string') color = '#CCCCCC'; const darkColor = shadeHexColor(color, -0.2); const lightColor = shadeHexColor(color, 0.1); ctx.fillStyle = darkColor; ctx.beginPath(); ctx.moveTo(xPos + width / 2, yPos); ctx.lineTo(xPos + width / 2 + depth, yPos - depth); ctx.lineTo(xPos + width / 2 + depth, base - depth); ctx.lineTo(xPos + width / 2, base); ctx.closePath(); ctx.fill(); ctx.fillStyle = lightColor; ctx.beginPath(); ctx.moveTo(xPos - width / 2, yPos); ctx.lineTo(xPos - width / 2 + depth, yPos - depth); ctx.lineTo(xPos + width / 2 + depth, yPos - depth); ctx.lineTo(xPos + width / 2, yPos); ctx.closePath(); ctx.fill(); }); } }); ctx.restore(); } };
+        // --- CHART PLUGINS ---
         const pie3DPlugin = { id: 'pie3D', beforeDraw(chart, args, options) { if (!options.enabled) return; const { ctx } = chart; const depth = options.depth || 10; const shadowColor = 'rgba(0,0,0,0.15)'; ctx.save(); for (let i = depth; i > 0; i--) { ctx.fillStyle = shadowColor; chart.config.data.datasets.forEach((dataset) => { const meta = chart.getDatasetMeta(0); if (!meta.hidden) { meta.data.forEach((element, j) => { if(element){ const {x, y, outerRadius, startAngle, endAngle} = element; ctx.beginPath(); ctx.moveTo(x, y); ctx.arc(x, y + i, outerRadius, startAngle, endAngle); ctx.closePath(); ctx.fill(); } }); } }); } ctx.restore(); } };
-        Chart.register(faked3DBarPlugin, pie3DPlugin);
+        Chart.register(pie3DPlugin, ChartDataLabels);
         
         // --- INITIALIZATION ---
         document.addEventListener('DOMContentLoaded', () => { 
@@ -2070,23 +2600,29 @@ Multiple explosions heard in Central Israel</textarea> </div></div><div id="news
             document.querySelector('#iconFinderModal .modal-close-btn').addEventListener('click', closeIconFinder);
             document.getElementById('iconFinderSearch').addEventListener('keyup', (e) => renderIconResults(e.target.value));
 
-            // AI Assistant Listeners
-            document.getElementById('generateWithAiBtn').addEventListener('click', callOpenRouterAPI);
-            document.getElementById('copyAiOutputBtn').addEventListener('click', () => {
-                const outputArea = document.getElementById('aiAssistantOutput');
-                outputArea.select();
-                document.execCommand('copy');
-                showAlert('Output copied!', 'success', 'aiAlertContainer');
+            // AI MODAL LISTENERS
+            document.getElementById('aiModalProvider').addEventListener('change', updateAiProviderUI);
+            document.getElementById('aiModalCloseBtn').addEventListener('click', closeAiAssistantModal);
+            document.getElementById('aiAssistantModal').addEventListener('click', (e) => {
+                if (e.target.id === 'aiAssistantModal') closeAiAssistantModal();
             });
-            document.getElementById('aiPromptTemplate').addEventListener('change', (e) => {
-                const promptTextarea = document.getElementById('aiPrompt');
+            document.getElementById('generateWithAiModalBtn').addEventListener('click', callAiAPI);
+            document.getElementById('copyAiOutputBtn').addEventListener('click', () => {
+                const outputArea = document.getElementById('aiModalOutput');
+                navigator.clipboard.writeText(outputArea.value).then(() => {
+                    showAlert('Output copied!', 'success', 'aiModalAlertContainer');
+                });
+            });
+            document.getElementById('applyAiOutputBtn').addEventListener('click', applyAiOutput);
+            document.getElementById('aiModalPromptTemplate').addEventListener('change', (e) => {
+                const promptTextarea = document.getElementById('aiModalPrompt');
                 const selectedOption = e.target.options[e.target.selectedIndex];
                 if (e.target.value) {
                     promptTextarea.value = e.target.value;
                 }
                 promptTextarea.placeholder = selectedOption.dataset.placeholder || 'e.g., Generate 4 bullet points...';
             });
-
+            
             const tableTextInput = document.getElementById('tableInputText'); 
             if (tableTextInput) { tableTextInput.value = 'ಸ್ಥಾನ : 01\nದೇಶ : ಅಮೆರಿಕ\nಕಂಪೆನಿಗಳ ಸಂಖ್ಯೆ : 1,873\nಮಾರುಕಟ್ಟೆ ಮೌಲ್ಯ : 57.11\n\nಸ್ಥಾನ : 02\nದೇಶ : ಜಪಾನ್\nಕಂಪೆನಿಗಳ ಸಂಖ್ಯೆ : 404\nಮಾರುಕಟ್ಟೆ ಮೌಲ್ಯ : 5.11\n\nಸ್ಥಾನ : 03\nದೇಶ : ಭಾರತ\nಕಂಪೆನಿಗಳ ಸಂಖ್ಯೆ : 348\nಮಾರುಕಟ್ಟೆ ಮೌಲ್ಯ : 3.75'; } 
             
