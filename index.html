@@ -31,6 +31,7 @@
             line-height: 1.6;
         }
         
+        /* --- Dynamic Aurora Background --- */
         .aurora-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: -1; }
         .aurora-blob { position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.3; }
         .blob1 { width: 400px; height: 400px; background: var(--primary-glow); top: -150px; left: -150px; animation: move-blob1 20s infinite alternate; }
@@ -43,12 +44,14 @@
 
         .container { width: 90%; max-width: 1100px; margin: 0 auto; padding: 6rem 0; }
         
+        /* --- Header / Navbar --- */
         .main-header { position: fixed; top: 0; left: 0; width: 100%; padding: 1rem 5%; display: flex; justify-content: space-between; align-items: center; background: rgba(13, 17, 23, 0.7); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color); z-index: 100; }
         .logo { font-weight: 700; font-size: 1.5rem; }
         .logo i { margin-right: 0.5rem; color: var(--primary-glow); }
         .cta-button { display: inline-block; background: linear-gradient(90deg, var(--primary-glow), var(--secondary-glow)); color: white; padding: 0.7rem 1.5rem; border-radius: 8px; text-decoration: none; font-size: 1rem; font-weight: 600; transition: all 0.3s ease; border: 1px solid transparent; }
         .cta-button:hover { transform: translateY(-2px); box-shadow: 0 8px 15px rgba(118, 75, 162, 0.2); }
 
+        /* --- Hero Section --- */
         .hero-section { display: flex; align-items: center; gap: 4rem; min-height: 90vh; }
         .hero-content { flex: 1; }
         .hero-content .highlight { font-weight: 700; color: var(--accent-glow); }
@@ -62,11 +65,10 @@
         .mock-infographic { position: absolute; inset: 0; padding: 2rem; border-radius: 16px; opacity: 0; animation: cycle-infographics 32s infinite ease-in-out; font-family: 'Anek Kannada', sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         @keyframes cycle-infographics {
             0%, 100% { opacity: 0; transform: scale(0.95); }
-            2%, 10.5% { opacity: 1; transform: scale(1); } /* Visible from 2% to 10.5% */
+            2%, 10.5% { opacity: 1; transform: scale(1); }
             12.5% { opacity: 0; transform: scale(0.95); }
         }
 
-        /* --- Individual Mockup Styles & Animation Delays --- */
         .mock-infographic.social { animation-delay: 0s; background: linear-gradient(135deg, #e73c7e, #ee7752); }
         .mock-infographic.bar-chart { animation-delay: 4s; background: #fff; color: #333; }
         .mock-infographic.timeline { animation-delay: 8s; background: #182338; }
@@ -126,8 +128,34 @@
         .scroll-reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
         .scroll-reveal.visible { opacity: 1; transform: translateY(0); }
         
-        @media (max-width: 992px) { .hero-section { flex-direction: column; text-align: center; } .hero-content p { margin: 0 auto 2rem auto; } .hero-visual { margin-top: 4rem; perspective: none; } .visual-container { transform: none; width: 100%; height: 450px; } .how-it-works-steps { flex-direction: column; } }
-        @media (max-width: 576px) { .container { padding: 4rem 0; } .hero-content h1 { font-size: 2.5rem; } .main-header { padding: 1rem 5%; } .logo { font-size: 1.2rem; } }
+        /* --- MOBILE RESPONSIVE STYLES --- */
+        @media (max-width: 992px) {
+            .hero-section { flex-direction: column; text-align: center; gap: 2rem; padding-top: 5rem; }
+            .hero-content { order: 2; }
+            .hero-visual { order: 1; width: 100%; perspective: none; }
+            .hero-content p { margin: 0 auto 2rem auto; }
+            .visual-container { transform: none; width: 100%; max-width: 500px; height: 450px; }
+            .how-it-works-steps { flex-direction: column; gap: 3rem; }
+            .section-title { font-size: 2rem; }
+        }
+        
+        @media (max-width: 768px) {
+            .container { padding: 4rem 0; }
+            .hero-content h1 { font-size: 2.8rem; }
+            .main-header { padding: 1rem 5%; }
+            .feature-card { padding: 1.5rem; }
+            .faq-question, .faq-answer p { padding: 1rem; }
+        }
+        
+        @media (max-width: 576px) {
+            .hero-content h1 { font-size: 2.2rem; }
+            .hero-content p { font-size: 1rem; }
+            .logo { font-size: 1.2rem; }
+            .mock-infographic { padding: 1.5rem; }
+            .mock-social-quote { font-size: 1.5rem; }
+            .mock-title { font-size: 1.2rem; }
+            .mock-news-bullet { font-size: 1rem; }
+        }
     </style>
 </head>
 <body>
@@ -212,6 +240,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // FAQ Accordion Logic
             const faqItems = document.querySelectorAll('.faq-item');
             faqItems.forEach(item => {
                 const question = item.querySelector('.faq-question');
@@ -224,6 +253,7 @@
                 });
             });
 
+            // Scroll Reveal Animation Logic
             const scrollObserver = new IntersectionObserver((entries) => {
                 entries.forEach((entry) => {
                     if (entry.isIntersecting) {
