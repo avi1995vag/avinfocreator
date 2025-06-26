@@ -145,6 +145,7 @@
         .tab-content.active { display: block; background: transparent; padding:0; border: none; }
         .control-group { margin-bottom: 12px; }
         .control-group h4, .control-group h5, .control-group h6 { margin-top: 12px; margin-bottom: 6px; color: var(--primary); font-weight: 600; border-bottom: 1px solid var(--subtle-border); padding-bottom: 3px; font-size: 1em; }
+        .control-group h6 i { margin-right: 6px; opacity: 0.8; }
         .control-label { display: block; margin-bottom: 4px; font-weight: 600; font-size: 13px; color: var(--text-color); }
         .control-label small { font-weight: 400; font-size: 0.8em; color: var(--text-color); opacity: 0.7; }
         .control-input, textarea.control-input, select.control-input { width: 100%; padding: 7px 10px; border: 1px solid var(--subtle-border); border-radius: 8px; font-family: 'Anek Kannada', sans-serif; font-size: 13px; transition: all 0.3s ease; background: var(--app-bg); color: var(--text-color); }
@@ -199,7 +200,7 @@
 
         .social-post-infographic { display: flex; justify-content: center; align-items: center; text-align: center; color: white; padding: 0; background-size: cover; background-position: center; position: relative; box-shadow: 0 10px 25px rgba(0,0,0,0.25); }
         .social-post-infographic .infographic-content { background: transparent; }
-        .social-post-infographic .header, .social-post-infographic .info-text { position: absolute; text-align: left; }
+        .social-post-infographic .header, .social-post-infographic .info-text { position: absolute; text-align: left; word-break: break-word; }
         .social-post-infographic .header { font-weight: 800; }
         .social-post-infographic .info-text { font-weight: 400; line-height: 1.6; }
         .social-post-infographic .text-has-shadow * { text-shadow: 2px 2px 8px rgba(0,0,0,0.6); }
@@ -215,9 +216,11 @@
         .news-content-area { flex-grow: 1; padding: 20px; display: flex; flex-direction: column; width: 100%; }
         .news-main-title { font-weight: 700; padding: 10px 20px; display: flex; align-items: center; gap: 15px; width: 100%;}
         .news-main-title img { height: 1.2em; width: auto; }
+        .news-main-title span { word-break: break-word; }
         .news-body-list { flex-grow: 1; overflow: hidden; }
         .list-item { display: flex; flex-direction: column; }
         .list-item-content { display: flex; align-items: flex-start; gap: 12px; line-height: 1.4; }
+        .list-item-content p { word-break: break-word; }
         .news-bullet { flex-shrink: 0; }
         .news-bullet.bullet-circle, .news-bullet.bullet-square { width: 1.5em; height: 1.5em; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; }
         .news-bullet.bullet-circle { border-radius: 50%; }
@@ -225,11 +228,11 @@
         .bullet-separator { height: 1px; width: 100%; }
         .list-item:last-child .bullet-separator { display: none; }
         .news-body-quote { text-align: left; padding: 20px 0; }
-        .news-body-quote blockquote { font-weight: 700; line-height: 1.3; border-left: 5px solid var(--primary); padding-left: 20px; }
+        .news-body-quote blockquote { font-weight: 700; line-height: 1.3; border-left: 5px solid var(--primary); padding-left: 20px; word-break: break-word; }
         .news-quote-bottom-area { display: flex; align-items: center; gap: 20px; margin-top: 20px; }
         .news-quote-attribution-text { display: flex; flex-direction: column; }
-        .news-quote-attribution-text .name { font-weight: 700; }
-        .news-quote-attribution-text .designation { font-weight: 400; opacity: 0.8; }
+        .news-quote-attribution-text .name { font-weight: 700; word-break: break-word; }
+        .news-quote-attribution-text .designation { font-weight: 400; opacity: 0.8; word-break: break-word; }
         .news-person-image { flex-shrink: 0; overflow: hidden; border: 3px solid rgba(255,255,255,0.5); box-shadow: 0 2px 8px rgba(0,0,0,0.3); background-color: var(--subtle-border); }
         .news-person-image.shape-circle { border-radius: 50%; }
         .news-person-image.shape-square { border-radius: 8px; }
@@ -343,48 +346,52 @@
         .modern-timeline-logo { max-width: 60px; max-height: 30px; object-fit: contain; margin-bottom: 8px; }
         .item-left .modern-timeline-logo { float: right; margin-left: 10px;}
         .item-right .modern-timeline-logo { float: left; margin-right: 10px;}
+        .modern-timeline-vertical-content h3 { word-break: break-word; }
+        .modern-timeline-vertical-content p { word-break: break-word; }
 
         /* Modern Horizontal Timeline */
         .timeline-modern-horizontal-container { display: flex; flex-direction: column; width: 100%; gap: 10px; }
         .modern-horizontal-axis { display: flex; border-bottom: 3px solid var(--subtle-border); padding-bottom: 10px; width: 100%; }
         .modern-horizontal-stop { flex: 1; display: flex; flex-direction: column; align-items: center; position: relative; gap: 8px; }
         .modern-horizontal-stop::after { content: ''; position: absolute; bottom: -23px; width: 3px; height: 13px; background-color: var(--subtle-border); }
-        .modern-horizontal-year-box { padding: 5px 10px; border-radius: 6px; color: white; font-weight: 700; }
+        .modern-horizontal-year-box { padding: 5px 10px; border-radius: 6px; color: white; font-weight: 700; word-break: break-word; }
         .modern-horizontal-icon-wrapper { width: 40px; height: 40px; display: flex; justify-content: center; align-items: center; border-radius: 50%; background: var(--light); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         .modern-horizontal-icon-wrapper img { max-height: 24px; max-width: 24px; object-fit: contain; }
         .modern-horizontal-content-area { display: flex; width: 100%; }
         .modern-horizontal-content-box { flex: 1; padding: 15px; border-radius: 8px; text-align: center; border: 2px solid transparent; background: var(--light); margin: 0 5px; }
+        .modern-horizontal-content-box h4 { word-break: break-word; }
+        .modern-horizontal-content-box p { word-break: break-word; }
         
         .chart-container { margin: 20px 0; padding: 15px; background: var(--light); border-radius: 8px; box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08); display: flex; flex-direction: column; width: 100%; max-width: 95%;}
-        .chart-container h3.chart-title {text-align: center; margin-bottom: 15px; font-weight: 700;} 
+        .chart-container h3.chart-title {text-align: center; margin-bottom: 15px; font-weight: 700; word-break: break-word;} 
         .chart-canvas-wrapper { position: relative; height: 250px; width: 100%; }
         .dam-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin: 15px 0; width: 100%;}
         .dam-card { padding: 15px; border-radius:10px; color:white; text-align:center; }
-        .dam-name { font-weight:600; margin-bottom:5px; color:white !important;}
+        .dam-name { font-weight:600; margin-bottom:5px; color:white !important; word-break: break-word;}
         .dam-level { font-weight:700; margin-bottom:5px; color:white !important;}
         .dam-progress-bar-bg { width: 100%; height: 8px; background: rgba(255,255,255,0.3); border-radius: 4px; margin-top: 8px; overflow:hidden; }
         .dam-progress-bar-fg { height: 100%; background: white; border-radius: 4px; }
-        .dam-capacity-info { margin-top:8px; opacity:0.9; color:white !important;}
-        .dam-progress-label { margin-top: 5px; opacity: 0.8; color:white !important;}
+        .dam-capacity-info { margin-top:8px; opacity:0.9; color:white !important; word-break: break-word;}
+        .dam-progress-label { margin-top: 5px; opacity: 0.8; color:white !important; word-break: break-word;}
         .price-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin: 15px 0; width: 100%;}
         .price-card { padding: 18px; border-radius: 10px; text-align: center; color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
         .price-card * { color: white !important; } 
-        .price-label { font-weight: 600; margin-bottom: 8px; }
+        .price-label { font-weight: 600; margin-bottom: 8px; word-break: break-word; }
         .price-value { font-weight: 700; margin-bottom: 5px; }
         .price-unit { opacity: 0.9; margin-bottom: 10px;}
-        .price-update-info { opacity: 0.8; margin-top:10px; }
+        .price-update-info { opacity: 0.8; margin-top:10px; word-break: break-word; }
         .comparison-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin: 15px 0; width: 100%;}
         .comparison-card { background: var(--light); border-radius: 10px; padding: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); border-top: 4px solid var(--primary); }
         .comparison-card:nth-child(even) { border-top-color: var(--secondary); }
-        .comparison-card h3 { margin-bottom: 8px; text-align:center; } 
-        .comparison-card .price { color: var(--accent) !important; margin-bottom: 15px; text-align:center; font-weight:600; }
+        .comparison-card h3 { margin-bottom: 8px; text-align:center; word-break: break-word; } 
+        .comparison-card .price { color: var(--accent) !important; margin-bottom: 15px; text-align:center; font-weight:600; word-break: break-word; }
         .comparison-card ul { list-style: none; padding: 0; margin:0; }
-        .comparison-card ul li { padding: 8px 0; border-bottom: 1px solid var(--subtle-border); display:flex; align-items:center; } 
+        .comparison-card ul li { padding: 8px 0; border-bottom: 1px solid var(--subtle-border); display:flex; align-items:center; word-break: break-word; } 
         .comparison-card ul li:last-child { border-bottom: none; }
         .comparison-card ul li i { color: var(--success) !important; margin-right: 8px; }
         .hierarchy-container { text-align: center; margin: 15px auto; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .hierarchy-node { background: var(--primary); color: white; padding: 8px 12px; border-radius: 8px; display: inline-block; margin: 5px; min-width: 120px; position: relative; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.15); }
-        .hierarchy-node h4 { margin: 0; color: white !important; font-size: 0.9em; font-weight: 600; }
+        .hierarchy-node h4 { margin: 0; color: white !important; font-size: 0.9em; font-weight: 600; word-break: break-word;}
         .hierarchy-children { margin-top: 40px; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; position: relative; padding-top: 20px; }
         .hierarchy-children::before { content: ''; position: absolute; top: 0; left: 10%; right: 10%; height: 2px; background: var(--subtle-border); }
         .hierarchy-node .node-connector { content: ''; position: absolute; left: 50%; bottom: -20px; width: 2px; height: 20px; background: var(--subtle-border); transform: translateX(-50%); }
@@ -392,8 +399,8 @@
         .hierarchy-container > .hierarchy-node .node-connector { display: none; }
         .list-infographic-item { display: flex; align-items: flex-start; background: var(--light); padding: 15px; border-radius: 8px; margin-bottom: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.07); width: 100%;}
         .list-infographic-item .icon { font-size: 1.8em; color: var(--primary) !important; margin-right: 15px; min-width:30px; text-align:center; }
-        .list-infographic-item .text-content h4 { margin-bottom: 5px; font-weight:600; } 
-        .list-infographic-item .text-content p { line-height:1.4; } 
+        .list-infographic-item .text-content h4 { margin-bottom: 5px; font-weight:600; word-break: break-word;} 
+        .list-infographic-item .text-content p { line-height:1.4; word-break: break-word;} 
         .coming-up-infographic { display: flex; align-items: center; text-align: center; width: 100%; position: relative; }
         .coming-up-infographic .infographic-content { padding: 20px; }
         .coming-up-infographic .image-container { position:relative; width:100%; max-width: 80%; margin-bottom: 15px; } 
@@ -401,10 +408,10 @@
         .coming-up-infographic img.main-image { width: 100%; height: auto; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); object-fit: cover; max-height: 300px; display:block; }
         .coming-up-infographic .image-container.full-width-bg img.main-image {border-radius:0; max-height:none; height:100%;}
         .coming-up-infographic .text-content-area { z-index: 1; position:relative; width:100%; } 
-        .coming-up-infographic .header { font-weight: 700; } 
-        .coming-up-infographic .sub-header { font-weight: 500; } 
-        .coming-up-infographic .info-text { max-width: 90%; line-height: 1.5; margin-left:auto; margin-right:auto;} 
-        .coming-up-infographic .date-time { font-weight: 600; color: var(--accent) !important; background-color: rgba(255,255,255,0.8); padding: 8px 15px; border-radius: 20px; display: inline-block; box-shadow: 0 2px 5px rgba(0,0,0,0.1);}
+        .coming-up-infographic .header { font-weight: 700; word-break: break-word;} 
+        .coming-up-infographic .sub-header { font-weight: 500; word-break: break-word;} 
+        .coming-up-infographic .info-text { max-width: 90%; line-height: 1.5; margin-left:auto; margin-right:auto; word-break: break-word;} 
+        .coming-up-infographic .date-time { font-weight: 600; color: var(--accent) !important; background-color: rgba(255,255,255,0.8); padding: 8px 15px; border-radius: 20px; display: inline-block; box-shadow: 0 2px 5px rgba(0,0,0,0.1); word-break: break-word;}
         
         .did-you-know-infographic { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; height: 100%; width: 100%; padding: 20px; }
         .did-you-know-infographic .dyk-header { font-weight: 800; background: var(--global-section-header-color); -webkit-background-clip: text; -webkit-text-fill-color: transparent; word-break: break-word; }
@@ -445,6 +452,15 @@
         .accordion-content { padding: 12px; display: none; border-radius: 0 0 8px 8px; }
         .accordion-content.active { display: block; }
         
+        @keyframes highlight-control {
+            0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--primary) 40%, transparent); }
+            50% { box-shadow: 0 0 0 4px color-mix(in srgb, var(--primary) 40%, transparent); }
+            100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--primary) 40%, transparent); }
+        }
+        .control-highlight {
+            animation: highlight-control 1.5s ease-out;
+        }
+
         /* --- AV Your Friend MODAL STYLES --- */
         #aiAssistantModal {
             position: fixed;
@@ -889,7 +905,7 @@ The entire response MUST be in Kannada script only. Finally, add a new line with
         <div id="commonSettingsTemplate" style="display: none;">
              <div class="accordion-item">
                 <div class="accordion-header">
-                    Fonts & Colors <i class="fas fa-chevron-down"></i>
+                    <h3 style="padding:0; border:none; margin:0;"><i class="fas fa-font"></i> Fonts & Colors</h3> <i class="fas fa-chevron-down"></i>
                 </div>
                 <div class="accordion-content">
                     <div class="control-group"> <label>Overall Font Weight</label> <select class="control-input" data-setting="fontWeight"> <option value="400">Normal</option> <option value="500">Medium</option> <option value="600">Semi Bold</option> <option value="700">Bold</option> <option value="800">Extra Bold</option> </select> </div>
@@ -908,7 +924,7 @@ The entire response MUST be in Kannada script only. Finally, add a new line with
             </div>
              <div class="accordion-item">
                 <div class="accordion-header">
-                    Background <i class="fas fa-chevron-down"></i>
+                    <h3 style="padding:0; border:none; margin:0;"><i class="fas fa-image"></i> Background</h3> <i class="fas fa-chevron-down"></i>
                 </div>
                 <div class="accordion-content">
                     <div class="control-group">
@@ -932,15 +948,18 @@ The entire response MUST be in Kannada script only. Finally, add a new line with
                         <div class="control-group"> <label>Zoom (%)</label> <input type="range" class="control-input" data-setting="infographicBgZoom" min="50" max="300" value="100"> </div>
                         <div class="control-group"> <label>Position X (px)</label> <input type="number" class="control-input" data-setting="infographicBgPosX" value="0" step="5"> </div>
                         <div class="control-group"> <label>Position Y (px)</label> <input type="number" class="control-input" data-setting="infographicBgPosY" value="0" step="5"> </div>
+                        <h6>Background Image Overlay</h6>
+                        <div class="control-group"> <label>Overlay Color</label> <input type="color" class="control-input" data-setting="infographicBgOverlayColor" value="#000000"></div>
+                        <div class="control-group"> <label>Overlay Opacity</label> <input type="range" class="control-input" data-setting="infographicBgOverlayOpacity" min="0" max="1" step="0.05" value="0.3"></div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="tab-content" id="social"><div class="accordion-item"><div class="accordion-header active"><h3>Social Post Controls</h3><i class="fas fa-chevron-down"></i></div><div class="accordion-content active"><div class="control-group"> <label>Background Image URL</label> <input type="url" class="control-input" id="socialImageUrl" placeholder="https://images.unsplash.com/photo-1506744038136-46273834b3fb"> </div><div class="control-group"> <label>Upload Background Image</label> <input type="file" class="control-input" id="socialImageUpload" accept="image/*"></div><h6>Background Image Adjustments</h6><div class="control-group"> <label>Zoom (%)</label> <input type="range" class="control-input" id="socialBgZoom" min="50" max="300" value="100"> </div><div class="control-group"> <label>Position X (px)</label> <input type="number" class="control-input" id="socialBgPosX" value="0" step="5"> </div><div class="control-group"> <label>Position Y (px)</label> <input type="number" class="control-input" id="socialBgPosY" value="0" step="5"> </div><h6>Header Text Settings</h6><div class="control-group"> <label>Header Text</label> <input type="text" class="control-input" id="socialHeader" value="Inspirational Quote"> </div><div class="control-group"> <label>Font Size (px)</label> <input type="number" class="control-input" id="socialHeaderFontSize" value="42"> </div><div class="control-group"> <label>Text Color</label> <input type="color" class="control-input" id="socialHeaderTextColor" value="#FFFFFF"> </div><div class="control-group"> <label>Position X (px)</label> <input type="number" class="control-input" id="socialHeaderPosX" value="40"> </div><div class="control-group"> <label>Position Y (px)</label> <input type="number" class="control-input" id="socialHeaderPosY" value="400"> </div><h6>Info Text Settings</h6><div class="control-group"> <label>Information Text</label> <textarea class="control-input" id="socialInfoText" rows="3">"The only way to do great work is to love what you do." - Steve Jobs</textarea> </div><div class="control-group"> <label>Font Size (px)</label> <input type="number" class="control-input" id="socialInfoTextFontSize" value="24"> </div><div class="control-group"> <label>Text Color</label> <input type="color" class="control-input" id="socialInfoTextColor" value="#FFFFFF"> </div><div class="control-group"> <label>Position X (px)</label> <input type="number" class="control-input" id="socialInfoTextPosX" value="40"> </div><div class="control-group"> <label>Position Y (px)</label> <input type="number" class="control-input" id="socialInfoTextPosY" value="500"> </div><h6>Overlay & Effects</h6><div class="control-group"> <label>Background Overlay Color</label> <input type="color" class="control-input" id="socialOverlayColor" value="#000000"> </div><div class="control-group"> <label>Background Overlay Opacity</label> <input type="range" class="control-input" id="socialOverlayOpacity" min="0" max="1" step="0.05" value="0.4"> </div><div class="control-group"> <label style="display: flex; align-items: center; gap: 8px;"><input type="checkbox" id="socialTextShadow" class="control-input" checked style="width: auto;"> Add Text Shadow</label></div></div></div><div class="specific-settings-container"></div></div>
-        <div class="tab-content" id="newsAlert"><div class="accordion-item"><div class="accordion-header active"><h3>News Alert Controls</h3><i class="fas fa-chevron-down"></i></div><div class="accordion-content active"><h6>Layout & Style</h6><div class="control-group"> <label>Layout</label> <select class="control-input" id="newsLayoutType"> <option value="standard" selected>Standard</option> <option value="overlapping">Overlapping Header</option> </select> </div><div class="control-group"> <label>Content Type</label> <select class="control-input" id="newsLayout"> <option value="list" selected>Points / List</option> <option value="quote">Quote</option> </select> </div><h6>Header Bar</h6><div id="newsHeaderSettings"><div class="control-group"> <label>Header Style</label> <select class="control-input" id="newsHeaderStyle"> <option value="solid" selected>Solid Color</option> <option value="transparent">Transparent</option> <option value="underline">Underline</option> </select></div><div class="control-group"> <label>Header Color</label> <input type="color" class="control-input" id="newsTopBarColor" value="#c00000"> </div><div class="control-group"> <label>Header Bar Font Size (px)</label> <input type="number" class="control-input" id="newsHeaderBarFontSize" value="28"> </div><div class="control-group"> <label>Header Padding (Y-axis, px)</label> <input type="range" class="control-input" id="newsHeaderPadding" min="5" max="50" value="10"></div><div class="control-group"> <label>Header Text Alignment</label> <select class="control-input" id="newsHeaderTextAlignment"> <option value="flex-start" selected>Left</option> <option value="center">Center</option> <option value="space-between">Space Between</option></select> </div><div class="control-group"> <label>Header Text</label> <input type="text" class="control-input" id="newsTopBarText" value="BREAKING NEWS"> </div><div class="control-group"> <label>Header Text Case</label> <select class="control-input" id="newsHeaderTextCase"> <option value="uppercase" selected>UPPERCASE</option> <option value="titlecase">Title Case</option> <option value="none">Normal</option> </select> </div><div class="control-group"> <label>Header Image URL</label> <input type="url" class="control-input" id="newsHeaderImageUrl"></div><div class="control-group"> <label>Upload Header Image</label> <input type="file" class="control-input" id="newsHeaderImageUpload" accept="image/*"></div><div class="control-group"> <label>Header Image Height (px)</label> <input type="number" class="control-input" id="newsHeaderImageHeight" value="25" min="10" max="100"> </div><div class="control-group"> <label>Header Tagline</label> <input type="text" class="control-input" id="newsHeaderTagline" placeholder="e.g., #EarningsWithETNOW"> </div></div><h6>Main Content</h6><div class="control-group"> <label>Main Title Text</label> <input type="text" class="control-input" id="newsMainTitle" value="ISRAEL - IRAN WAR INTENSIFIES"> </div><div class="control-group"> <label>Main Title Font Size (px)</label> <input type="number" class="control-input" id="newsMainTitleFontSize" value="42"> </div><div class="control-group"> <label>Main Title BG Color</label> <input type="color" class="control-input" id="newsMainTitleBgColor" value="#f7b731"> </div><div class="control-group"> <label>Space Below Main Title (px)</label> <input type="number" class="control-input" id="newsMainTitleMarginBottom" value="15" min="0"> </div><div class="control-group"> <label>Title Image URL</label> <input type="url" class="control-input" id="newsTitleImageUrl"></div><div class="control-group"> <label>Upload Title Image</label> <input type="file" class="control-input" id="newsTitleImageUpload" accept="image/*"></div><div class="control-group"> <label>Title Image Height (px)</label> <input type="number" class="control-input" id="newsTitleImageHeight" value="30" min="10" max="100"></div><div id="newsListSettings"><h6>List Layout Options</h6><div class="control-group"> <label>Bullet/Number Style</label> <select class="control-input" id="newsBulletStyle"> <option value="bullet">Standard Bullet (•)</option> <option value="check">Checkmark (✓)</option> <option value="arrow">Arrow (→)</option> <option value="number">Numbered (1.)</option> <option value="circle">Numbered in Circle</option> <option value="square">Numbered in Square</option></select></div><div class="control-group"> <label>Side Image Position</label> <select class="control-input" id="newsSideImagePosition"><option value="none">None</option><option value="left">Left</option><option value="right">Right</option></select></div><div class="control-group"> <label>Side Image Width (%)</label> <input type="range" class="control-input" id="newsSideImageSize" min="20" max="60" value="40"></div><div class="control-group"> <label>Side Image URL</label> <input type="url" class="control-input" id="newsSideImageUrl"></div><div class="control-group"> <label>Upload Side Image</label> <input type="file" class="control-input" id="newsSideImageUpload" accept="image/*"></div><div class="control-group"> <label>Side Image Zoom (%)</label> <input type="range" class="control-input" id="newsSideImageZoom" min="100" max="300" value="100"></div><h6>List Item Separator</h6><div class="control-group"> <label>Separator Style</label> <select class="control-input" id="newsListSeparatorType"><option value="none">None</option><option value="solid">Solid Line</option><option value="dotted">Dotted Line</option><option value="dashed">Dashed Line</option></select></div><div class="control-group"> <label>Separator Color</label> <input type="color" class="control-input" id="newsListSeparatorColor" value="#FFFFFF"></div><div class="control-group"> <label>Separator Thickness (px)</label> <input type="number" class="control-input" id="newsListSeparatorSize" value="1" min="1" max="10"></div><div class="control-group"> <label>Space Between Items (px)</label> <input type="number" class="control-input" id="newsListItemSpacing" value="10" min="0"> </div><h6>List Content</h6><div class="control-group"> <label>Bullet Points <small>(One per line)</small></label> <textarea class="control-input" id="newsListPoints" rows="5">Israeli military says missiles launched from Iran towards Israel
+        <div class="tab-content" id="social"><div class="accordion-item"><div class="accordion-header active"><h3>Social Post Controls</h3><i class="fas fa-chevron-down"></i></div><div class="accordion-content active"><h6><i class="fas fa-image"></i> Background Image</h6><div class="control-group"> <label>Image URL</label> <input type="url" class="control-input" id="socialImageUrl" placeholder="https://images.unsplash.com/photo-1506744038136-46273834b3fb"> </div><div class="control-group"> <label>Upload Background Image</label> <input type="file" class="control-input" id="socialImageUpload" accept="image/*"></div><div class="control-group"> <label>Zoom (%)</label> <input type="range" class="control-input" id="socialBgZoom" min="50" max="300" value="100"> </div><div class="control-group"> <label>Position X (px)</label> <input type="number" class="control-input" id="socialBgPosX" value="0" step="5"> </div><div class="control-group"> <label>Position Y (px)</label> <input type="number" class="control-input" id="socialBgPosY" value="0" step="5"> </div><hr style="border: none; border-top: 1px solid var(--subtle-border); margin: 20px 0;"><h6><i class="fas fa-heading"></i> Header Text</h6><div class="control-group"> <label>Header Text</label> <input type="text" class="control-input" id="socialHeader" value="Inspirational Quote"> </div><div class="control-group"> <label>Font Size (px)</label> <input type="number" class="control-input" id="socialHeaderFontSize" value="42"> </div><div class="control-group"> <label>Text Color</label> <input type="color" class="control-input" id="socialHeaderTextColor" value="#FFFFFF"> </div><div class="control-group"> <label>Position X (px)</label> <input type="number" class="control-input" id="socialHeaderPosX" value="40"> </div><div class="control-group"> <label>Position Y (px)</label> <input type="number" class="control-input" id="socialHeaderPosY" value="400"> </div><hr style="border: none; border-top: 1px solid var(--subtle-border); margin: 20px 0;"><h6><i class="fas fa-paragraph"></i> Info Text</h6><div class="control-group"> <label>Information Text</label> <textarea class="control-input" id="socialInfoText" rows="3">"The only way to do great work is to love what you do." - Steve Jobs</textarea> </div><div class="control-group"> <label>Font Size (px)</label> <input type="number" class="control-input" id="socialInfoTextFontSize" value="24"> </div><div class="control-group"> <label>Text Color</label> <input type="color" class="control-input" id="socialInfoTextColor" value="#FFFFFF"> </div><div class="control-group"> <label>Position X (px)</label> <input type="number" class="control-input" id="socialInfoTextPosX" value="40"> </div><div class="control-group"> <label>Position Y (px)</label> <input type="number" class="control-input" id="socialInfoTextPosY" value="500"> </div><hr style="border: none; border-top: 1px solid var(--subtle-border); margin: 20px 0;"><h6><i class="fas fa-magic"></i> Overlay & Effects</h6><div class="control-group"> <label>Background Overlay Color</label> <input type="color" class="control-input" id="socialOverlayColor" value="#000000"> </div><div class="control-group"> <label>Background Overlay Opacity</label> <input type="range" class="control-input" id="socialOverlayOpacity" min="0" max="1" step="0.05" value="0.4"> </div><div class="control-group"> <label style="display: flex; align-items: center; gap: 8px;"><input type="checkbox" id="socialTextShadow" class="control-input" checked style="width: auto;"> Add Text Shadow</label></div></div></div><div class="specific-settings-container"></div></div>
+        <div class="tab-content" id="newsAlert"><div class="accordion-item"><div class="accordion-header active"><h3>News Alert Controls</h3><i class="fas fa-chevron-down"></i></div><div class="accordion-content active"><h6><i class="fas fa-layer-group"></i> Layout & Style</h6><div class="control-group"> <label>Layout</label> <select class="control-input" id="newsLayoutType"> <option value="standard" selected>Standard</option> <option value="overlapping">Overlapping Header</option> </select> </div><div class="control-group"> <label>Content Type</label> <select class="control-input" id="newsLayout"> <option value="list" selected>Points / List</option> <option value="quote">Quote</option> </select> </div><hr style="border: none; border-top: 1px solid var(--subtle-border); margin: 20px 0;"><div id="newsHeaderSettings"><h6><i class="fas fa-window-maximize"></i> Header Bar</h6><div class="control-group"> <label>Header Style</label> <select class="control-input" id="newsHeaderStyle"> <option value="solid" selected>Solid Color</option> <option value="transparent">Transparent</option> <option value="underline">Underline</option> </select></div><div class="control-group"> <label>Header Color</label> <input type="color" class="control-input" id="newsTopBarColor" value="#c00000"> </div><div class="control-group"> <label>Header Bar Font Size (px)</label> <input type="number" class="control-input" id="newsHeaderBarFontSize" value="28"> </div><div class="control-group"> <label>Header Text Alignment</label> <select class="control-input" id="newsHeaderTextAlignment"> <option value="flex-start" selected>Left</option> <option value="center">Center</option> <option value="space-between">Space Between</option></select> </div><div class="control-group"> <label>Header Text</label> <input type="text" class="control-input" id="newsTopBarText" value="BREAKING NEWS"> </div><div class="control-group"> <label>Header Image URL</label> <input type="url" class="control-input" id="newsHeaderImageUrl"></div><div class="control-group"> <label>Upload Header Image</label> <input type="file" class="control-input" id="newsHeaderImageUpload" accept="image/*"></div><div class="control-group"> <label>Header Tagline</label> <input type="text" class="control-input" id="newsHeaderTagline" placeholder="e.g., #EarningsWithETNOW"> </div></div><hr style="border: none; border-top: 1px solid var(--subtle-border); margin: 20px 0;"><h6><i class="fas fa-align-left"></i> Main Content</h6><div class="control-group"> <label>Main Title Text</label> <input type="text" class="control-input" id="newsMainTitle" value="ISRAEL - IRAN WAR INTENSIFIES"> </div><div class="control-group"> <label>Main Title Font Size (px)</label> <input type="number" class="control-input" id="newsMainTitleFontSize" value="42"> </div><div class="control-group"> <label>Main Title BG Color</label> <input type="color" class="control-input" id="newsMainTitleBgColor" value="#f7b731"> </div><div id="newsListSettings"><h6><i class="fas fa-list-ul"></i> List Options (for 'Points' Content)</h6><div class="control-group"> <label>Bullet/Number Style</label> <select class="control-input" id="newsBulletStyle"> <option value="bullet">Standard Bullet (•)</option> <option value="check">Checkmark (✓)</option> <option value="arrow">Arrow (→)</option> <option value="number">Numbered (1.)</option> <option value="circle">Numbered in Circle</option> <option value="square">Numbered in Square</option></select></div><div class="control-group"> <label>Bullet Points <small>(One per line)</small></label> <textarea class="control-input" id="newsListPoints" rows="5">Israeli military says missiles launched from Iran towards Israel
 several explosions heard over Tel Aviv
 Interceptions seen in sky over Jerusalem
-Multiple explosions heard in Central Israel</textarea> </div></div><div id="newsQuoteSettings" style="display: none;"><h6>Quote Layout Options</h6><div class="control-group"> <label style="display: flex; align-items: center; gap: 8px;"><input type="checkbox" id="newsQuoteHeaderEnable" class="control-input" checked style="width: auto;"> Show Header Bar</label></div><div class="control-group"> <label>Quote Text</label> <textarea class="control-input" id="newsQuoteText" rows="4">"Trump's bold decision to target Iran's nuclear facilities will change history."</textarea> </div><h6>Attribution</h6><div class="control-group"> <label>Attribution Name</label> <input type="text" class="control-input" id="newsQuoteAttribution" value="BENJAMIN NETANYAHU"> </div><div class="control-group"> <label>Name Font Size (px)</label> <input type="number" class="control-input" id="newsQuoteAttributionFontSize" value="22"> </div><div class="control-group"> <label>Name Color</label> <input type="color" class="control-input" id="newsQuoteAttributionColor" value="#FFFFFF"> </div><div class="control-group"> <label>Attribution Designation</label> <input type="text" class="control-input" id="newsQuoteDesignation" value="Israeli PM"> </div><div class="control-group"> <label>Designation Font Size (px)</label> <input type="number" class="control-input" id="newsQuoteDesignationFontSize" value="18"> </div><div class="control-group"> <label>Designation Color</label> <input type="color" class="control-input" id="newsQuoteDesignationColor" value="#FFFFFF"> </div><div class="control-group"> <label>Attribution Alignment</label> <select class="control-input" id="newsQuoteAttributionAlignment"><option value="flex-start" selected>Left</option><option value="center">Center</option><option value="flex-end">Right</option></select></div><div class="control-group"> <label>Margin Top (px)</label> <input type="range" class="control-input" id="newsQuoteAttributionMarginTop" min="0" max="100" value="20"></div><div class="control-group"> <label>Person Image Shape</label> <select class="control-input" id="newsPersonImageShape"><option value="circle" selected>Circle</option><option value="square">Square</option></select></div><div class="control-group"> <label>Person Image Size (px)</label> <input type="number" class="control-input" id="newsPersonImageSize" value="100" min="50" max="300"></div><div class="control-group"> <label>Person Image URL</label> <input type="url" class="control-input" id="newsPersonImageUrl"></div><div class="control-group"> <label>Upload Person Image</label> <input type="file" class="control-input" id="newsPersonImageUpload" accept="image/*"></div></div><h6>Background Overlay & Source</h6><div class="control-group"> <label>Subtle Background Pattern</label> <select class="control-input" id="newsBgPattern"> <option value="none" selected>None</option> <option value="dots">Dots</option> <option value="lines">Lines</option></select></div><div class="control-group"> <label>Overlay Color</label> <input type="color" class="control-input" id="newsOverlayColor" value="#000000"> </div><div class="control-group"> <label>Overlay Opacity</label> <input type="range" class="control-input" id="newsOverlayOpacity" min="0" max="1" step="0.05" value="0.6"> </div><div class="control-group"> <label>Source Text <small>(e.g., Agencies)</small></label> <input type="text" class="control-input" id="newsSourceText" value="(Agencies)"> </div></div></div><div class="specific-settings-container"></div></div>
+Multiple explosions heard in Central Israel</textarea> </div></div><div id="newsQuoteSettings" style="display: none;"><h6><i class="fas fa-quote-left"></i> Quote Options (for 'Quote' Content)</h6><div class="control-group"> <label>Quote Text</label> <textarea class="control-input" id="newsQuoteText" rows="4">"Trump's bold decision to target Iran's nuclear facilities will change history."</textarea> </div><div class="control-group"> <label>Attribution Name</label> <input type="text" class="control-input" id="newsQuoteAttribution" value="BENJAMIN NETANYAHU"> </div><div class="control-group"> <label>Attribution Designation</label> <input type="text" class="control-input" id="newsQuoteDesignation" value="Israeli PM"> </div><div class="control-group"> <label>Person Image URL</label> <input type="url" class="control-input" id="newsPersonImageUrl"></div><div class="control-group"> <label>Upload Person Image</label> <input type="file" class="control-input" id="newsPersonImageUpload" accept="image/*"></div></div><hr style="border: none; border-top: 1px solid var(--subtle-border); margin: 20px 0;"><h6><i class="fas fa-palette"></i> Background &amp; Source</h6><div class="control-group"> <label>Subtle Background Pattern</label> <select class="control-input" id="newsBgPattern"> <option value="none" selected>None</option> <option value="dots">Dots</option> <option value="lines">Lines</option></select></div><div class="control-group"> <label>Overlay Color</label> <input type="color" class="control-input" id="newsOverlayColor" value="#000000"> </div><div class="control-group"> <label>Overlay Opacity</label> <input type="range" class="control-input" id="newsOverlayOpacity" min="0" max="1" step="0.05" value="0.6"> </div><div class="control-group"> <label>Source Text <small>(e.g., Agencies)</small></label> <input type="text" class="control-input" id="newsSourceText" value="(Agencies)"> </div></div></div><div class="specific-settings-container"></div></div>
         <div class="tab-content" id="process"><div class="accordion-item"><div class="accordion-header active"><h3>Process Flow Controls</h3><i class="fas fa-chevron-down"></i></div><div class="accordion-content active"><div class="control-group"> <label>Section Header</label> <input type="text" class="control-input" id="processSectionTitle" value="Our Workflow"> </div><div class="control-group"> <label>Step Titles <small>(using global separator)</small></label> <textarea class="control-input" id="processStepTitlesCSV" rows="2">Discovery,Design,Development,Deployment</textarea> </div><div class="control-group"> <label>Step Descriptions <small>(using global separator)</small></label> <textarea class="control-input" id="processStepDescsCSV" rows="3">Research & planning phase.,Wireframing & UI design concepts.,Coding & building the application.,Final testing & official launch.</textarea> </div><div class="control-group"> <label>Step Icon <small>(FA class or text, using global separator)</small></label><div class="icon-search-row"><input type="text" class="control-input" id="processStepIconsCSV" placeholder="fas fa-search,fas fa-palette,..." value="fas fa-search,fas fa-palette,fas fa-code,fas fa-rocket"><button class="btn btn-secondary find-icon-btn" data-target-input="processStepIconsCSV" title="Find Icon"><i class="fas fa-search"></i></button></div><div id="processStepIconsCSV-suggestions" class="icon-suggestions"></div></div></div></div><div class="specific-settings-container"></div></div>
         <div class="tab-content" id="statistical"><div class="accordion-item"><div class="accordion-header active"><h3>Statistical Controls</h3><i class="fas fa-chevron-down"></i></div><div class="accordion-content active"><div class="control-group"> <label>Section Header</label> <input type="text" class="control-input" id="statSectionTitle" value="Key Performance Indicators"> </div><div class="control-group"> <label>Stat Values <small>(using global separator)</small></label> <textarea class="control-input" id="statValuesCSV" rows="2">85%,2.5M,150+,9.2/10</textarea> </div><div class="control-group"> <label>Stat Labels <small>(using global separator)</small></label> <textarea class="control-input" id="statLabelsCSV" rows="2">Success Rate,Active Users,Countries Reached,Avg. Rating</textarea> </div></div></div><div class="specific-settings-container"></div></div>
         <div class="tab-content" id="textToTable"><div class="accordion-item"><div class="accordion-header active"><h3>Text to Table Controls</h3><i class="fas fa-chevron-down"></i></div><div class="accordion-content active"><div class="control-group"> <label>Section Header</label> <input type="text" class="control-input" id="tableSectionTitle" value="Data Overview"> </div><div class="control-group"><label for="tableInputText">Input Text Data:</label><textarea id="tableInputText" class="control-input" rows="5" placeholder="Paste text here. Use tabs, commas, or vertical format."></textarea></div><div class="control-group"><label for="tableDataFormat">Data Format:</label><select id="tableDataFormat" class="control-input"><option value="tabular">Tabular (Columns)</option><option value="vertical">Vertical (Key: Value)</option></select></div><div class="control-group" id="tableSeparatorGroup"><label for="tableSeparator">Column Separator:</label><select id="tableSeparator" class="control-input"><option value="\t">Tab</option><option value=",">Comma (,)</option><option value="|">Pipe (|)</option><option value=";">Semicolon (;)</option></select></div><div class="control-group" id="tableVerticalOptions" style="display: none;"><label for="tableFieldSeparator">Field-Value Separator:</label><select id="tableFieldSeparator" class="control-input"><option value=" : ">Space-Colon-Space</option><option value=":">Colon</option><option value=" - ">Space-Dash-Space</option><option value="=">Equals</option></select></div><div class="control-group" id="tableHasHeaderGroup"><label style="display: flex; align-items: center; gap: 8px;"><input type="checkbox" id="tableHasHeader" class="control-input" checked style="width: auto;"> First row is header </label></div><h6>Table Styling</h6><div class="control-group"> <label>Header BG Color</label> <input type="color" class="control-input" id="tableHeaderBgColor" value="#f2f2f2"> </div><div class="control-group"> <label>Header Text Color</label> <input type="color" class="control-input" id="tableHeaderTextColor" value="#333333"> </div><div class="control-group"> <label>Odd Row BG Color</label> <input type="color" class="control-input" id="tableOddRowBgColor" value="#ffffff"> </div><div class="control-group"> <label>Even Row BG Color</label> <input type="color" class="control-input" id="tableEvenRowBgColor" value="#f9f9f9"> </div><div class="control-group"> <label>Border Color</label> <input type="color" class="control-input" id="tableBorderColor" value="#dddddd"> </div><div class="control-group"> <label>Body Text Color</label> <input type="color" class="control-input" id="tableBodyTextColor" value="#333333"> </div><div class="control-group"><button class="btn btn-success" onclick="copyGeneratedTable()" style="width: 100%;"><i class="fas fa-copy"></i> Copy Table for Pasting</button></div><div id="tableAlertContainer"></div></div></div><div class="specific-settings-container"></div></div>
@@ -1151,7 +1170,10 @@ A visual bookmarking tool that helps you discover and save creative ideas.</text
                 } else if (infographicBgType === 'image') {
                     let infographicBgImgSrc = getSpecificSetting('infographicBackgroundImageUpload') || getSpecificSetting('infographicBackgroundImageUrl');
                     if (infographicBgImgSrc) {
-                        infographicDiv.style.backgroundImage = `url(${sanitizeHTML(infographicBgImgSrc)})`;
+                        const overlayColor = getSpecificSetting('infographicBgOverlayColor', '#000000');
+                        const overlayOpacity = getSpecificSetting('infographicBgOverlayOpacity', '0.3');
+                        const rgbaOverlay = hexToRgba(overlayColor, overlayOpacity);
+                        infographicDiv.style.backgroundImage = `linear-gradient(${rgbaOverlay}, ${rgbaOverlay}), url(${sanitizeHTML(infographicBgImgSrc)})`;
                         infographicDiv.style.backgroundSize = `${getSpecificSetting('infographicBgZoom', '100')}%`;
                         infographicDiv.style.backgroundPosition = `${getSpecificSetting('infographicBgPosX', '0')}px ${getSpecificSetting('infographicBgPosY', '0')}px`;
                     }
@@ -1230,11 +1252,12 @@ A visual bookmarking tool that helps you discover and save creative ideas.</text
             }
         }
         
-        function createSectionTitle(title, f, l) {
+        function createSectionTitle(title, f, l, controlId) {
             if (!title) return '';
             const enableBg = getElementValue('globalSectionTitleBackgroundEnable', true);
             const titleColor = getSpecificSetting('sectionTitleColor');
             const headerColorVar = getComputedStyle(document.documentElement).getPropertyValue('--global-section-header-color');
+            const dataAttr = controlId ? `data-control-id="${controlId}"` : '';
 
             let finalStyle = `color: ${titleColor};`;
             if (enableBg) {
@@ -1244,7 +1267,7 @@ A visual bookmarking tool that helps you discover and save creative ideas.</text
                     finalStyle = `color: ${headerColorVar};`; 
                 }
             }
-            return `<h1 class="section-title" style="font-size: ${f.sectionTitleFontSize}; margin-bottom: ${l.sectionTitleMarginBottom}; ${finalStyle}">${sanitizeHTML(title)}</h1>`;
+            return `<h1 class="section-title" ${dataAttr} style="font-size: ${f.sectionTitleFontSize}; margin-bottom: ${l.sectionTitleMarginBottom}; ${finalStyle}">${sanitizeHTML(title)}</h1>`;
         }
 
         function generateSocialInfographic(canvas, padding) {
@@ -1276,8 +1299,8 @@ A visual bookmarking tool that helps you discover and save creative ideas.</text
             
             canvas.innerHTML = `<div class="infographic-content" style="padding:${padding};">
                 <div class="${textContentClass}">
-                    <div class="header" style="${headerStyle}">${sanitizeHTML(header)}</div>
-                    <p class="info-text" style="${infoTextStyle}">${sanitizeHTML(infoText).replace(/\n/g, '<br>')}</p>
+                    <div class="header" data-control-id="socialHeader" style="${headerStyle}">${sanitizeHTML(header)}</div>
+                    <p class="info-text" data-control-id="socialInfoText" style="${infoTextStyle}">${sanitizeHTML(infoText).replace(/\n/g, '<br>')}</p>
                 </div></div>`;
         }
         
@@ -1364,7 +1387,7 @@ A visual bookmarking tool that helps you discover and save creative ideas.</text
                         case 'square': bulletHtml = `<div class="news-bullet bullet-square" style="background-color: var(--primary); font-size: ${numberedBulletFontSize};">${i + 1}</div>`; break;
                         default: bulletHtml = `<div class="news-bullet" style="color:var(--primary); font-size: 1.2em;">•</div>`;
                     }
-                    listItems += `<div class="list-item"><div class="list-item-content">${bulletHtml} <p style="font-size:${fontStyles.paragraphFontSize};">${sanitizeHTML(p)}</p></div><div class="bullet-separator" style="${separatorCss}"></div></div>`;
+                    listItems += `<div class="list-item"><div class="list-item-content">${bulletHtml} <p data-control-id="newsListPoints" style="font-size:${fontStyles.paragraphFontSize};">${sanitizeHTML(p)}</p></div><div class="bullet-separator" style="${separatorCss}"></div></div>`;
                 });
                 let listContentHtml = `<div class="list-content">${listItems}</div>`;
                 const sideImagePos = getElementValue('newsSideImagePosition');
@@ -1375,7 +1398,7 @@ A visual bookmarking tool that helps you discover and save creative ideas.</text
                 if (sideImagePos !== 'none' && sideImageSrc) {
                     bodyHtml = `<div class="news-content-with-side-image ${sideImagePos === 'left' ? 'image-left' : ''}">
                                     ${listContentHtml}
-                                    <div class="side-image-container" style="flex-basis: ${sideImageWidth}; background-image: url(${sanitizeHTML(sideImageSrc)}); background-size: ${sideImageZoom};"></div>
+                                    <div class="side-image-container" data-control-id="newsSideImageUrl" style="flex-basis: ${sideImageWidth}; background-image: url(${sanitizeHTML(sideImageSrc)}); background-size: ${sideImageZoom};"></div>
                                  </div>`;
                 } else { bodyHtml = listContentHtml; }
             } else { // Quote Layout
@@ -1393,30 +1416,30 @@ A visual bookmarking tool that helps you discover and save creative ideas.</text
                 const attrAlign = getElementValue('newsQuoteAttributionAlignment', 'flex-start');
                 const attrMarginTop = getElementValue('newsQuoteAttributionMarginTop', '20') + 'px';
 
-                const attributionImageHtml = personImgSrc ? `<div class="news-person-image shape-${personImgShape}" style="width: ${personImgSize}; height: ${personImgSize};"><img src="${sanitizeHTML(personImgSrc)}" alt="${attribution}"></div>` : '';
+                const attributionImageHtml = personImgSrc ? `<div class="news-person-image shape-${personImgShape}" data-control-id="newsPersonImageUrl" style="width: ${personImgSize}; height: ${personImgSize};"><img src="${sanitizeHTML(personImgSrc)}" alt="${attribution}"></div>` : '';
                 
                 const attributionTextHtml = `<div class="news-quote-attribution-text">
-                    <span class="name" style="font-size: ${attrFontSize}; color: ${attrColor};">${attribution}</span>
-                    ${designation ? `<span class="designation" style="font-size: ${desigFontSize}; color: ${desigColor};">${designation}</span>` : ''}
+                    <span class="name" data-control-id="newsQuoteAttribution" style="font-size: ${attrFontSize}; color: ${attrColor};">${attribution}</span>
+                    ${designation ? `<span class="designation" data-control-id="newsQuoteDesignation" style="font-size: ${desigFontSize}; color: ${desigColor};">${designation}</span>` : ''}
                 </div>`;
                 
                 bodyHtml = `<div class="news-body-quote">
-                                <blockquote style="font-size: ${fontStyles.paragraphFontSize};">${quoteText}</blockquote>
+                                <blockquote data-control-id="newsQuoteText" style="font-size: ${fontStyles.paragraphFontSize};">${quoteText}</blockquote>
                             </div>
                             <div class="news-quote-bottom-area" style="justify-content: ${attrAlign}; margin-top: ${attrMarginTop};">${attributionImageHtml}${attributionTextHtml}</div>`;
             }
 
             const sourceText = sanitizeHTML(getElementValue('newsSourceText'));
             const showHeader = (contentType === 'quote') ? getElementValue('newsQuoteHeaderEnable') : true;
-            const taglineHtml = headerTagline ? `<div class="news-tagline">${headerTagline}</div>` : '';
+            const taglineHtml = headerTagline ? `<div class="news-tagline" data-control-id="newsHeaderTagline">${headerTagline}</div>` : '';
 
             let finalHtml = ``;
             if (showHeader) {
                  finalHtml += `
                 <div class="news-header-bar news-header-style-${headerStyle}" style="--header-color: ${topBarColor}; background-color: ${topBarColor}; font-size: ${headerBarFontSize}; justify-content: ${textAlign}; padding-top:${headerPadding}; padding-bottom:${headerPadding};">
                     <div class="news-header-bar-main">
-                        ${headerImage ? `<img src="${sanitizeHTML(headerImage)}" style="height: ${headerImageHeight};">` : ''}
-                        <span>${headerText}</span>
+                        ${headerImage ? `<img data-control-id="newsHeaderImageUrl" src="${sanitizeHTML(headerImage)}" style="height: ${headerImageHeight};">` : ''}
+                        <span data-control-id="newsTopBarText">${headerText}</span>
                          ${textAlign !== 'space-between' ? taglineHtml : ''}
                     </div>
                     ${textAlign === 'space-between' ? taglineHtml : ''}
@@ -1425,18 +1448,18 @@ A visual bookmarking tool that helps you discover and save creative ideas.</text
              finalHtml += `
                 <div class="news-content-area">
                     <div class="news-main-title" style="background-color: ${mainTitleBg}; font-size: ${mainTitleFontSize}; margin-bottom: ${mainTitleMarginBottom};">
-                         ${titleImage ? `<img src="${sanitizeHTML(titleImage)}" style="height: ${titleImageHeight};">` : ''}
-                         <span>${mainTitle}</span>
+                         ${titleImage ? `<img data-control-id="newsTitleImageUrl" src="${sanitizeHTML(titleImage)}" style="height: ${titleImageHeight};">` : ''}
+                         <span data-control-id="newsMainTitle">${mainTitle}</span>
                     </div>
                     <div class="news-body-list">${bodyHtml}</div>
-                    ${sourceText ? `<div class="news-source-text">${sourceText}</div>` : ''}
+                    ${sourceText ? `<div class="news-source-text" data-control-id="newsSourceText">${sourceText}</div>` : ''}
                 </div>`;
             canvas.insertAdjacentHTML('beforeend', finalHtml);
         }
 
         function generateProcessInfographic(contentDiv, f, l) {
             const sectionTitle = getElementValue('processSectionTitle');
-            let html = createSectionTitle(sectionTitle, f, l);
+            let html = createSectionTitle(sectionTitle, f, l, 'processSectionTitle');
             const titles = parseMultiValue(getElementValue('processStepTitlesCSV'));
             const descs = parseMultiValue(getElementValue('processStepDescsCSV'));
             const icons = parseMultiValue(getElementValue('processStepIconsCSV'));
@@ -1451,10 +1474,10 @@ A visual bookmarking tool that helps you discover and save creative ideas.</text
 
                     html += `
                         <div class="process-step">
-                            <div class="step-number">${icon}</div>
+                            <div class="step-number" data-control-id="processStepIconsCSV">${icon}</div>
                             <div class="step-content">
-                                <h3 style="font-size: ${f.headerFontSize}; margin-bottom: ${l.subHeaderMarginBottom};">${title}</h3>
-                                <p style="font-size: ${f.paragraphFontSize}; line-height: ${l.paragraphLineHeight};">${desc}</p>
+                                <h3 data-control-id="processStepTitlesCSV" style="font-size: ${f.headerFontSize}; margin-bottom: ${l.subHeaderMarginBottom};">${title}</h3>
+                                <p data-control-id="processStepDescsCSV" style="font-size: ${f.paragraphFontSize}; line-height: ${l.paragraphLineHeight};">${desc}</p>
                             </div>
                         </div>`;
                 }
@@ -1464,7 +1487,7 @@ A visual bookmarking tool that helps you discover and save creative ideas.</text
 
         function generateStatisticalInfographic(contentDiv, f, l) {
             const sectionTitle = getElementValue('statSectionTitle');
-            let html = createSectionTitle(sectionTitle, f, l);
+            let html = createSectionTitle(sectionTitle, f, l, 'statSectionTitle');
             const values = parseMultiValue(getElementValue('statValuesCSV'));
             const labels = parseMultiValue(getElementValue('statLabelsCSV'));
             const maxItems = Math.max(values.length, labels.length);
@@ -1478,8 +1501,8 @@ A visual bookmarking tool that helps you discover and save creative ideas.</text
 
                     html += `
                         <div class="stat-card">
-                            <div class="stat-number" style="font-size: ${valueFontSize};">${value}</div>
-                            <div class="stat-label" style="font-size: ${f.paragraphFontSize};">${label}</div>
+                            <div class="stat-number" data-control-id="statValuesCSV" style="font-size: ${valueFontSize};">${value}</div>
+                            <div class="stat-label" data-control-id="statLabelsCSV" style="font-size: ${f.paragraphFontSize};">${label}</div>
                         </div>`;
                 }
                 html += '</div>';
@@ -1487,12 +1510,12 @@ A visual bookmarking tool that helps you discover and save creative ideas.</text
             contentDiv.innerHTML = html;
         }
         
-        function generateTableInfographic(contentDiv, f, l){const title=getElementValue('tableSectionTitle','Data Table');let html=createSectionTitle(title,f,l);const inputText=document.getElementById('tableInputText').value.trim(),dataFormat=document.getElementById('tableDataFormat').value;if(!inputText){html+=`<p style="text-align:center; font-size: ${f.paragraphFontSize};">Paste data to generate a table.</p>`;contentDiv.innerHTML=html;return}const headerBg=getElementValue('tableHeaderBgColor','#f2f2f2'),headerText=getElementValue('tableHeaderTextColor','#333333'),oddRowBg=getElementValue('tableOddRowBgColor','#ffffff'),evenRowBg=getElementValue('tableEvenRowBgColor','#f9f9f9'),borderColor=getElementValue('tableBorderColor','#dddddd'),bodyTextColor=getElementValue('tableBodyTextColor','#333333');try{let tableContentHTML='';if(dataFormat==='vertical'){tableContentHTML=generateVerticalTableContent(inputText)}else{tableContentHTML=generateTabularTableContent(inputText)}html+=`<div class="generated-table-wrapper"><table class="generated-table" style="border: 1px solid ${borderColor}; font-size: ${f.paragraphFontSize};">${tableContentHTML}</table></div>`}catch(e){html+=`<p style="text-align:center; color:red; font-size: ${f.paragraphFontSize};">${sanitizeHTML(e.message)}</p>`}contentDiv.innerHTML=html;const tableEl=contentDiv.querySelector('.generated-table');if(tableEl){tableEl.querySelectorAll('th').forEach(th=>{th.style.backgroundColor=headerBg;th.style.color=headerText;th.style.border=`1px solid ${borderColor}`});tableEl.querySelectorAll('tbody tr').forEach((row,index)=>{row.style.backgroundColor=(index%2===0)?oddRowBg:evenRowBg;row.querySelectorAll('td').forEach(cell=>{cell.style.border=`1px solid ${borderColor}`;cell.style.color=bodyTextColor})})}}
+        function generateTableInfographic(contentDiv, f, l){const title=getElementValue('tableSectionTitle','Data Table');let html=createSectionTitle(title,f,l, 'tableSectionTitle');const inputText=document.getElementById('tableInputText').value.trim(),dataFormat=document.getElementById('tableDataFormat').value;if(!inputText){html+=`<p style="text-align:center; font-size: ${f.paragraphFontSize};">Paste data to generate a table.</p>`;contentDiv.innerHTML=html;return}const headerBg=getElementValue('tableHeaderBgColor','#f2f2f2'),headerText=getElementValue('tableHeaderTextColor','#333333'),oddRowBg=getElementValue('tableOddRowBgColor','#ffffff'),evenRowBg=getElementValue('tableEvenRowBgColor','#f9f9f9'),borderColor=getElementValue('tableBorderColor','#dddddd'),bodyTextColor=getElementValue('tableBodyTextColor','#333333');try{let tableContentHTML='';if(dataFormat==='vertical'){tableContentHTML=generateVerticalTableContent(inputText)}else{tableContentHTML=generateTabularTableContent(inputText)}html+=`<div class="generated-table-wrapper"><table class="generated-table" data-control-id="tableInputText" style="border: 1px solid ${borderColor}; font-size: ${f.paragraphFontSize};">${tableContentHTML}</table></div>`}catch(e){html+=`<p style="text-align:center; color:red; font-size: ${f.paragraphFontSize};">${sanitizeHTML(e.message)}</p>`}contentDiv.innerHTML=html;const tableEl=contentDiv.querySelector('.generated-table');if(tableEl){tableEl.querySelectorAll('th').forEach(th=>{th.style.backgroundColor=headerBg;th.style.color=headerText;th.style.border=`1px solid ${borderColor}`});tableEl.querySelectorAll('tbody tr').forEach((row,index)=>{row.style.backgroundColor=(index%2===0)?oddRowBg:evenRowBg;row.querySelectorAll('td').forEach(cell=>{cell.style.border=`1px solid ${borderColor}`;cell.style.color=bodyTextColor})})}}
         function generateVerticalTableContent(text){const separator=document.getElementById('tableFieldSeparator').value;const records=text.split(/\n\s*\n/).filter(r=>r.trim());if(records.length===0)throw new Error("No data blocks found in vertical format.");const headers=records[0].trim().split('\n').map(line=>{const parts=line.split(separator);return parts.length>=2?parts[0].trim():null}).filter(Boolean);if(headers.length===0)throw new Error("Could not determine headers from the first block.");let html='<thead><tr>';headers.forEach(h=>{html+=`<th>${sanitizeHTML(h)}</th>`});html+='</tr></thead><tbody>';records.forEach(record=>{const lines=record.trim().split('\n');const recordMap=new Map();lines.forEach(line=>{const parts=line.split(separator);if(parts.length>=2){recordMap.set(parts[0].trim(),parts.slice(1).join(separator).trim())}});html+='<tr>';headers.forEach(h=>{html+=`<td>${sanitizeHTML(recordMap.get(h)||"")}</td>`});html+='</tr>'});html+='</tbody>';return html}
         function generateTabularTableContent(text){const separator=document.getElementById('tableSeparator').value.replace(/\\t/g,'\t');const hasHeader=document.getElementById('tableHasHeader').checked;const lines=text.split('\n').filter(l=>l.trim());if(lines.length===0)throw new Error("No valid data found in tabular format.");let html='';if(hasHeader&&lines.length>0){const headerCells=lines.shift().split(separator);html+='<thead><tr>';headerCells.forEach(cell=>{html+=`<th>${sanitizeHTML(cell.trim())}</th>`});html+='</tr></thead>'}html+='<tbody>';lines.forEach(line=>{const cells=line.split(separator);html+='<tr>';cells.forEach(cell=>{html+=`<td>${sanitizeHTML(cell.trim())}</td>`});html+='</tr>'});html+='</tbody>';return html}
         function generateInformationalInfographic(contentDiv, f, l) {
             const sectionTitle = getElementValue('infoSectionTitle');
-            let html = createSectionTitle(sectionTitle, f, l);
+            let html = createSectionTitle(sectionTitle, f, l, 'infoSectionTitle');
             const blockCount = getElementIntValue('infoBlockCount', 1);
 
             for (let i = 1; i <= blockCount; i++) {
@@ -1505,7 +1528,7 @@ A visual bookmarking tool that helps you discover and save creative ideas.</text
                 let imageHtml = '';
                 if (imageUrl && imagePos !== 'none') {
                     imageHtml = `
-                        <div class="info-block-image-container size-${imageSize}">
+                        <div class="info-block-image-container size-${imageSize}" data-control-id="infoBlock${i}ImageUrl">
                             <img src="${sanitizeHTML(imageUrl)}" alt="${title}">
                         </div>`;
                 }
@@ -1514,8 +1537,8 @@ A visual bookmarking tool that helps you discover and save creative ideas.</text
                     <div class="info-block-item ${imagePos !== 'none' ? 'image-' + imagePos : ''}">
                         ${imageHtml}
                         <div class="info-block-text">
-                            <h2 style="font-size: ${f.headerFontSize}; margin-bottom: ${l.headerMarginBottom};">${title}</h2>
-                            <p style="font-size: ${f.paragraphFontSize}; line-height: ${l.paragraphLineHeight};">${content}</p>
+                            <h2 data-control-id="infoBlock${i}Title" style="font-size: ${f.headerFontSize}; margin-bottom: ${l.headerMarginBottom};">${title}</h2>
+                            <p data-control-id="infoBlock${i}Content" style="font-size: ${f.paragraphFontSize}; line-height: ${l.paragraphLineHeight};">${content}</p>
                         </div>
                     </div>`;
             }
@@ -1525,7 +1548,7 @@ A visual bookmarking tool that helps you discover and save creative ideas.</text
         function generateTimelineInfographic(contentDiv, f, l) {
             const sectionTitle = getElementValue('timelineSectionTitle');
             const style = getElementValue('timelineLayoutType', 'modern-vertical');
-            contentDiv.innerHTML = createSectionTitle(sectionTitle, f, l);
+            contentDiv.innerHTML = createSectionTitle(sectionTitle, f, l, 'timelineSectionTitle');
 
             const dates = parseMultiValue(getElementValue('timelineEventDatesCSV'));
             const titles = parseMultiValue(getElementValue('timelineEventTitlesCSV'));
@@ -1546,21 +1569,21 @@ A visual bookmarking tool that helps you discover and save creative ideas.</text
                 const endText = sanitizeHTML(getElementValue('timelineEndText', ''));
                 const endIcon = getElementValue('timelineEndIcon', '');
                 
-                let startNodeHtml = (showStartEnd && (startText || startIcon)) ? `<div class="timeline-start-node" style="font-size:${f.paragraphFontSize};">${createIconHTML(startIcon)}<span>${startText}</span></div>` : '';
-                let endNodeHtml = (showStartEnd && (endText || endIcon)) ? `<div class="timeline-end-node" style="font-size:${f.paragraphFontSize};">${createIconHTML(endIcon)}<span>${endText}</span></div>` : '';
+                let startNodeHtml = (showStartEnd && (startText || startIcon)) ? `<div class="timeline-start-node" data-control-id="timelineStartText" style="font-size:${f.paragraphFontSize};">${createIconHTML(startIcon)}<span>${startText}</span></div>` : '';
+                let endNodeHtml = (showStartEnd && (endText || endIcon)) ? `<div class="timeline-end-node" data-control-id="timelineEndText" style="font-size:${f.paragraphFontSize};">${createIconHTML(endIcon)}<span>${endText}</span></div>` : '';
 
                 if (style === 'classic-vertical') {
                     html += `<div class="timeline-classic-vertical-container">${startNodeHtml}`;
                     for (let i = 0; i < maxItems; i++) {
                         const imageHtml = images[i] ? `<img src="${sanitizeHTML(images[i])}" alt="${sanitizeHTML(titles[i] || 'Timeline image')}">` : '';
-                        html += `<div class="timeline-classic-vertical-item"><div class="timeline-classic-vertical-dot"></div><div class="timeline-classic-vertical-content"><h3 style="font-size:${f.smallTextFontSize};">${sanitizeHTML(dates[i] || '')}</h3><h4 style="font-size:${f.headerFontSize}; margin-bottom:${l.subHeaderMarginBottom};">${sanitizeHTML(titles[i] || 'Event Title')}</h4><p style="font-size:${f.paragraphFontSize}; line-height:${l.paragraphLineHeight};">${sanitizeHTML(descs[i] || 'Event description.')}</p>${imageHtml}</div></div>`;
+                        html += `<div class="timeline-classic-vertical-item"><div class="timeline-classic-vertical-dot"></div><div class="timeline-classic-vertical-content"><h3 data-control-id="timelineEventDatesCSV" style="font-size:${f.smallTextFontSize};">${sanitizeHTML(dates[i] || '')}</h3><h4 data-control-id="timelineEventTitlesCSV" style="font-size:${f.headerFontSize}; margin-bottom:${l.subHeaderMarginBottom};">${sanitizeHTML(titles[i] || 'Event Title')}</h4><p data-control-id="timelineEventDescsCSV" style="font-size:${f.paragraphFontSize}; line-height:${l.paragraphLineHeight};">${sanitizeHTML(descs[i] || 'Event description.')}</p>${imageHtml}</div></div>`;
                     }
                     html += `${endNodeHtml}</div>`;
                 } else { // classic-horizontal
                     html += `<div class="timeline-classic-horizontal-wrapper"><div class="timeline-classic-horizontal-container">${startNodeHtml}<div class="timeline-classic-horizontal-line"></div><div class="timeline-classic-horizontal-events">`;
                     for (let i = 0; i < maxItems; i++) {
                         const imageHtml = images[i] ? `<img src="${sanitizeHTML(images[i])}" alt="${sanitizeHTML(titles[i] || 'Timeline image')}">` : '';
-                        html += `<div class="timeline-classic-horizontal-item"><div class="timeline-classic-horizontal-dot"></div><div class="timeline-classic-horizontal-content"><h3 style="font-size:${f.smallTextFontSize};">${sanitizeHTML(dates[i] || '')}</h3><h4 style="font-size:${Math.max(12, parseFloat(f.paragraphFontSize))}px; margin-bottom:${l.subHeaderMarginBottom};">${sanitizeHTML(titles[i] || 'Event')}</h4><p style="font-size:${Math.max(10, parseFloat(f.smallTextFontSize))}px; line-height:${l.paragraphLineHeight};">${sanitizeHTML(descs[i] || 'Desc.')}</p>${imageHtml}</div></div>`;
+                        html += `<div class="timeline-classic-horizontal-item"><div class="timeline-classic-horizontal-dot"></div><div class="timeline-classic-horizontal-content"><h3 data-control-id="timelineEventDatesCSV" style="font-size:${f.smallTextFontSize};">${sanitizeHTML(dates[i] || '')}</h3><h4 data-control-id="timelineEventTitlesCSV" style="font-size:${Math.max(12, parseFloat(f.paragraphFontSize))}px; margin-bottom:${l.subHeaderMarginBottom};">${sanitizeHTML(titles[i] || 'Event')}</h4><p data-control-id="timelineEventDescsCSV" style="font-size:${Math.max(10, parseFloat(f.smallTextFontSize))}px; line-height:${l.paragraphLineHeight};">${sanitizeHTML(descs[i] || 'Desc.')}</p>${imageHtml}</div></div>`;
                     }
                     html += `</div>${endNodeHtml}</div></div>`;
                 }
@@ -1570,14 +1593,14 @@ A visual bookmarking tool that helps you discover and save creative ideas.</text
                 for (let i = 0; i < maxItems; i++) {
                     const sideClass = (i % 2 === 0) ? 'item-right' : 'item-left';
                     const dotColor = themeColors[i % themeColors.length];
-                    const imageHtml = images[i] ? `<img class="modern-timeline-logo" style="max-height:${modernImageSize};" src="${sanitizeHTML(images[i])}" alt="${sanitizeHTML(titles[i] || '')}">` : '';
+                    const imageHtml = images[i] ? `<img class="modern-timeline-logo" data-control-id="timelineEventImagesCSV" style="max-height:${modernImageSize};" src="${sanitizeHTML(images[i])}" alt="${sanitizeHTML(titles[i] || '')}">` : '';
                     html += `<div class="timeline-modern-vertical-item ${sideClass}">
                                 <div class="modern-timeline-spacer"></div>
                                 <div class="modern-timeline-dot" style="border-color:${dotColor};"></div>
                                 <div class="modern-timeline-vertical-content">
                                     ${imageHtml}
-                                    <h3 style="font-size:${f.headerFontSize}; margin-bottom:${l.subHeaderMarginBottom}; color:${dotColor} !important;">${sanitizeHTML(dates[i] || '')} ${sanitizeHTML(titles[i] || '')}</h3>
-                                    <p style="font-size:${f.paragraphFontSize}; line-height:${l.paragraphLineHeight};">${sanitizeHTML(descs[i] || '')}</p>
+                                    <h3 data-control-id="timelineEventTitlesCSV" style="font-size:${f.headerFontSize}; margin-bottom:${l.subHeaderMarginBottom}; color:${dotColor} !important;">${sanitizeHTML(dates[i] || '')} ${sanitizeHTML(titles[i] || '')}</h3>
+                                    <p data-control-id="timelineEventDescsCSV" style="font-size:${f.paragraphFontSize}; line-height:${l.paragraphLineHeight};">${sanitizeHTML(descs[i] || '')}</p>
                                 </div>
                              </div>`;
                 }
@@ -1590,16 +1613,16 @@ A visual bookmarking tool that helps you discover and save creative ideas.</text
 
                 for (let i = 0; i < maxItems; i++) {
                     const color = themeColors[i % themeColors.length];
-                    const imageHtml = images[i] ? `<img style="max-height:${modernImageSize}; max-width:${modernImageSize};" src="${sanitizeHTML(images[i])}" alt="${sanitizeHTML(titles[i] || '')}">` : '';
+                    const imageHtml = images[i] ? `<img data-control-id="timelineEventImagesCSV" style="max-height:${modernImageSize}; max-width:${modernImageSize};" src="${sanitizeHTML(images[i])}" alt="${sanitizeHTML(titles[i] || '')}">` : '';
                     
                     axisHtml += `<div class="modern-horizontal-stop">
-                                    <div class="modern-horizontal-year-box" style="background-color:${color}; font-size:${f.headerFontSize};">${sanitizeHTML(dates[i] || '')}</div>
+                                    <div class="modern-horizontal-year-box" data-control-id="timelineEventDatesCSV" style="background-color:${color}; font-size:${f.headerFontSize};">${sanitizeHTML(dates[i] || '')}</div>
                                     <div class="modern-horizontal-icon-wrapper">${imageHtml}</div>
                                  </div>`;
                     
                     contentHtml += `<div class="modern-horizontal-content-box" style="border-color:${color};">
-                                        <h4 style="font-size:${f.headerFontSize}; color:${color} !important; margin-bottom:${l.subHeaderMarginBottom};">${sanitizeHTML(titles[i] || '')}</h4>
-                                        <p style="font-size:${f.paragraphFontSize}; line-height:${l.paragraphLineHeight};">${sanitizeHTML(descs[i] || '')}</p>
+                                        <h4 data-control-id="timelineEventTitlesCSV" style="font-size:${f.headerFontSize}; color:${color} !important; margin-bottom:${l.subHeaderMarginBottom};">${sanitizeHTML(titles[i] || '')}</h4>
+                                        <p data-control-id="timelineEventDescsCSV" style="font-size:${f.paragraphFontSize}; line-height:${l.paragraphLineHeight};">${sanitizeHTML(descs[i] || '')}</p>
                                     </div>`;
                 }
                 axisHtml += '</div>';
@@ -1611,7 +1634,7 @@ A visual bookmarking tool that helps you discover and save creative ideas.</text
 
         function generateBarChartInfographic(contentDiv, f, l) {
             const sectionTitle = getElementValue('barChartSectionTitle');
-            let html = createSectionTitle(sectionTitle, f, l);
+            let html = createSectionTitle(sectionTitle, f, l, 'barChartSectionTitle');
             const chartTitle = sanitizeHTML(getElementValue('barChartTitle', 'Bar Chart'));
             const chartHeight = getElementIntValue('barChartHeight', 250);
             const labels = parseMultiValue(getElementValue('barChartLabelsCSV'));
@@ -1619,7 +1642,7 @@ A visual bookmarking tool that helps you discover and save creative ideas.</text
             const chartId = 'barChartCanvas';
             
             html += `
-                <div class="chart-container">
+                <div class="chart-container" data-control-id="barChartTitle">
                     <h3 class="chart-title" style="font-size: ${f.headerFontSize};">${chartTitle}</h3>
                     <div class="chart-canvas-wrapper" style="height: ${chartHeight}px;">
                         <canvas id="${chartId}"></canvas>
@@ -1631,7 +1654,7 @@ A visual bookmarking tool that helps you discover and save creative ideas.</text
 
         function generatePieChartInfographic(contentDiv, f, l) {
             const sectionTitle = getElementValue('pieChartSectionTitle');
-            let html = createSectionTitle(sectionTitle, f, l);
+            let html = createSectionTitle(sectionTitle, f, l, 'pieChartSectionTitle');
             const chartTitle = sanitizeHTML(getElementValue('pieChartUserTitle', 'Pie Chart'));
             const chartHeight = getElementIntValue('pieChartHeight', 250);
             const labels = parseMultiValue(getElementValue('pieChartLabelsCSV'));
@@ -1639,7 +1662,7 @@ A visual bookmarking tool that helps you discover and save creative ideas.</text
             const chartId = 'pieChartCanvas';
             
             html += `
-                <div class="chart-container">
+                <div class="chart-container" data-control-id="pieChartUserTitle">
                     <h3 class="chart-title" style="font-size: ${f.headerFontSize};">${chartTitle}</h3>
                     <div class="chart-canvas-wrapper" style="height: ${chartHeight}px;">
                         <canvas id="${chartId}"></canvas>
@@ -1651,7 +1674,7 @@ A visual bookmarking tool that helps you discover and save creative ideas.</text
 
         function generateDoughnutChartInfographic(contentDiv, f, l) {
             const sectionTitle = getElementValue('doughnutChartSectionTitle');
-            let html = createSectionTitle(sectionTitle, f, l);
+            let html = createSectionTitle(sectionTitle, f, l, 'doughnutChartSectionTitle');
             const chartTitle = sanitizeHTML(getElementValue('doughnutChartUserTitle', 'Doughnut Chart'));
             const chartHeight = getElementIntValue('doughnutChartHeight', 250);
             const labels = parseMultiValue(getElementValue('doughnutChartLabelsCSV'));
@@ -1659,7 +1682,7 @@ A visual bookmarking tool that helps you discover and save creative ideas.</text
             const chartId = 'doughnutChartCanvas';
             
             html += `
-                <div class="chart-container">
+                <div class="chart-container" data-control-id="doughnutChartUserTitle">
                     <h3 class="chart-title" style="font-size: ${f.headerFontSize};">${chartTitle}</h3>
                     <div class="chart-canvas-wrapper" style="height: ${chartHeight}px;">
                         <canvas id="${chartId}"></canvas>
@@ -1671,7 +1694,7 @@ A visual bookmarking tool that helps you discover and save creative ideas.</text
         
         function generateHalfDoughnutChartInfographic(contentDiv, f, l) {
             const sectionTitle = getElementValue('halfDoughnutChartSectionTitle');
-            let html = createSectionTitle(sectionTitle, f, l);
+            let html = createSectionTitle(sectionTitle, f, l, 'halfDoughnutChartSectionTitle');
             const chartTitle = sanitizeHTML(getElementValue('halfDoughnutChartUserTitle', 'Gauge Chart'));
             const chartHeight = getElementIntValue('halfDoughnutChartHeight', 200);
             const labels = parseMultiValue(getElementValue('halfDoughnutChartLabelsCSV'));
@@ -1679,7 +1702,7 @@ A visual bookmarking tool that helps you discover and save creative ideas.</text
             const chartId = 'halfDoughnutChartCanvas';
 
             html += `
-                <div class="chart-container">
+                <div class="chart-container" data-control-id="halfDoughnutChartUserTitle">
                      <h3 class="chart-title" style="font-size: ${f.headerFontSize};">${chartTitle}</h3>
                     <div class="chart-canvas-wrapper" style="height: ${chartHeight}px;">
                         <canvas id="${chartId}"></canvas>
@@ -1691,7 +1714,7 @@ A visual bookmarking tool that helps you discover and save creative ideas.</text
 
         function generateComparisonInfographic(contentDiv, f, l) {
             const sectionTitle = getElementValue('compareSectionTitle');
-            let html = createSectionTitle(sectionTitle, f, l);
+            let html = createSectionTitle(sectionTitle, f, l, 'compareSectionTitle');
             html += '<div class="comparison-grid">';
 
             for(let i = 1; i <= 2; i++) {
@@ -1701,14 +1724,14 @@ A visual bookmarking tool that helps you discover and save creative ideas.</text
                 
                 let featuresHtml = '<ul>';
                 features.forEach(feature => {
-                    featuresHtml += `<li style="font-size: ${f.paragraphFontSize};">${createIconHTML('fas fa-check-circle')} ${sanitizeHTML(feature)}</li>`;
+                    featuresHtml += `<li data-control-id="compareItem${i}FeaturesCSV" style="font-size: ${f.paragraphFontSize};">${createIconHTML('fas fa-check-circle')} ${sanitizeHTML(feature)}</li>`;
                 });
                 featuresHtml += '</ul>';
 
                 html += `
                     <div class="comparison-card">
-                        <h3 style="font-size: ${f.headerFontSize}; margin-bottom:${l.headerMarginBottom};">${title}</h3>
-                        <div class="price" style="font-size: ${f.paragraphFontSize};">${price}</div>
+                        <h3 data-control-id="compareItem${i}Title" style="font-size: ${f.headerFontSize}; margin-bottom:${l.headerMarginBottom};">${title}</h3>
+                        <div class="price" data-control-id="compareItem${i}Price" style="font-size: ${f.paragraphFontSize};">${price}</div>
                         ${featuresHtml}
                     </div>`;
             }
@@ -1718,7 +1741,7 @@ A visual bookmarking tool that helps you discover and save creative ideas.</text
 
         function generateHierarchicalInfographic(contentDiv, f, l) {
             const sectionTitle = getElementValue('hierarchySectionTitle');
-            contentDiv.innerHTML = createSectionTitle(sectionTitle, f, l);
+            contentDiv.innerHTML = createSectionTitle(sectionTitle, f, l, 'hierarchySectionTitle');
 
             const data = getElementValue('hierarchyData', '');
             const lines = data.split('\n').filter(line => line.trim() !== '');
@@ -1758,7 +1781,7 @@ A visual bookmarking tool that helps you discover and save creative ideas.</text
                 
                 let html = `
                     <div class="hierarchy-node-wrapper">
-                        <div class="hierarchy-node" style="background:${nodeColor};">
+                        <div class="hierarchy-node" data-control-id="hierarchyData" style="background:${nodeColor};">
                             <h4 style="font-size: ${f.paragraphFontSize}">${sanitizeHTML(node.text)}</h4>
                             ${node.children.length > 0 ? '<div class="node-connector"></div>' : ''}
                         </div>
@@ -1786,7 +1809,7 @@ A visual bookmarking tool that helps you discover and save creative ideas.</text
 
         function generateListInfographic(contentDiv, f, l) {
             const sectionTitle = getElementValue('listSectionTitle');
-            let html = createSectionTitle(sectionTitle, f, l);
+            let html = createSectionTitle(sectionTitle, f, l, 'listSectionTitle');
             const titles = parseMultiValue(getElementValue('listItemTitlesCSV'));
             const descs = parseMultiValue(getElementValue('listItemDescsCSV'));
             const icons = parseMultiValue(getElementValue('listItemIconsCSV'));
@@ -1802,10 +1825,10 @@ A visual bookmarking tool that helps you discover and save creative ideas.</text
 
                     html += `
                         <div class="list-infographic-item">
-                            <div class="icon">${icon}</div>
+                            <div class="icon" data-control-id="listItemIconsCSV">${icon}</div>
                             <div class="text-content">
-                                <h4 style="font-size: ${f.headerFontSize}; margin-bottom: ${l.subHeaderMarginBottom};">${title}</h4>
-                                <p style="font-size: ${f.paragraphFontSize}; line-height: ${l.paragraphLineHeight};">${desc}</p>
+                                <h4 data-control-id="listItemTitlesCSV" style="font-size: ${f.headerFontSize}; margin-bottom: ${l.subHeaderMarginBottom};">${title}</h4>
+                                <p data-control-id="listItemDescsCSV" style="font-size: ${f.paragraphFontSize}; line-height: ${l.paragraphLineHeight};">${desc}</p>
                             </div>
                         </div>`;
                 }
@@ -1824,21 +1847,21 @@ A visual bookmarking tool that helps you discover and save creative ideas.</text
             let html = `<div class="did-you-know-infographic">`;
             
             if (mainHeader) {
-                 html += `<h1 class="dyk-header" style="font-size: ${f.sectionTitleFontSize}; margin-bottom: ${l.sectionTitleMarginBottom};">${mainHeader}</h1>`;
+                 html += `<h1 class="dyk-header" data-control-id="didYouKnowMainHeader" style="font-size: ${f.sectionTitleFontSize}; margin-bottom: ${l.sectionTitleMarginBottom};">${mainHeader}</h1>`;
             }
 
             if(imageUrl) {
-                html += `<div class="dyk-image-container" style="width: ${imageSize}; height: ${imageSize};">
+                html += `<div class="dyk-image-container" data-control-id="didYouKnowImageUrl" style="width: ${imageSize}; height: ${imageSize};">
                             <img src="${sanitizeHTML(imageUrl)}" alt="Fact Image">
                          </div>`;
             }
             
             if (factText) {
-                html += `<p class="dyk-fact-text" style="font-size: ${f.paragraphFontSize}; margin: ${l.headerMarginBottom} 0;">${factText}</p>`;
+                html += `<p class="dyk-fact-text" data-control-id="didYouKnowFact" style="font-size: ${f.paragraphFontSize}; margin: ${l.headerMarginBottom} 0;">${factText}</p>`;
             }
 
             if (sourceText) {
-                html += `<p class="dyk-source-text" style="font-size: ${f.smallTextFontSize};">${sourceText}</p>`;
+                html += `<p class="dyk-source-text" data-control-id="didYouKnowSource" style="font-size: ${f.smallTextFontSize};">${sourceText}</p>`;
             }
             
             html += `</div>`;
@@ -1858,15 +1881,15 @@ A visual bookmarking tool that helps you discover and save creative ideas.</text
 
             let imageHtml = '';
             if (imageUrl) {
-                imageHtml = `<div class="image-container"><img src="${imageUrl}" class="main-image" alt="${header}"></div>`;
+                imageHtml = `<div class="image-container" data-control-id="comingUpImageUrl"><img src="${imageUrl}" class="main-image" alt="${header}"></div>`;
             }
 
             const textHtml = `
                 <div class="text-content-area">
-                    <h1 class="header" style="font-size:${f.sectionTitleFontSize}; margin-bottom:${l.headerMarginBottom};">${header}</h1>
-                    <h2 class="sub-header" style="font-size:${f.headerFontSize}; margin-bottom:${l.headerMarginBottom};">${subHeader}</h2>
-                    <p class="info-text" style="font-size:${f.paragraphFontSize}; line-height:${l.paragraphLineHeight}; margin-bottom: 20px;">${infoText}</p>
-                    <div class="date-time" style="font-size:${f.paragraphFontSize};">${date} &bull; ${time}</div>
+                    <h1 class="header" data-control-id="comingUpHeader" style="font-size:${f.sectionTitleFontSize}; margin-bottom:${l.headerMarginBottom};">${header}</h1>
+                    <h2 class="sub-header" data-control-id="comingUpSubHeader" style="font-size:${f.headerFontSize}; margin-bottom:${l.headerMarginBottom};">${subHeader}</h2>
+                    <p class="info-text" data-control-id="comingUpInfoText" style="font-size:${f.paragraphFontSize}; line-height:${l.paragraphLineHeight}; margin-bottom: 20px;">${infoText}</p>
+                    <div class="date-time" data-control-id="comingUpDate" style="font-size:${f.paragraphFontSize};">${date} &bull; ${time}</div>
                 </div>`;
             
             if (position === 'background') {
@@ -2095,7 +2118,7 @@ A visual bookmarking tool that helps you discover and save creative ideas.</text
         
         function generateDamInfographic(contentDiv, f, l) {
             const sectionTitle = getElementValue('damSectionTitle', 'Dam Levels');
-            let html = createSectionTitle(sectionTitle, f, l);
+            let html = createSectionTitle(sectionTitle, f, l, 'damSectionTitle');
             const cardWidth = getElementIntValue('damCardWidth', 150);
             html += `<div class="dam-grid" style="grid-template-columns: repeat(auto-fit, minmax(${cardWidth}px, 1fr));">`;
             const names = parseMultiValue(getElementValue('damNamesCSV'));
@@ -2125,11 +2148,11 @@ A visual bookmarking tool that helps you discover and save creative ideas.</text
                     const gradientEnd = shadeHexColor(cardColor, -0.25);
                     html += `
                         <div class="dam-card" style="background: linear-gradient(135deg, ${cardColor}, ${gradientEnd});">
-                            <div class="dam-name" style="font-size: ${f.headerFontSize}; margin-bottom: ${l.subHeaderMarginBottom};">${name}</div>
+                            <div class="dam-name" data-control-id="damNamesCSV" style="font-size: ${f.headerFontSize}; margin-bottom: ${l.subHeaderMarginBottom};">${name}</div>
                             <div class="dam-level" style="font-size: ${levelFontSize}px; margin-bottom: ${l.headerMarginBottom};">${percentage}%</div>
                             <div class="dam-progress-bar-bg"><div class="dam-progress-bar-fg" style="width: ${percentage}%;"></div></div>
-                            <div class="dam-capacity-info" style="font-size: ${f.smallTextFontSize}; line-height: ${l.paragraphLineHeight};">${level.toLocaleString(undefined, {minimumFractionDigits: (level % 1 === 0 ? 0 : 1), maximumFractionDigits: 2})} / ${capacity.toLocaleString(undefined, {minimumFractionDigits: (capacity % 1 === 0 ? 0 : 1), maximumFractionDigits: 2})} ${sanitizeHTML(unit)}</div>
-                            <div class="dam-progress-label" style="font-size: ${Math.max(7, 0.9 * parseFloat(f.smallTextFontSize))}px;">${sanitizeHTML(progressLabel)}</div>
+                            <div class="dam-capacity-info" data-control-id="damPresentLevelsCSV" style="font-size: ${f.smallTextFontSize}; line-height: ${l.paragraphLineHeight};">${level.toLocaleString(undefined, {minimumFractionDigits: (level % 1 === 0 ? 0 : 1), maximumFractionDigits: 2})} / ${capacity.toLocaleString(undefined, {minimumFractionDigits: (capacity % 1 === 0 ? 0 : 1), maximumFractionDigits: 2})} ${sanitizeHTML(unit)}</div>
+                            <div class="dam-progress-label" data-control-id="damProgressLabel" style="font-size: ${Math.max(7, 0.9 * parseFloat(f.smallTextFontSize))}px;">${sanitizeHTML(progressLabel)}</div>
                         </div>`;
                 }
             }
@@ -2139,7 +2162,7 @@ A visual bookmarking tool that helps you discover and save creative ideas.</text
 
         function generatePriceInfographic(contentDiv, f, l) {
             const sectionTitle = getElementValue('priceSectionTitle', 'Current Rates');
-            let html = createSectionTitle(sectionTitle, f, l);
+            let html = createSectionTitle(sectionTitle, f, l, 'priceSectionTitle');
             const cardWidth = getElementIntValue('priceCardWidth', 180);
             html += `<div class="price-grid" style="grid-template-columns: repeat(auto-fit, minmax(${cardWidth}px, 1fr));">`;
 
@@ -2172,15 +2195,15 @@ A visual bookmarking tool that helps you discover and save creative ideas.</text
 
                 html += `
                     <div class="price-card" style="background: ${backgroundStyle};">
-                        <div class="price-label" style="font-size: ${f.headerFontSize}; margin-bottom: ${l.subHeaderMarginBottom};">${label}</div>
-                        <div class="price-value" style="font-size: ${f.sectionTitleFontSize}; margin-bottom: ${l.headerMarginBottom};">₹${rate}</div>
-                        <div class="price-unit" style="font-size: ${f.smallTextFontSize};">${unit}</div>
+                        <div class="price-label" data-control-id="priceItem${i}Label" style="font-size: ${f.headerFontSize}; margin-bottom: ${l.subHeaderMarginBottom};">${label}</div>
+                        <div class="price-value" data-control-id="priceItem${i}Rate" style="font-size: ${f.sectionTitleFontSize}; margin-bottom: ${l.headerMarginBottom};">₹${rate}</div>
+                        <div class="price-unit" data-control-id="priceItem${i}Unit" style="font-size: ${f.smallTextFontSize};">${unit}</div>
                     </div>`;
                 colorIndex++;
             }
             html += '</div>';
             if (itemsExist && updateInfo) {
-                html += `<p class="price-update-info" style="text-align:center; font-size: ${f.smallTextFontSize}; margin-top:15px;">${updateInfo}</p>`;
+                html += `<p class="price-update-info" data-control-id="priceUpdateLabel" style="text-align:center; font-size: ${f.smallTextFontSize}; margin-top:15px;">${updateInfo}</p>`;
             }
             contentDiv.innerHTML = html;
         }
@@ -2215,10 +2238,10 @@ A visual bookmarking tool that helps you discover and save creative ideas.</text
             let leftContent = '';
             let rightContent = '';
 
-            const logoHtml = logoSrc ? `<div class="footer-logo-container" style="height:${logoHeight}; width:${logoWidth};"><img src="${sanitizeHTML(logoSrc)}" style="object-fit:${logoFit};"></div>` : '';
+            const logoHtml = logoSrc ? `<div class="footer-logo-container" data-control-id="footerBarLogoUrl" style="height:${logoHeight}; width:${logoWidth};"><img src="${sanitizeHTML(logoSrc)}" style="object-fit:${logoFit};"></div>` : '';
             const textHtml = `<div class="footer-text" style="font-size:${textSize};">
-                                ${websiteText ? `<span class="website-text">${websiteText}</span>` : ''}
-                                ${hashtagText ? `<span class="hashtag-text">${hashtagText}</span>` : ''}
+                                ${websiteText ? `<span class="website-text" data-control-id="footerBarWebsite">${websiteText}</span>` : ''}
+                                ${hashtagText ? `<span class="hashtag-text" data-control-id="footerBarHashtag">${hashtagText}</span>` : ''}
                               </div>`;
 
             if (alignment === 'flex-start' || alignment === 'center') {
@@ -2313,7 +2336,7 @@ A visual bookmarking tool that helps you discover and save creative ideas.</text
             });
         }
         
-        const SETTINGS_KEY = 'avAiInfoCreatorSettings_v6';
+        const SETTINGS_KEY = 'avAiInfoCreatorSettings_v7'; // Incremented version
 
         function saveSettings() {
             const saveBtn = document.getElementById('saveBtn');
@@ -2585,6 +2608,39 @@ A visual bookmarking tool that helps you discover and save creative ideas.</text
         // --- CHART PLUGINS ---
         const pie3DPlugin = { id: 'pie3D', beforeDraw(chart, args, options) { if (!options.enabled) return; const { ctx } = chart; const depth = options.depth || 10; const shadowColor = 'rgba(0,0,0,0.15)'; ctx.save(); for (let i = depth; i > 0; i--) { ctx.fillStyle = shadowColor; chart.config.data.datasets.forEach((dataset) => { const meta = chart.getDatasetMeta(0); if (!meta.hidden) { meta.data.forEach((element, j) => { if(element){ const {x, y, outerRadius, startAngle, endAngle} = element; ctx.beginPath(); ctx.moveTo(x, y); ctx.arc(x, y + i, outerRadius, startAngle, endAngle); ctx.closePath(); ctx.fill(); } }); } }); } ctx.restore(); } };
         Chart.register(pie3DPlugin, ChartDataLabels);
+
+        // --- CLICK-TO-SELECT LOGIC ---
+        function setupCanvasObjectSelector() {
+            const canvas = document.getElementById('infographicCanvas');
+            if (!canvas) return;
+
+            canvas.addEventListener('click', (e) => {
+                const targetElement = e.target.closest('[data-control-id]');
+                if (targetElement) {
+                    e.stopPropagation();
+                    const controlId = targetElement.dataset.controlId;
+                    const control = document.getElementById(controlId);
+
+                    if (control) {
+                        const accordionContent = control.closest('.accordion-content');
+                        if (accordionContent && !accordionContent.classList.contains('active')) {
+                            const header = accordionContent.previousElementSibling;
+                            if (header && header.classList.contains('accordion-header')) {
+                                header.click();
+                            }
+                        }
+                        
+                        control.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        control.focus();
+
+                        control.classList.add('control-highlight');
+                        setTimeout(() => {
+                            control.classList.remove('control-highlight');
+                        }, 1500);
+                    }
+                }
+            });
+        }
         
         // --- INITIALIZATION ---
         document.addEventListener('DOMContentLoaded', () => { 
@@ -2596,6 +2652,7 @@ A visual bookmarking tool that helps you discover and save creative ideas.</text
             populateSpecificSettings();
             buildInfoBlockControls(); 
             attachAllListeners();
+            setupCanvasObjectSelector(); // Initialize click-to-select
             
             document.querySelector('#iconFinderModal .modal-close-btn').addEventListener('click', closeIconFinder);
             document.getElementById('iconFinderSearch').addEventListener('keyup', (e) => renderIconResults(e.target.value));
@@ -2620,7 +2677,7 @@ A visual bookmarking tool that helps you discover and save creative ideas.</text
                 if (e.target.value) {
                     promptTextarea.value = e.target.value;
                 }
-                promptTextarea.placeholder = selectedOption.dataset.placeholder || 'e.g., Generate 4 bullet points...';
+               promptTextarea.placeholder = selectedOption.dataset.placeholder || 'e.g., Generate 4 bullet points...';
             });
             
             const tableTextInput = document.getElementById('tableInputText'); 
