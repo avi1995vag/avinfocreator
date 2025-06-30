@@ -199,6 +199,56 @@
             .showcase-pane-container { min-height: 50vh; margin-top: 2rem; }
         }
     </style>
+    <!-- PASTE THIS CODE BEFORE THE CLOSING </head> TAG -->
+
+<style>
+    /* Prevents selecting text with the mouse */
+    body {
+        -webkit-user-select: none; /* Safari */
+        -ms-user-select: none; /* IE 10+ and Edge */
+        user-select: none; /* Standard syntax */
+    }
+</style>
+
+<script>
+    // This script adds basic deterrents against copying.
+    // IMPORTANT: This does not provide true protection, as a determined user can still access the code.
+    
+    document.addEventListener('DOMContentLoaded', function() {
+
+        // 1. Disable Right-Click Context Menu
+        // This prevents users from easily accessing "View Page Source" or "Inspect".
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
+
+        // 2. Disable Common Developer Keyboard Shortcuts
+        // This blocks keys like F12, Ctrl+Shift+I, etc.
+        document.addEventListener('keydown', function(e) {
+            // F12
+            if (e.keyCode == 123) {
+                e.preventDefault();
+            }
+            // Ctrl+Shift+I
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) {
+                e.preventDefault();
+            }
+            // Ctrl+Shift+C
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) {
+                e.preventDefault();
+            }
+            // Ctrl+Shift+J
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) {
+                e.preventDefault();
+            }
+            // Ctrl+U
+            if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) {
+                e.preventDefault();
+            }
+        });
+
+    });
+</script>
 </head>
 <body>
     <header class="main-header">
