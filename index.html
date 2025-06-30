@@ -3,266 +3,383 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AV AI Info Creator - Instantly Visualize Your Ideas</title>
-    <link href="https://fonts.googleapis.com/css2?family=Anek+Kannada:wght@300;400;500;700;800&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" rel="stylesheet">
+    <title>Vinyasa AI - Tell Your Story Visually, Instantly.</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Anek+Kannada:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
     <style>
         :root {
-            --bg-color: #0d1117;
-            --primary-glow: #667eea;
-            --secondary-glow: #764ba2;
-            --accent-glow: #f093fb;
-            --success-glow: #4ecdc4;
-            --warning-glow: #f7b731;
-            --text-primary: #e6edf3;
-            --text-secondary: #a1aec4;
-            --border-color: rgba(255, 255, 255, 0.1);
-            --card-bg: rgba(22, 27, 34, 0.6);
+            --bg-dark: #11111b;
+            --text-light: #e2e8f0;
+            --text-muted: #94a3b8;
+            --accent-purple: #c084fc;
+            --accent-pink: #f472b6;
+            --card-bg: rgba(30, 41, 59, 0.5); 
+            --card-border: rgba(255, 255, 255, 0.1);
+            --card-blur: 10px;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
-
+        
         body {
-            font-family: 'Anek Kannada', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
             overflow-x: hidden;
+            background-image: radial-gradient(circle at 15% 15%, rgba(192, 132, 252, 0.15) 0%, transparent 30%),
+                              radial-gradient(circle at 85% 80%, rgba(96, 165, 250, 0.15) 0%, transparent 30%);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .vignette {
+            min-height: 100vh;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 4rem 0;
+            flex-direction: column;
+        }
+
+        /* --- HEADER --- */
+        .main-header {
+            width: 100%;
+            padding: 1.5rem 0;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 10;
+        }
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: var(--text-light);
+        }
+        .logo-icon {
+            background-image: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: grid;
+            place-items: center;
+        }
+        .logo-icon i { font-size: 1rem; }
+        .btn {
+            display: inline-block;
+            padding: 0.7rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        .btn-primary { background-color: #4f46e5; color: white; }
+        .btn-primary:hover { background-color: #4338ca; }
+
+        /* --- HERO VIGNETTE --- */
+        .vignette-hero .main-content {
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1.1fr;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .hero-text { padding-right: 2rem; }
+        .hero-text h1 {
+            font-size: clamp(3rem, 5.5vw, 4.5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.04em;
+        }
+        .hero-text h1 span {
+            background-image: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero-text p {
+            font-size: 1.125rem;
             line-height: 1.6;
+            color: var(--text-muted);
+            max-width: 500px;
+            margin-bottom: 2rem;
         }
         
-        /* --- Dynamic Aurora Background --- */
-        .aurora-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: -1; }
-        .aurora-blob { position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.3; }
-        .blob1 { width: 400px; height: 400px; background: var(--primary-glow); top: -150px; left: -150px; animation: move-blob1 20s infinite alternate; }
-        .blob2 { width: 500px; height: 500px; background: var(--secondary-glow); bottom: -200px; right: -200px; animation: move-blob2 25s infinite alternate; }
-        .blob3 { width: 300px; height: 300px; background: var(--accent-glow); top: 50%; left: 50%; transform: translate(-50%, -50%); animation: move-blob3 15s infinite alternate; }
-
-        @keyframes move-blob1 { from { transform: translate(0, 0) scale(1); } to { transform: translate(200px, 100px) scale(1.2); } }
-        @keyframes move-blob2 { from { transform: translate(0, 0) scale(1.2); } to { transform: translate(-150px, -100px) scale(1); } }
-        @keyframes move-blob3 { from { transform: rotate(0deg) scale(1); } to { transform: rotate(180deg) scale(1.3); } }
-
-        .container { width: 90%; max-width: 1100px; margin: 0 auto; padding: 6rem 0; }
-        
-        /* --- Header / Navbar --- */
-        .main-header { position: fixed; top: 0; left: 0; width: 100%; padding: 1rem 5%; display: flex; justify-content: space-between; align-items: center; background: rgba(13, 17, 23, 0.7); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color); z-index: 100; }
-        .logo { font-weight: 700; font-size: 1.5rem; }
-        .logo i { margin-right: 0.5rem; color: var(--primary-glow); }
-        .cta-button { display: inline-block; background: linear-gradient(90deg, var(--primary-glow), var(--secondary-glow)); color: white; padding: 0.7rem 1.5rem; border-radius: 8px; text-decoration: none; font-size: 1rem; font-weight: 600; transition: all 0.3s ease; border: 1px solid transparent; }
-        .cta-button:hover { transform: translateY(-2px); box-shadow: 0 8px 15px rgba(118, 75, 162, 0.2); }
-
-        /* --- Hero Section --- */
-        .hero-section { display: flex; align-items: center; gap: 4rem; min-height: 90vh; }
-        .hero-content { flex: 1; }
-        .hero-content .highlight { font-weight: 700; color: var(--accent-glow); }
-        .hero-content h1 { font-size: 3.5rem; font-weight: 800; line-height: 1.1; margin-bottom: 1.5rem; }
-        .hero-content p { font-size: 1.1rem; color: var(--text-secondary); margin-bottom: 2rem; max-width: 500px; }
-
-        .hero-visual { flex: 1; perspective: 1000px; display: flex; justify-content: center; align-items: center; }
-        .visual-container { width: 500px; height: 500px; position: relative; transform: rotateY(-20deg) rotateX(10deg); transform-style: preserve-3d; border-radius: 16px; border: 1px solid var(--border-color); box-shadow: 0 20px 40px rgba(0,0,0,0.3); backdrop-filter: blur(5px); background: rgba(0,0,0,0.1); }
-        
-        /* --- Animation Engine --- */
-        .mock-infographic { position: absolute; inset: 0; padding: 2rem; border-radius: 16px; opacity: 0; animation: cycle-infographics 32s infinite ease-in-out; font-family: 'Anek Kannada', sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        @keyframes cycle-infographics {
-            0%, 100% { opacity: 0; transform: scale(0.95); }
-            2%, 10.5% { opacity: 1; transform: scale(1); }
-            12.5% { opacity: 0; transform: scale(0.95); }
+        /* Right Showcase Pane */
+        .showcase-pane-container {
+            perspective: 1500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
         }
+        .showcase-pane {
+            width: 100%;
+            max-width: 600px;
+            aspect-ratio: 4 / 3;
+            border-radius: 24px;
+            position: relative;
+            transform-style: preserve-3d;
+            transform: rotateX(5deg) rotateY(-15deg);
+            transition: transform 0.4s ease-out, background 0.8s ease-in-out;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+        }
+        .showcase-content { width: 100%; height: 100%; position: relative; }
+        .showcase-slide {
+            position: absolute; inset: 0; padding: 2.5rem;
+            display: flex; align-items: center; justify-content: center;
+            flex-direction: column; opacity: 0;
+            transition: opacity 0.8s ease-in-out; text-align: center;
+        }
+        .showcase-slide.active { opacity: 1; }
+        .kannada-quote {
+            font-family: 'Anek Kannada', sans-serif;
+            font-size: clamp(1.75rem, 3vw, 2.5rem);
+            font-weight: 500; line-height: 1.4;
+        }
+        .quote-attribution { margin-top: 1rem; font-size: 1rem; font-weight: 500; color: var(--text-muted); }
+        .svg-infographic { width: 80%; height: 80%; }
 
-        .mock-infographic.social { animation-delay: 0s; background: linear-gradient(135deg, #e73c7e, #ee7752); }
-        .mock-infographic.bar-chart { animation-delay: 4s; background: #fff; color: #333; }
-        .mock-infographic.timeline { animation-delay: 8s; background: #182338; }
-        .mock-infographic.dam-levels { animation-delay: 12s; background: #111; }
-        .mock-infographic.prices { animation-delay: 16s; background: linear-gradient(135deg, #1d2b4b, #2c3e50); }
-        .mock-infographic.doughnut-chart { animation-delay: 20s; background: #fff; color: #333; }
-        .mock-infographic.news { animation-delay: 24s; background: #111; }
-        .mock-infographic.create-yours { animation-delay: 28s; background: linear-gradient(45deg, var(--primary-glow), var(--secondary-glow)); }
-        
-        /* Mockup Content CSS */
-        .mock-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 1.5rem; text-align: center; }
-        .mock-social-quote { font-size: 1.8rem; font-weight: 600; text-align: center; text-shadow: 2px 2px 4px rgba(0,0,0,0.2); }
-        .mock-bar-chart-container { display: flex; gap: 0.8rem; height: 150px; align-items: flex-end; border-bottom: 2px solid #ddd; padding: 0 1rem; }
-        .mock-bar { width: 30px; background: var(--primary-glow); border-radius: 4px 4px 0 0; }
-        .mock-timeline-container { position: relative; padding-left: 2rem; height: 250px; }
-        .mock-timeline-container::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--border-color); }
-        .mock-timeline-item { position: relative; margin-bottom: 1.5rem; }
-        .mock-timeline-item::before { content: ''; position: absolute; left: -2.75rem; top: 0.3rem; width: 14px; height: 14px; border-radius: 50%; background: var(--accent-glow); border: 3px solid #182338;}
-        .mock-timeline-item h5 { font-weight: 600; } .mock-timeline-item p { font-size: 0.8rem; color: var(--text-secondary); }
-        .mock-grid { width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-        .mock-dam-card { padding: 1rem; border-radius: 8px; text-align: center; }
-        .mock-dam-card h5 { font-size: 1rem; margin-bottom: 0.2rem; } .mock-dam-card h3 { font-size: 1.8rem; }
-        .mock-progress-bar { height: 6px; background: rgba(255,255,255,0.2); border-radius: 3px; margin-top: 0.5rem; overflow: hidden; }
-        .mock-progress-bar div { height: 100%; width: 85%; background: white; }
-        .mock-price-card { padding: 1rem; border-radius: 8px; text-align: center; }
-        .mock-price-card h5 { font-size: 1.1rem; opacity: 0.8; } .mock-price-card h3 { font-size: 2rem; }
-        .mock-doughnut-chart-container { width: 150px; height: 150px; border-radius: 50%; display: grid; place-items: center; background: conic-gradient(from 0deg, var(--primary-glow) 0% 45%, var(--success-glow) 45% 75%, var(--warning-glow) 75% 100%); }
-        .mock-doughnut-chart-container::before { content: ''; width: 60%; height: 60%; background: #fff; border-radius: 50%; }
-        .mock-news-header { background: #c00; color: white; padding: 0.5rem 1rem; font-weight: 800; font-size: 1.3rem; margin-bottom: 1.5rem; display: inline-block; }
-        .mock-news-bullet { text-align: left; width: 100%; font-size: 1.1rem; line-height: 1.8; list-style: none; padding-left: 0; }
-        .mock-news-bullet li { margin-bottom: 0.5rem; padding-left: 1.5rem; position: relative; }
-        .mock-news-bullet li::before { content: '✓'; color: var(--accent-glow); position: absolute; left: 0; font-weight: bold; }
-        .mock-create-yours-icon { font-size: 5rem; margin-bottom: 1.5rem; }
-        
-        .section-title { text-align: center; font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem; }
-        .section-subtitle { text-align: center; font-size: 1.1rem; color: var(--text-secondary); max-width: 600px; margin: 0 auto 3rem auto; }
-        .infographic-gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1.5rem; }
-        .gallery-item { background: var(--card-bg); border: 1px solid var(--border-color); padding: 1.5rem; border-radius: 12px; text-align: center; transition: all 0.3s ease; }
-        .gallery-item:hover { transform: scale(1.05); background: rgba(255, 255, 255, 0.1); border-color: var(--primary-glow); }
-        .gallery-item .icon { font-size: 2.5rem; margin-bottom: 1rem; color: var(--accent-glow); }
-        .gallery-item h4 { font-size: 1rem; font-weight: 600; }
-        .how-it-works-steps { display: flex; justify-content: space-between; gap: 2rem; margin-top: 4rem; position: relative; }
-        .step { flex: 1; text-align: center; }
-        .step .icon-wrapper { width: 80px; height: 80px; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 50%; margin: 0 auto 1.5rem auto; display: flex; justify-content: center; align-items: center; font-size: 2rem; color: var(--success-glow); }
-        .step h3 { font-size: 1.2rem; margin-bottom: 0.5rem; }
-        .step p { color: var(--text-secondary); }
-        .faq-accordion { max-width: 700px; margin: 4rem auto 0 auto; }
-        .faq-item { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; margin-bottom: 1rem; overflow: hidden; }
-        .faq-question { padding: 1.5rem; font-weight: 600; font-size: 1.1rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
-        .faq-question i { transition: transform 0.3s ease; }
-        .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.5s ease-in-out; color: var(--text-secondary); }
-        .faq-answer p { padding: 0 1.5rem 1.5rem 1.5rem; border-top: 1px solid var(--border-color); padding-top: 1.5rem; }
-        .faq-item.active .faq-question i { transform: rotate(180deg); }
-        .faq-item.active .faq-answer { max-height: 200px; }
-        .final-cta { text-align: center; } .final-cta h2 { font-size: 2.2rem; } .final-cta p { margin-bottom: 2rem; }
-        .footer { text-align: center; padding: 2rem 0; margin-top: 2rem; border-top: 1px solid var(--border-color); color: var(--text-secondary); }
-        .scroll-reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
-        .scroll-reveal.visible { opacity: 1; transform: translateY(0); }
-        
-        /* --- MOBILE RESPONSIVE STYLES --- */
-        @media (max-width: 992px) {
-            .hero-section { flex-direction: column; text-align: center; gap: 2rem; padding-top: 5rem; }
-            .hero-content { order: 2; }
-            .hero-visual { order: 1; width: 100%; perspective: none; }
-            .hero-content p { margin: 0 auto 2rem auto; }
-            .visual-container { transform: none; width: 100%; max-width: 500px; height: 450px; }
-            .how-it-works-steps { flex-direction: column; gap: 3rem; }
-            .section-title { font-size: 2rem; }
+        /* --- OTHER VIGNETTES --- */
+        .content-wrapper, .section-title {
+            max-width: 1200px; width: 100%; text-align: center; position: relative; z-index: 1;
+            opacity: 0; transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
         }
+        .vignette.is-visible .content-wrapper, .vignette.is-visible .section-title { opacity: 1; transform: translateY(0); }
+        .section-title { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 700; margin-bottom: 4rem; }
+        .glass-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; backdrop-filter: blur(var(--card-blur)); -webkit-backdrop-filter: blur(var(--card-blur)); box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2); }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; width:100%; }
+        .feature-card { text-align: center; padding: 2rem 1.5rem; transition: transform 0.3s ease; }
+        .feature-card:hover { transform: translateY(-10px); }
+        .feature-card .icon { font-size: 2.5rem; color: var(--accent-purple); margin-bottom: 1.5rem; }
+        .feature-card h3 { font-size: 1.4rem; margin-bottom: 1rem; }
+        .feature-card p { font-size: 0.9rem; color: var(--text-muted); }
+        .showcase-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; perspective: 1500px; width: 100%; }
+        .showcase-item { aspect-ratio: 1 / 1; padding: 1rem; transition: transform 0.4s ease-out; transform-style: preserve-3d; }
         
-        @media (max-width: 768px) {
-            .container { padding: 4rem 0; }
-            .hero-content h1 { font-size: 2.8rem; }
-            .main-header { padding: 1rem 5%; }
-            .feature-card { padding: 1.5rem; }
-            .faq-question, .faq-answer p { padding: 1rem; }
-        }
+        .faq-container { max-width: 800px; margin: 0 auto; width:100%; }
+        .faq-item { margin-bottom: 1rem; overflow: hidden; }
+        .faq-question { padding: 1.5rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 500; font-size: 1.1rem; }
+        .faq-question i { transition: transform 0.3s ease; color: var(--accent-purple); }
+        .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.5s ease-out, padding 0.5s ease; padding: 0 1.5rem; color: var(--text-muted); }
+        .faq-item.active .faq-answer { max-height: 300px; padding: 0 1.5rem 1.5rem; }
+        .faq-item.active .faq-question i { transform: rotate(45deg); }
         
-        @media (max-width: 576px) {
-            .hero-content h1 { font-size: 2.2rem; }
-            .hero-content p { font-size: 1rem; }
-            .logo { font-size: 1.2rem; }
-            .mock-infographic { padding: 1.5rem; }
-            .mock-social-quote { font-size: 1.5rem; }
-            .mock-title { font-size: 1.2rem; }
-            .mock-news-bullet { font-size: 1rem; }
+        .vignette-cta .content-wrapper { padding: 4rem; }
+        .vignette-cta h2 { font-size: clamp(2rem, 5vw, 3.5rem); margin-bottom: 1rem; }
+        .vignette-cta p { max-width: 600px; margin: 0 auto 2rem; color: var(--text-muted); }
+        .main-footer { padding-top: 4rem; margin-top: 4rem; border-top: 1px solid var(--card-border); }
+        .main-footer a { color: var(--accent-purple); text-decoration: none; font-weight: 500; }
+
+        @media(max-width: 1024px) {
+            .vignette-hero .main-content { grid-template-columns: 1fr; text-align: center; }
+            .hero-text { padding-right: 0; }
+            .hero-text p { margin-left: auto; margin-right: auto; }
+            .showcase-pane-container { min-height: 50vh; margin-top: 2rem; }
         }
     </style>
 </head>
 <body>
-
-    <div class="aurora-bg">
-        <div class="aurora-blob blob1"></div>
-        <div class="aurora-blob blob2"></div>
-        <div class="aurora-blob blob3"></div>
-    </div>
-
     <header class="main-header">
-        <div class="logo"><i class="fas fa-pen-ruler"></i>AV AI Creator</div>
-        <a href="creator.html" class="cta-button">Launch Tool</a>
+        <div class="container header-content">
+             <a href="#" class="logo">
+                <span class="logo-icon"><i class="fas fa-magic-sparkles"></i></span>
+                Vinyasa AI
+            </a>
+            <nav>
+                <a href="creator.html" class="btn btn-primary">Launch Tool</a>
+            </nav>
+        </div>
     </header>
-    
-    <main>
-        <div class="container">
-            <section class="hero-section">
-                <div class="hero-content scroll-reveal">
-                    <h1>Turn Raw Data into<br><span class="highlight">Stunning Visuals.</span> Instantly.</h1>
+
+    <div id="vignette-container">
+
+        <!-- Vignette 1: Main Hero -->
+        <section class="vignette vignette-hero is-visible" data-vignette="1">
+            <div class="main-content container">
+                 <div class="hero-text">
+                    <h1>Tell Your Story<br><span> Visually</span><br>Instantly.</h1>
                     <p>Generate beautiful, data-rich infographics for social media, news, and presentations in minutes. Powered by AI, designed for creativity. No design skills required.</p>
-                    <a href="creator.html" class="cta-button"><i class="fas fa-rocket"></i> Get Started for Free</a>
+                    <a href="creator.html" class="btn btn-primary">Get Started for Free</a>
                 </div>
-                <div class="hero-visual scroll-reveal">
-                    <div class="visual-container">
-                        <div class="mock-infographic social"><p class="mock-social-quote">"ಕನಸುಗಳನ್ನು ನನಸಾಗಿಸಲು ಮೊದಲು ಕನಸು ಕಾಣಬೇಕು."<br>- ಎ.ಪಿ.ಜೆ. ಅಬ್ದುಲ್ ಕಲಾಂ</p></div>
-                        <div class="mock-infographic bar-chart"><h3 class="mock-title" style="color:#333">ಮಾಸಿಕ ಆದಾಯ</h3><div class="mock-bar-chart-container"><div class="mock-bar" style="height: 40%;"></div><div class="mock-bar" style="height: 75%; background: var(--secondary-glow);"></div><div class="mock-bar" style="height: 60%;"></div><div class="mock-bar" style="height: 90%; background: var(--secondary-glow);"></div></div></div>
-                        <div class="mock-infographic timeline"><h3 class="mock-title">ಯೋಜನೆಯ ಹಂತಗಳು</h3><div class="mock-timeline-container"><div class="mock-timeline-item"><h5>ಸಂಶೋಧನೆ</h5><p>2023, Q1</p></div><div class="mock-timeline-item"><h5>ವಿನ್ಯಾಸ</h5><p>2023, Q2</p></div><div class="mock-timeline-item"><h5>ಅಭಿವೃದ್ಧಿ</h5><p>2023, Q3</p></div></div></div>
-                        <div class="mock-infographic dam-levels"><h3 class="mock-title">ಜಲಾಶಯದ ಮಟ್ಟ</h3><div class="mock-grid"><div class="mock-dam-card" style="background: var(--success-glow);"><h5 style="color:black">ಕೆ.ಆರ್.ಎಸ್</h5><h3 style="color:black">85%</h3><div class="mock-progress-bar"><div></div></div></div><div class="mock-dam-card" style="background: var(--warning-glow);"><h5 style="color:black">ಕಬಿನಿ</h5><h3 style="color:black">62%</h3><div class="mock-progress-bar"><div style="width: 62%"></div></div></div></div></div>
-                        <div class="mock-infographic prices"><h3 class="mock-title">ಇಂದಿನ ಬೆಲೆ</h3><div class="mock-grid"><div class="mock-price-card" style="background: linear-gradient(45deg, #ffd700, #f1c40f);"><h5>ಚಿನ್ನ (24K)</h5><h3>₹72,500</h3></div><div class="mock-price-card" style="background: linear-gradient(45deg, #e0e0e0, #bdc3c7);"><h5>ಬೆಳ್ಳಿ (1 KG)</h5><h3>₹85,000</h3></div></div></div>
-                        <div class="mock-infographic doughnut-chart"><h3 class="mock-title" style="color:#333">ಮತ ಹಂಚಿಕೆ</h3><div class="mock-doughnut-chart-container"></div></div>
-                        <div class="mock-infographic news"><div class="mock-news-header">ಬ್ರೇಕಿಂಗ್ ನ್ಯೂಸ್</div><ul class="mock-news-bullet"><li>ನಗರದಲ್ಲಿ ಭಾರೀ ಮಳೆ, ಜನಜೀವನ ಅಸ್ತವ್ಯಸ್ತ.</li><li>ಹಲವು ಪ್ರದೇಶಗಳಲ್ಲಿ ವಿದ್ಯುತ್ ಸಂಪರ್ಕ ಕಡಿತ.</li><li>ಮುಂದಿನ 24 ಗಂಟೆಗಳ ಕಾಲ ರೆಡ್ ಅಲರ್ಟ್ ಘೋಷಣೆ.</li></ul></div>
-                        <div class="mock-infographic create-yours"><i class="fas fa-magic-wand-sparkles mock-create-yours-icon"></i><h3 class="mock-title">Create Yours Now</h3></div>
+                <div class="showcase-pane-container">
+                    <div id="showcasePane" class="showcase-pane">
+                        <div class="showcase-content">
+                            <!-- Slides will be injected by JS -->
+                        </div>
                     </div>
                 </div>
-            </section>
-        </div>
-
-        <div class="container scroll-reveal">
-            <h2 class="section-title">What You Can Create</h2>
-            <p class="section-subtitle">A versatile toolkit to bring any idea to life. Your only limit is your imagination.</p>
-            <div class="infographic-gallery">
-                <div class="gallery-item"><div class="icon"><i class="fas fa-quote-right"></i></div><h4>Social Posts</h4></div>
-                <div class="gallery-item"><div class="icon"><i class="fas fa-newspaper"></i></div><h4>News Alerts</h4></div>
-                <div class="gallery-item"><div class="icon"><i class="fas fa-chart-bar"></i></div><h4>Data Charts</h4></div>
-                <div class="gallery-item"><div class="icon"><i class="fas fa-timeline"></i></div><h4>Timelines</h4></div>
-                <div class="gallery-item"><div class="icon"><i class="fas fa-list-ul"></i></div><h4>Lists & Steps</h4></div>
-                <div class="gallery-item"><div class="icon"><i class="fas fa-tags"></i></div><h4>Price Cards</h4></div>
             </div>
-        </div>
+        </section>
 
-        <div class="container scroll-reveal">
-             <h2 class="section-title">How It Works</h2>
-             <p class="section-subtitle">Creating professional infographics is as easy as one, two, three. No complex software, no learning curve.</p>
-             <div class="how-it-works-steps">
-                <div class="step"><div class="icon-wrapper"><i class="fas fa-hand-pointer"></i></div><h3>1. Select & Prompt</h3><p>Choose your infographic type and use the AI assistant to generate your content in seconds.</p></div>
-                <div class="step"><div class="icon-wrapper"><i class="fas fa-sliders"></i></div><h3>2. Customize</h3><p>Adjust fonts, colors, layouts, and backgrounds with a powerful, real-time visual editor.</p></div>
-                <div class="step"><div class="icon-wrapper"><i class="fas fa-download"></i></div><h3>3. Download</h3><p>Export your finished design as a high-quality, perfectly sized image, ready to be shared.</p></div>
+        <!-- Vignette 2: Features -->
+        <section class="vignette" data-vignette="2">
+            <h2 class="section-title">Core Capabilities</h2>
+            <div class="content-wrapper features-grid">
+                <div class="feature-card glass-card"><div class="icon"><i class="fas fa-robot"></i></div><h3>AI Content Studio</h3><p>Use AI to generate text and create unique visuals from articles, removing creative blocks.</p></div>
+                <div class="feature-card glass-card"><div class="icon"><i class="fas fa-swatchbook"></i></div><h3>Diverse Templates</h3><p>Choose from a rich library of templates for any story, from dashboards to timelines.</p></div>
+                <div class="feature-card glass-card"><div class="icon"><i class="fas fa-edit"></i></div><h3>Live Editing</h3><p>Click any element to edit. A floating toolbar gives you instant control over your design.</p></div>
+                <div class="feature-card glass-card"><div class="icon"><i class="fas fa-language"></i></div><h3>Made for Kannada</h3><p>With native fonts and tailored AI, it's the perfect tool for regional creators and media.</p></div>
+            </div>
+        </section>
+
+        <!-- Vignette 3: Showcase -->
+        <section class="vignette" data-vignette="3">
+            <h2 class="section-title">What Will You Create?</h2>
+            <div class="content-wrapper showcase-grid">
+                <div class="showcase-item glass-card"><svg viewBox="0 0 100 100" class="svg-infographic"><title>Dashboard</title><rect x="5" y="5" width="55" height="40" fill="rgba(255,255,255,0.1)" rx="3"></rect><rect x="20" y="25" width="8" height="15" fill="#c084fc"></rect><rect x="32" y="15" width="8" height="25" fill="#c084fc"></rect><rect x="65" y="5" width="30" height="40" fill="rgba(255,255,255,0.1)" rx="3"></rect><circle cx="80" cy="25" r="12" stroke="#f472b6" stroke-width="4" fill="none"></circle><rect x="5" y="50" width="90" height="45" fill="rgba(255,255,255,0.1)" rx="3"></rect><text x="10" y="62" font-size="5" fill="#e2e8f0">Activity</text></svg></div>
+                <div class="showcase-item glass-card"><svg viewBox="0 0 100 100" class="svg-infographic"><title>Timeline</title><line x1="50" y1="10" x2="50" y2="90" stroke="#60a5fa" stroke-width="1"></line><circle cx="50" cy="20" r="3" fill="#f472b6"></circle><text x="60" y="22" font-size="5" fill="#e2e8f0">2020</text><circle cx="50" cy="50" r="3" fill="#f472b6"></circle><text x="40" y="52" font-size="5" fill="#e2e8f0" text-anchor="end">2022</text><circle cx="50" cy="80" r="3" fill="#f472b6"></circle><text x="60" y="82" font-size="5" fill="#e2e8f0">2024</text></svg></div>
+                <div class="showcase-item glass-card"><svg viewBox="0 0 100 100" class="svg-infographic"><title>News Alert</title><rect width="100" height="100" fill="#1e293b" rx="5"></rect><rect x="5" y="5" width="90" height="12" fill="#e11d48"></rect><text x="50" y="14" font-size="7" fill="white" text-anchor="middle" font-weight="bold">BREAKING</text><rect x="5" y="25" width="90" height="5" fill="#60a5fa"></rect><text x="10" y="38" font-size="3" fill="#e2e8f0">● Lorem ipsum dolor sit amet.</text><text x="10" y="46" font-size="3" fill="#e2e8f0">● Consectetur adipiscing elit.</text><text x="10" y="54" font-size="3" fill="#e2e8f0">● Sed do eiusmod tempor incididunt.</text></svg></div>
+                <div class="showcase-item glass-card"><svg viewBox="0 0 100 100" class="svg-infographic"><title>Bar Chart</title><text x="50" y="15" text-anchor="middle" font-size="7" fill="#e2e8f0">Sales Growth</text><rect x="20" y="60" width="15" height="30" fill="#c084fc" rx="2"></rect><rect x="42.5" y="40" width="15" height="50" fill="#f472b6" rx="2"></rect><rect x="65" y="25" width="15" height="65" fill="#fb923c" rx="2"></rect></svg></div>
+                <div class="showcase-item glass-card"><svg viewBox="0 0 100 100" class="svg-infographic"><title>Social Post</title><rect width="100" height="100" fill="#be185d" rx="5"></rect><path d="M25 40 L25 60 L45 60" fill="none" stroke="#fb923c" stroke-width="8" stroke-linecap="round"></path><path d="M55 40 L55 60 L75 60" fill="none" stroke="#fb923c" stroke-width="8" stroke-linecap="round"></path><text x="50" y="75" text-anchor="middle" font-size="5" fill="#e2e8f0">"The future is now."</text></svg></div>
+                <div class="showcase-item glass-card"><svg viewBox="0 0 100 100" class="svg-infographic"><title>Process Flow</title><path d="M20 50 L 80 50" stroke="#475569" stroke-width="1" stroke-dasharray="3"></path><circle cx="20" cy="50" r="8" fill="#c084fc"></circle><text x="20" y="51.5" text-anchor="middle" font-size="6" fill="white">1</text><circle cx="50" cy="50" r="8" fill="#f472b6"></circle><text x="50" y="51.5" text-anchor="middle" font-size="6" fill="white">2</text><circle cx="80" cy="50" r="8" fill="#60a5fa"></circle><text x="80" y="51.5" text-anchor="middle" font-size="6" fill="white">3</text></svg></div>
+                <div class="showcase-item glass-card"><svg viewBox="0 0 100 100" class="svg-infographic"><title>List</title><path d="M25,25 h50" stroke-width="2" stroke="#c084fc"></path><path d="M25,35 h40" stroke-width="1" stroke="#475569"></path><path d="M25,50 h50" stroke-width="2" stroke="#c084fc"></path><path d="M25,60 h45" stroke-width="1" stroke="#475569"></path><path d="M25,75 h50" stroke-width="2" stroke="#c084fc"></path><path d="M25,85 h35" stroke-width="1" stroke="#475569"></path></svg></div>
+                <div class="showcase-item glass-card"><svg viewBox="0 0 100 100" class="svg-infographic"><title>Comparison</title><rect x="10" y="10" width="35" height="80" fill="rgba(255,255,255,0.1)" rx="3"></rect><rect x="55" y="10" width="35" height="80" fill="rgba(255,255,255,0.1)" rx="3"></rect><line x1="15" y1="50" x2="25" y2="60" stroke="#f472b6" stroke-width="2"></line><line x1="25" y1="60" x2="40" y2="45" stroke="#f472b6" stroke-width="2"></line><line x1="60" y1="50" x2="70" y2="60" stroke="#f472b6" stroke-width="2"></line><line x1="70" y1="60" x2="85" y2="45" stroke="#f472b6" stroke-width="2"></line><text x="27.5" y="25" font-size="7" text-anchor="middle" fill="#e2e8f0">Plan A</text><text x="72.5" y="25" font-size="7" text-anchor="middle" fill="#e2e8f0">Plan B</text></svg></div>
+            </div>
+        </section>
+
+        <!-- Vignette 4: FAQ Section -->
+        <section class="vignette" data-vignette="4">
+             <h2 class="section-title">Frequently Asked Questions</h2>
+             <div class="content-wrapper faq-container">
+                <div class="faq-item glass-card"><div class="faq-question"><span>What is Vinyasa AI?</span><i class="fas fa-plus"></i></div><div class="faq-answer"><p>Vinyasa AI is a powerful, web-based tool designed to help you create professional infographics instantly. It combines a wide range of templates with AI-powered content and image generation, all controlled through an easy-to-use, interactive interface.</p></div></div>
+                <div class="faq-item glass-card"><div class="faq-question"><span>Do I need to install any software?</span><i class="fas fa-plus"></i></div><div class="faq-answer"><p>No. Vinyasa AI is a fully browser-based application. There is nothing to install. Just open the `creator.html` file in a modern web browser like Chrome or Firefox to get started.</p></div></div>
+                <div class="faq-item glass-card"><div class="faq-question"><span>Do I need an API key to use this?</span><i class="fas fa-plus"></i></div><div class="faq-answer"><p>For the core infographic design and layout features, you do not need any API key. However, to use the AI-powered "AV Magic Studio" (for text generation) and "AV Image Studio," you will need to provide your own API keys from providers like OpenRouter or Google AI Studio. The tool has a settings panel to enter these keys securely.</p></div></div>
+                <div class="faq-item glass-card"><div class="faq-question"><span>Is this tool suitable for creating content in Kannada?</span><i class="fas fa-plus"></i></div><div class="faq-answer"><p>Absolutely! Vinyasa AI was built with Kannada creators in mind. It uses the 'Anek Kannada' font for beautiful rendering, and the AI prompt templates are specifically designed to request and handle Kannada-language content from the AI models.</p></div></div>
+                <div class="faq-item glass-card"><div class="faq-question"><span>Can I save my work?</span><i class="fas fa-plus"></i></div><div class="faq-answer"><p>Yes. The tool includes a "Save" button that stores all your settings and input text in your browser's local storage. When you return, your last-used configuration will be loaded automatically. You can also download your final creation as a high-quality JPG or PNG image.</p></div></div>
+                <div class="faq-item glass-card"><div class="faq-question"><span>Are my API keys and data secure?</span><i class="fas fa-plus"></i></div><div class="faq-answer"><p>Your API keys are stored only in your browser's local storage and are never sent to any server other than the AI provider you select (e.g., OpenRouter, Google). The entire application runs locally on your computer. Your data and keys are as secure as your own machine.</p></div></div>
+                <div class="faq-item glass-card"><div class="faq-question"><span>What infographic types are available?</span><i class="fas fa-plus"></i></div><div class="faq-answer"><p>Vinyasa AI offers a wide range of types, including Dashboards, Social Posts, News Alerts, Process Flows, Timelines, various Charts (Bar, Pie, Doughnut, Gauge), Dam Levels, Price cards, Comparison tables, Hierarchies, Lists, and "Did You Know?" facts.</p></div></div>
+                <div class="faq-item glass-card"><div class="faq-question"><span>Can I use my own images?</span><i class="fas fa-plus"></i></div><div class="faq-answer"><p>Yes. Most templates that use images have fields for both pasting an image URL and uploading an image directly from your computer. Uploading is recommended for best results and to avoid potential cross-origin (CORS) issues.</p></div></div>
+                <div class="faq-item glass-card"><div class="faq-question"><span>Is there a dark mode?</span><i class="fas fa-plus"></i></div><div class="faq-answer"><p>Yes! The application features a beautiful dark mode that can be toggled in the sidebar. This affects both the editor interface and the default colors available for your infographics, ensuring a comfortable creative experience day or night.</p></div></div>
+                <div class="faq-item glass-card"><div class="faq-question"><span>Who created Vinyasa AI?</span><i class="fas fa-plus"></i></div><div class="faq-answer"><p>Vinyasa AI is a creative passion project developed by Avinash Vagarnal, designed to empower creators to tell their stories visually without the steep learning curve of traditional design software.</p></div></div>
              </div>
-        </div>
-        
-        <div class="container scroll-reveal">
-            <h2 class="section-title">Frequently Asked Questions</h2>
-            <div class="faq-accordion">
-                <div class="faq-item"><div class="faq-question"><span>Is this tool completely free to use?</span><i class="fas fa-chevron-down"></i></div><div class="faq-answer"><p>Yes, the Info Creator tool is completely free. The AI content generation feature relies on external services which have generous free tiers, but may require your own free API key for extensive use.</p></div></div>
-                <div class="faq-item"><div class="faq-question"><span>Do I need to create an account or sign up?</span><i class="fas fa-chevron-down"></i></div><div class="faq-answer"><p>No account or sign-up is required. You can launch the tool and start creating immediately. All processing happens directly in your browser, ensuring your data remains private.</p></div></div>
-                <div class="faq-item"><div class="faq-question"><span>Can I generate content in Kannada?</span><i class="fas fa-chevron-down"></i></div><div class="faq-answer"><p>Absolutely! The integrated "AV Your Friend" AI assistant is specifically designed with detailed prompts to generate high-quality text, lists, and data directly in Kannada script.</p></div></div>
-                <div class="faq-item"><div class="faq-question"><span>Can I use the infographics for commercial purposes?</span><i class="fas fa-chevron-down"></i></div><div class="faq-answer"><p>Yes. The infographics you create are yours to use however you wish, including for commercial projects. You are responsible for ensuring any uploaded images or AI-generated content complies with copyright laws.</p></div></div>
+        </section>
+
+        <!-- Vignette 5: Final CTA & Footer -->
+        <section class="vignette" data-vignette="5">
+            <div class="content-wrapper glass-card vignette-cta">
+                <h2>Your Vision, Visualized.</h2>
+                <p>You have the ideas. You have the data. Vinyasa AI is the bridge to bring them to life with beauty and impact. Stop wrestling with complicated software and start creating.</p>
+                <a href="creator.html" class="btn-primary">Unveil Your Creativity Now</a>
+                <footer class="main-footer">
+                    <p>&copy; 2025 Vinyasa AI. A creative project by <a href="https://github.com/avinash-vagarnal" target="_blank" rel="noopener noreferrer">Avinash Vagarnal</a>. All Rights Reserved.</p>
+                </footer>
             </div>
-        </div>
-        
-        <div class="container scroll-reveal final-cta">
-            <h2>Ready to Bring Your Ideas to Life?</h2>
-            <p class="section-subtitle">Your next viral infographic is just one click away. No more blank pages, no more complicated tools.</p>
-            <a href="creator.html" class="cta-button"><i class="fas fa-bolt"></i> Start Designing Now</a>
-        </div>
-    </main>
-    
-    <footer class="footer">
-        <p>© 2025 Avinash Vagarnal AI Creatives. All Rights Reserved.</p>
-    </footer>
+        </section>
+
+    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // FAQ Accordion Logic
-            const faqItems = document.querySelectorAll('.faq-item');
-            faqItems.forEach(item => {
-                const question = item.querySelector('.faq-question');
-                question.addEventListener('click', () => {
-                    const isActive = item.classList.contains('active');
-                    faqItems.forEach(i => i.classList.remove('active'));
-                    if (!isActive) {
-                        item.classList.add('active');
+            // --- SCROLL OBSERVER FOR VIGNETTES ---
+            const vignettes = document.querySelectorAll('.vignette');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
                     }
+                });
+            }, { threshold: 0.2 });
+            vignettes.forEach(v => observer.observe(v));
+
+            // --- HERO PANE CAROUSEL LOGIC ---
+            const showcaseContent = document.querySelector('.showcase-content');
+            const pane = document.getElementById('showcasePane');
+            const slidesData = [
+                { type: 'quote', text: 'ಕನಸುಗಳನ್ನು ನನಸಾಗಿಸಲು ಮೊದಲು ಕನಸು ಕಾಣಬೇಕು.', author: 'ಎ.ಪಿ.ಜೆ. ಅಬ್ದುಲ್ ಕಲಾಂ', background: 'linear-gradient(135deg, #e11d48, #fb923c)' },
+                { type: 'svg', content: `<svg viewBox="0 0 100 80" class="svg-infographic"><text x="50" y="10" font-size="6" fill="#e2e8f0" text-anchor="middle" font-family="Inter, sans-serif">ಯೋಜನೆಯ ಹಂತಗಳು</text><line x1="50" y1="20" x2="50" y2="75" stroke="#475569" stroke-width="1"></line><circle cx="50" cy="28" r="3" fill="#60a5fa"></circle><text x="58" y="30" font-size="4" fill="#94a3b8" font-family="Inter, sans-serif">2023, Q1</text><circle cx="50" cy="48" r="3" fill="#60a5fa"></circle><text x="58" y="50" font-size="4" fill="#94a3b8" font-family="Inter, sans-serif">2023, Q2</text><circle cx="50" cy="68" r="3" fill="#60a5fa"></circle><text x="58" y="70" font-size="4" fill="#94a3b8" font-family="Inter, sans-serif">2023, Q3</text></svg>`, background: 'linear-gradient(135deg, #1e293b, #0f172a)' },
+                { type: 'svg', content: `<svg viewBox="0 0 100 80" class="svg-infographic"><text x="50" y="10" font-size="6" fill="#e2e8f0" text-anchor="middle" font-family="Inter, sans-serif">ತ್ರೈಮಾಸಿಕ ವರದಿ</text><rect x="20" y="50" width="15" height="30" rx="2" fill="#c084fc"></rect><rect x="42.5" y="30" width="15" height="50" rx="2" fill="#f472b6"></rect><rect x="65" y="20" width="15" height="60" rx="2" fill="#fb923c"></rect></svg>`, background: 'linear-gradient(135deg, #4c1d95, #c084fc)' },
+                { type: 'quote', text: 'ಶ್ರದ್ಧೆಯಿಲ್ಲದ ಸಾಧನೆ ವ್ಯರ್ಥ.', author: 'ಸುಭಾಷ್ ಚಂದ್ರ ಬೋಸ್', background: 'linear-gradient(135deg, #be185d, #f472b6)' },
+                { type: 'svg', content: `<svg viewBox="0 0 100 80" class="svg-infographic"><text x="50" y="10" font-size="6" fill="#e2e8f0" text-anchor="middle" font-family="Inter, sans-serif">ಸೃಜನಾತ್ಮಕ ಪ್ರಕ್ರಿಯೆ</text><path d="M15 45 H 85" stroke="#475569" stroke-width="1" stroke-dasharray="3"></path><circle cx="20" cy="45" r="8" fill="#c084fc"><animate attributeName="r" values="8;10;8" dur="2s" repeatCount="indefinite" /></circle><circle cx="50" cy="45" r="8" fill="#f472b6"><animate attributeName="r" values="8;10;8" dur="2s" begin="0.5s" repeatCount="indefinite" /></circle><circle cx="80" cy="45" r="8" fill="#60a5fa"><animate attributeName="r" values="8;10;8" dur="2s" begin="1s" repeatCount="indefinite" /></circle><text x="20" y="65" font-size="4" fill="#94a3b8" text-anchor="middle">ಕಲ್ಪನೆ</text><text x="50" y="65" font-size="4" fill="#94a3b8" text-anchor="middle">ವಿನ್ಯಾಸ</text><text x="80" y="65" font-size="4" fill="#94a3b8" text-anchor="middle">ಅಭಿವೃದ್ಧಿ</text></svg>`, background: 'linear-gradient(135deg, #1e3a8a, #60a5fa)'}
+            ];
+            
+            slidesData.forEach(slideData => {
+                const slideDiv = document.createElement('div');
+                slideDiv.className = 'showcase-slide';
+                if(slideData.type === 'quote') {
+                    slideDiv.innerHTML = `<h2 class="kannada-quote">${slideData.text}</h2><p class="quote-attribution">- ${slideData.author}</p>`;
+                } else {
+                    slideDiv.innerHTML = slideData.content;
+                }
+                showcaseContent.appendChild(slideDiv);
+            });
+
+            const slides = document.querySelectorAll('.showcase-slide');
+            let currentIndex = 0;
+            slides[currentIndex].classList.add('active');
+            pane.style.background = slidesData[currentIndex].background;
+
+            setInterval(() => {
+                slides[currentIndex].classList.remove('active');
+                currentIndex = (currentIndex + 1) % slides.length;
+                slides[currentIndex].classList.add('active');
+                pane.style.background = slidesData[currentIndex].background;
+            }, 5000);
+
+            // --- 3D TILT EFFECT ---
+            const paneContainer = document.querySelector('.showcase-pane-container');
+            paneContainer.addEventListener('mousemove', (e) => {
+                const { left, top, width, height } = paneContainer.getBoundingClientRect();
+                const x = e.clientX - left; const y = e.clientY - top;
+                const rotateX = ((y - height / 2) / (height / 2)) * -8;
+                const rotateY = ((x - width / 2) / (width / 2)) * 8;
+                pane.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            });
+            paneContainer.addEventListener('mouseleave', () => {
+                pane.style.transform = 'rotateX(5deg) rotateY(-15deg)';
+            });
+
+            const showcaseItems = document.querySelectorAll('.showcase-item');
+            showcaseItems.forEach(item => {
+                item.addEventListener('mousemove', (e) => {
+                    const { left, top, width, height } = item.getBoundingClientRect();
+                    const x = e.clientX - left; const y = e.clientY - top;
+                    const rotateX = ((y - height / 2) / (height / 2)) * -8;
+                    const rotateY = ((x - width / 2) / (width / 2)) * 8;
+                    item.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.05, 1.05, 1.05)`;
+                });
+                item.addEventListener('mouseleave', () => {
+                    item.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
                 });
             });
 
-            // Scroll Reveal Animation Logic
-            const scrollObserver = new IntersectionObserver((entries) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
+            // --- FAQ ACCORDION ---
+            document.querySelectorAll('.faq-question').forEach(question => {
+                question.addEventListener('click', () => {
+                    const item = question.parentElement;
+                    const icon = question.querySelector('i');
+                    const wasActive = item.classList.contains('active');
+                    document.querySelectorAll('.faq-item').forEach(otherItem => {
+                        otherItem.classList.remove('active');
+                        otherItem.querySelector('i').classList.replace('fa-minus', 'fa-plus');
+                    });
+                    if (!wasActive) {
+                        item.classList.add('active');
+                        icon.classList.replace('fa-plus', 'fa-minus');
                     }
                 });
-            }, { threshold: 0.1 });
-
-            document.querySelectorAll('.scroll-reveal').forEach((el) => scrollObserver.observe(el));
+            });
         });
     </script>
 </body>
