@@ -93,7 +93,7 @@
         .container { display: flex; width: 100%; height: 100%; overflow: hidden; }
         
         .sidebar { 
-            width: 300x; 
+            width: 400px; 
             background: var(--sidebar-bg);
             backdrop-filter: blur(12px); 
             -webkit-backdrop-filter: blur(12px);
@@ -121,7 +121,7 @@
         .main-content { flex-grow: 1; padding: 10px 20px; display: flex; justify-content: center; align-items: center; }
 
         .logo { text-align: center; margin-bottom: 25px; }
-        .logo h1 { font-weight: 800; background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 30x; }
+        .logo h1 { font-weight: 800; background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 30px; }
         .logo p { color: var(--text-color); opacity: 0.8;}
 
         #infographicTypeSelectorGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 8px; margin-bottom: 20px; }
@@ -139,7 +139,7 @@
         .infographic-type-btn:hover:not(.active) i { transform: scale(1.1); }
         .infographic-type-btn.active i { color: white !important; }
 
-        .infographic-type-btn[data-type="social"] i, .infographic-type-btn[data-type="hierarchical"] i { color: var(--primary); }
+        .infographic-type-btn[data-type="social"] i, .infographic-type-btn[data-type="hierarchical"] i, .infographic-type-btn[data-type="blankCanvas"] i { color: var(--primary); }
         .infographic-type-btn[data-type="newsAlert"] i, .infographic-type-btn[data-type="didYouKnow"] i { color: var(--danger); }
         .infographic-type-btn[data-type="process"] i, .infographic-type-btn[data-type="timeline"] i { color: var(--secondary); }
         .infographic-type-btn[data-type="statistical"] i, .infographic-type-btn[data-type="list"] i { color: var(--success); }
@@ -682,6 +682,33 @@
         #aiImageApplyControls label { margin-bottom: 0; flex-shrink: 0; }
         #aiImageApplyControls select { max-width: 250px; }
 
+        /* --- BLANK CANVAS STYLES --- */
+        .blank-canvas-element {
+            position: absolute;
+            min-width: 50px;
+            min-height: 20px;
+            border: 1px dashed transparent;
+        }
+        .blank-canvas-element:hover {
+            border-color: var(--primary);
+        }
+        .blank-canvas-element.element-selected {
+            border: 2px solid var(--warning) !important;
+            resize: both;
+            overflow: auto;
+        }
+        .blank-canvas-element .bc-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .blank-canvas-element .bc-text {
+            width: 100%;
+            height: 100%;
+            padding: 5px;
+            word-break: break-word;
+        }
+
         @media (max-width: 992px) {
             html, body { overflow: auto; }
             .container { flex-direction: column; height: auto; overflow: visible; }
@@ -712,7 +739,7 @@
             .coming-up-infographic.layout-image-right .image-container { max-width: 40%; }
         }
     </style>
-    <!-- PASTE THIS CODE BEFORE THE CLOSING </head> TAG -->
+<!-- PASTE THIS CODE BEFORE THE CLOSING </head> TAG -->
 
 <style>
     /* Prevents selecting text with the mouse */
@@ -803,6 +830,8 @@
                 <div class="control-group">
                     <label>Select Infographic Type</label>
                     <div id="infographicTypeSelectorGrid">
+                        <!-- ADDED blankCanvas button -->
+                        <button class="infographic-type-btn control-input" data-type="blankCanvas"><i class="fas fa-edit"></i><span>Blank Canvas</span></button>
                         <button class="infographic-type-btn control-input" data-type="dashboard"><i class="fas fa-border-all"></i><span>Dashboard</span></button>
                         <button class="infographic-type-btn control-input" data-type="social"><i class="fas fa-quote-right"></i><span>Social Post</span></button>
                         <button class="infographic-type-btn control-input" data-type="newsAlert"><i class="fas fa-newspaper"></i><span>News Alert</span></button>
@@ -1210,9 +1239,78 @@ The entire response MUST be in Kannada script only. Finally, add a new line with
                 </div>
             </div>
         </div>
+        <!-- ADDED Blank Canvas tab -->
+        <div class="tab-content" id="blankCanvas">
+            <div class="accordion-item">
+                <div class="accordion-header active">
+                    <h3><i class="fas fa-plus-square"></i> Add Elements</h3>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="accordion-content active">
+                    <button id="blankCanvasAddText" class="btn btn-primary" style="width:100%; margin-bottom: 10px;">Add Text Box</button>
+                    <button id="blankCanvasAddImage" class="btn btn-primary" style="width:100%;">Add Image</button>
+                </div>
+            </div>
+            <div id="blankCanvasSelectedElementControls" style="display:none;">
+                <div class="accordion-item">
+                    <div class="accordion-header active">
+                        <h3><i class="fas fa-sliders-h"></i> Selected Element Properties</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="accordion-content active">
+                        <!-- Text Content (for text elements) -->
+                        <div class="control-group" id="prop-text-content-group">
+                            <label>Text Content</label>
+                            <textarea class="control-input" id="prop-text-content"></textarea>
+                        </div>
+                        <!-- Image URL (for image elements) -->
+                        <div class="control-group" id="prop-image-src-group">
+                            <label>Image URL</label>
+                            <input type="url" class="control-input" id="prop-image-src">
+                            <label>Upload Image</label>
+                            <input type="file" class="control-input" id="prop-image-upload" accept="image/*">
+                        </div>
+                        <!-- Common Properties -->
+                        <div class="control-group">
+                            <label>Position X (px)</label>
+                            <input type="number" class="control-input" id="prop-pos-x" step="5">
+                        </div>
+                        <div class="control-group">
+                            <label>Position Y (px)</label>
+                            <input type="number" class="control-input" id="prop-pos-y" step="5">
+                        </div>
+                        <div class="control-group">
+                            <label>Width (px)</label>
+                            <input type="number" class="control-input" id="prop-width" step="5">
+                        </div>
+                        <div class="control-group">
+                            <label>Height (px)</label>
+                            <input type="number" class="control-input" id="prop-height" step="5">
+                        </div>
+                        <div class="control-group">
+                            <label>Rotation (deg)</label>
+                            <input type="number" class="control-input" id="prop-rotate" step="1">
+                        </div>
+                        <div class="control-group" id="prop-font-size-group">
+                            <label>Font Size (px)</label>
+                            <input type="number" class="control-input" id="prop-font-size">
+                        </div>
+                        <div class="control-group" id="prop-font-color-group">
+                            <label>Font Color</label>
+                            <input type="color" class="control-input" id="prop-font-color">
+                        </div>
+                        <div class="control-group">
+                            <label>Layer (Z-Index)</label>
+                            <input type="number" class="control-input" id="prop-z-index">
+                        </div>
+                        <button id="blankCanvasDeleteElement" class="btn btn-danger" style="width:100%; background: var(--danger);"><i class="fas fa-trash"></i> Delete Element</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="tab-content" id="dashboard"><div class="accordion-item"><div class="accordion-header active"><h3>Dashboard Controls</h3><i class="fas fa-chevron-down"></i></div><div class="accordion-content active"><div class="control-group"><label>Section Header</label><input type="text" class="control-input" id="dashboard-sectionTitle" value="Comprehensive Dashboard"></div><h6>Layout</h6><div class="control-group"><label>Grid Columns (e.g., 1fr 1fr 1fr)</label><input type="text" class="control-input" id="dashboard-gridColumns" value="1fr 1fr 1fr"></div><div class="control-group"><label>Grid Rows (e.g., auto 1fr 1fr)</label><input type="text" class="control-input" id="dashboard-gridRows" value="auto 1fr 1fr"></div><div class="control-group"><label>Gap (px)</label><input type="number" class="control-input" id="dashboard-gap" value="15"></div></div></div><div class="accordion-item"><div class="accordion-header"><h3>Stats Cards</h3><i class="fas fa-chevron-down"></i></div><div class="accordion-content"><div class="control-group"><label><input type="checkbox" id="dashboard-statsEnabled" class="control-input" style="width:auto; margin-right:5px;" checked> Show Stats Cards</label></div><div class="control-group"><label>CSS Grid Area <small>row-start / col-start / row-end / col-end</small></label><input type="text" class="control-input" id="dashboard-statsGridArea" value="1 / 1 / 2 / 4"></div><div class="control-group"><label>Stat Values (CSV)</label><input type="text" class="control-input" id="dashboard-statValuesCSV" value="1.2M,85%,$450K"></div><div class="control-group"><label>Stat Labels (CSV)</label><input type="text" class="control-input" id="dashboard-statLabelsCSV" value="Active Users,Success Rate,Revenue"></div><h6>Styling</h6><div class="control-group"><label>Value Font Size (px)</label><input type="number" class="control-input" id="dashboard-statValueFontSize" value="28"></div><div class="control-group"><label>Value Color</label><input type="color" class="control-input" id="dashboard-statValueColor" value="#f093fb"></div><div class="control-group"><label>Label Font Size (px)</label><input type="number" class="control-input" id="dashboard-statLabelFontSize" value="14"></div><div class="control-group"><label>Label Color</label><input type="color" class="control-input" id="dashboard-statLabelColor" value="#2c3e50"></div></div></div><div class="accordion-item"><div class="accordion-header"><h3>Bar Chart</h3><i class="fas fa-chevron-down"></i></div><div class="accordion-content"><div class="control-group"><label><input type="checkbox" id="dashboard-horizBarChartEnabled" class="control-input" style="width:auto; margin-right:5px;" checked> Show Bar Chart</label></div><div class="control-group"><label>Title</label><input type="text" class="control-input" id="dashboard-horizBarChartTitle" value="Regional Sales"></div><div class="control-group"><label>CSS Grid Area <small>row-start / col-start / row-end / col-end</small></label><input type="text" class="control-input" id="dashboard-horizBarChartGridArea" value="2 / 1 / 3 / 3"></div><div class="control-group"><label>Orientation</label><select class="control-input" id="dashboard-horizBarChartOrientation"><option value="vertical">Vertical</option><option value="horizontal" selected>Horizontal</option></select></div><div class="control-group"><label>Data Labels (CSV)</label><input type="text" class="control-input" id="dashboard-horizBarChartLabelsCSV" value="North,South,East,West"></div><div class="control-group"><label>Data Values (CSV)</label><input type="text" class="control-input" id="dashboard-horizBarChartDataCSV" value="120,190,150,250"></div><div class="control-group"><label>Bar Colors (CSV)</label><input type="text" class="control-input" id="dashboard-horizBarChartColorsCSV" value="#667eea,#764ba2,#f093fb,#4ecdc4"></div><div class="control-group"><label>Image URLs (CSV)</label><textarea class="control-input" id="dashboard-horizBarChartImageUrlsCSV" rows="2"></textarea></div><div class="control-group"><label>Image Size (px)</label><input type="number" class="control-input" id="dashboard-horizBarChartImageSize" value="20"></div><div class="control-group"><label>Image Shape</label><select class="control-input" id="dashboard-horizBarChartImageShape"><option value="rectangle">Rectangle</option><option value="circle">Circle</option></select></div></div></div><div class="accordion-item"><div class="accordion-header"><h3>Side Chart (Pie)</h3><i class="fas fa-chevron-down"></i></div><div class="accordion-content"><div class="control-group"><label><input type="checkbox" id="dashboard-pieChartEnabled" class="control-input" style="width:auto; margin-right:5px;" checked> Show Pie Chart</label></div><div class="control-group"><label>Title</label><input type="text" class="control-input" id="dashboard-pieChartTitle" value="Traffic Sources"></div><div class="control-group"><label>CSS Grid Area <small>row-start / col-start / row-end / col-end</small></label><input type="text" class="control-input" id="dashboard-pieChartGridArea" value="2 / 3 / 3 / 4"></div><div class="control-group"><label>Data Labels (CSV)</label><input type="text" class="control-input" id="dashboard-pieChartLabelsCSV" value="Organic,Referral,Direct"></div><div class="control-group"><label>Data Values (CSV)</label><input type="text" class="control-input" id="dashboard-pieChartDataCSV" value="60,25,15"></div></div></div><div class="accordion-item"><div class="accordion-header"><h3>List Panel</h3><i class="fas fa-chevron-down"></i></div><div class="accordion-content"><div class="control-group"><label><input type="checkbox" id="dashboard-listEnabled" class="control-input" style="width:auto; margin-right:5px;" checked> Show List Panel</label></div><div class="control-group"><label>Title</label><input type="text" class="control-input" id="dashboard-listTitle" value="Recent Activities"></div><div class="control-group"><label>CSS Grid Area <small>row-start / col-start / row-end / col-end</small></label><input type="text" class="control-input" id="dashboard-listGridArea" value="3 / 1 / 4 / 3"></div><div class="control-group"><label>Item Texts (CSV)</label><textarea class="control-input" id="dashboard-listItemsCSV">Project Alpha Launched,New Client Onboarded,Q2 Report Published,Team Offsite Event</textarea></div><div class="control-group"><label>Item Icons/Images (CSV)</label><textarea class="control-input" id="dashboard-listIconsCSV">fas fa-rocket,fas fa-handshake,fas fa-file-alt,https://i.pravatar.cc/24?u=team</textarea></div><h6>Styling</h6><div class="control-group"><label>List Item Color</label><input type="color" class="control-input" id="dashboard-listItemColor" value="#2c3e50"></div><div class="control-group"><label>List Icon Color</label><input type="color" class="control-input" id="dashboard-listIconColor" value="#764ba2"></div></div></div><div class="accordion-item"><div class="accordion-header"><h3>Image Panel</h3><i class="fas fa-chevron-down"></i></div><div class="accordion-content"><div class="control-group"><label><input type="checkbox" id="dashboard-imageEnabled" class="control-input" style="width:auto; margin-right:5px;" checked> Show Image Panel</label></div><div class="control-group"><label>CSS Grid Area <small>row-start / col-start / row-end / col-end</small></label><input type="text" class="control-input" id="dashboard-imageGridArea" value="3 / 3 / 4 / 4"></div><div class="control-group"><label>Image URL</label><input type="url" class="control-input" id="dashboard-imageUrl" value="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1170"></div><div class="control-group"><label>Upload Image</label><input type="file" class="control-input" id="dashboard-imageUpload" accept="image/*"></div><div class="control-group"><label>Image Fit</label><select id="dashboard-imageFit" class="control-input"><option value="cover">Cover (Fill & Crop)</option><option value="contain">Contain (Fit Inside)</option></select></div></div></div><div class="specific-settings-container"></div></div>
         <div class="tab-content" id="social"><div class="accordion-item"><div class="accordion-header active"><h3>Social Post Controls</h3><i class="fas fa-chevron-down"></i></div><div class="accordion-content active"><h6><i class="fas fa-heading"></i> Header Text</h6><div class="control-group"> <label>Header Text</label> <input type="text" class="control-input" id="socialHeader" value="Inspirational Quote"> </div><div class="control-group"> <label>Font Size (px)</label> <input type="number" class="control-input" id="socialHeaderFontSize" value="42"> </div><div class="control-group"> <label>Text Color</label> <input type="color" class="control-input" id="socialHeaderTextColor" value="#FFFFFF"> </div><div class="control-group"> <label>Position X (px)</label> <input type="number" class="control-input" id="socialHeaderPosX" value="40"> </div><div class="control-group"> <label>Position Y (px)</label> <input type="number" class="control-input" id="socialHeaderPosY" value="400"> </div><hr style="border: none; border-top: 1px solid var(--subtle-border); margin: 20px 0;"><h6><i class="fas fa-paragraph"></i> Info Text</h6><div class="control-group"> <label>Information Text</label> <textarea class="control-input" id="socialInfoText" rows="3">"The only way to do great work is to love what you do." - Steve Jobs</textarea> </div><div class="control-group"> <label>Font Size (px)</label> <input type="number" class="control-input" id="socialInfoTextFontSize" value="24"> </div><div class="control-group"> <label>Text Color</label> <input type="color" class="control-input" id="socialInfoTextColor" value="#FFFFFF"> </div><div class="control-group"> <label>Position X (px)</label> <input type="number" class="control-input" id="socialInfoTextPosX" value="40"> </div><div class="control-group"> <label>Position Y (px)</label> <input type="number" class="control-input" id="socialInfoTextPosY" value="500"> </div><hr style="border: none; border-top: 1px solid var(--subtle-border); margin: 20px 0;"><h6><i class="fas fa-magic"></i> Effects</h6><div class="control-group"> <label style="display: flex; align-items: center; gap: 8px;"><input type="checkbox" id="socialTextShadow" class="control-input" checked style="width: auto;"> Add Text Shadow</label></div></div></div><div class="specific-settings-container"></div></div>
-        <div class="tab-content" id="newsAlert"><div class="accordion-item"><div class="accordion-header active"><h3>News Alert Controls</h3><i class="fas fa-chevron-down"></i></div><div class="accordion-content active"><h6><i class="fas fa-layer-group"></i> Layout & Style</h6><div class="control-group"> <label>Layout</label> <select class="control-input" id="newsLayoutType"> <option value="standard" selected>Standard</option> <option value="overlapping">Overlapping Header</option> </select> </div><div class="control-group"> <label>Content Type</label> <select class="control-input" id="newsLayout"> <option value="list" selected>Points / List</option> <option value="quote">Quote</option> </select> </div><hr style="border: none; border-top: 1px solid var(--subtle-border); margin: 20px 0;"><div id="newsHeaderSettings"><h6><i class="fas fa-window-maximize"></i> Header Bar</h6><div class="control-group"><label>Header Style</label><select class="control-input" id="newsHeaderStyle"><option value="solid" selected>Solid Color</option><option value="transparent">Transparent</option><option value="underline">Underline</option></select></div><div class="control-group"><label>Header Color</label><input type="color" class="control-input" id="newsTopBarColor" value="#c00000"></div><div class="control-group"><label>Header Bar Text</label><input type="text" class="control-input" id="newsTopBarText" value="BREAKING NEWS"></div><div class="control-group"><label>Font Size (px)</label><input type="number" class="control-input" id="newsHeaderBarFontSize" value="28"></div><div class="control-group"><label>Text Color</label><input type="color" class="control-input" id="newsHeaderBarTextColor" value="#FFFFFF"></div><div class="control-group"><label>Text Alignment</label><select class="control-input" id="newsHeaderTextAlignment"><option value="flex-start" selected>Left</option><option value="center">Center</option><option value="space-between">Space Between</option></select></div><div class="control-group"><label>Header Image URL</label><input type="url" class="control-input" id="newsHeaderImageUrl"></div><div class="control-group"><label>Upload Header Image</label><input type="file" class="control-input" id="newsHeaderImageUpload" accept="image/*"></div><div class="control-group"><label>Header Tagline</label><input type="text" class="control-input" id="newsHeaderTagline" placeholder="e.g., #EarningsWithETNOW"></div></div><hr style="border: none; border-top: 1px solid var(--subtle-border); margin: 20px 0;"><h6><i class="fas fa-align-left"></i> Main Content</h6><div class="control-group"><label>Main Title Text</label><input type="text" class="control-input" id="newsMainTitle" value="ISRAEL - IRAN WAR INTENSIFIES"></div><div class="control-group"><label>Font Size (px)</label><input type="number" class="control-input" id="newsMainTitleFontSize" value="42"></div><div class="control-group"><label>BG Color</label><input type="color" class="control-input" id="newsMainTitleBgColor" value="#f7b731"></div><div class="control-group"><label>Text Color</label><input type="color" class="control-input" id="newsMainTitleTextColor" value="#FFFFFF"></div><div id="newsListSettings"><h6><i class="fas fa-list-ul"></i> List Options (for 'Points' Content)</h6><div class="control-group"><label>Bullet/Number Style</label><select class="control-input" id="newsBulletStyle"><option value="bullet">Standard Bullet (•)</option><option value="check">Checkmark (✓)</option><option value="arrow">Arrow (→)</option><option value="number">Numbered (1.)</option><option value="circle">Numbered in Circle</option><option value="square">Numbered in Square</option></select></div><div class="control-group"><label><input type="checkbox" id="newsEnableDivider" class="control-input" style="width:auto; margin-right: 5px;" checked> Show Divider Line</label></div><div class="control-group"><label>Bullet Points <small>(One per line)</small></label><textarea class="control-input" id="newsListPoints" rows="5">Israeli military says missiles launched from Iran towards Israel
+        <div class="tab-content" id="newsAlert"><div class="accordion-item"><div class="accordion-header active"><h3>News Alert Controls</h3><i class="fas fa-chevron-down"></i></div><div class="accordion-content active"><h6><i class="fas fa-layer-group"></i> Layout & Style</h6><div class="control-group"> <label>Layout</label> <select class="control-input" id="newsLayoutType"> <option value="standard" selected>Standard</option> <option value="overlapping">Overlapping Header</option> </select> </div><div class="control-group"> <label>Content Type</label> <select class="control-input" id="newsLayout"> <option value="list" selected>Points / List</option> <option value="quote">Quote</option> </select> </div><hr style="border: none; border-top: 1px solid var(--subtle-border); margin: 20px 0;"><div id="newsHeaderSettings"><h6><i class="fas fa-window-maximize"></i> Header Bar</h6><div class="control-group"><label>Header Style</label><select class="control-input" id="newsHeaderStyle"><option value="solid" selected>Solid Color</option><option value="transparent">Transparent</option><option value="underline">Underline</option></select></div><div class="control-group"><label>Header Color</label><input type="color" class="control-input" id="newsTopBarColor" value="#c00000"></div><div class="control-group"><label>Header Bar Text</label><input type="text" class="control-input" id="newsTopBarText" value="BREAKING NEWS"></div><div class="control-group"><label>Font Size (px)</label><input type="number" class="control-input" id="newsHeaderBarFontSize" value="28"></div><div class="control-group"><label>Text Color</label><input type="color" class="control-input" id="newsHeaderBarTextColor" value="#FFFFFF"></div><div class="control-group"><label>Text Alignment</label><select class="control-input" id="newsHeaderTextAlignment"><option value="flex-start" selected>Left</option><option value="center">Center</option><option value="space-between">Space Between</option></select></div><div class="control-group"><label>Header Image URL</label><input type="url" class="control-input" id="newsHeaderImageUrl"></div><div class="control-group"><label>Upload Header Image</label><input type="file" class="control-input" id="newsHeaderImageUpload" accept="image/*"></div><div class="control-group"><label>Header Tagline</label><input type="text" class="control-input" id="newsHeaderTagline" placeholder="e.g., #EarningsWithETNOW"></div></div><hr style="border: none; border-top: 1px solid var(--subtle-border); margin: 20px 0;"><h6><i class="fas fa-align-left"></i> Main Content</h6><div class="control-group"><label>Main Title Text</label><input type="text" class="control-input" id="newsMainTitle" value="ISRAEL - IRAN WAR INTENSIFIES"></div><div class="control-group"><label>Font Size (px)</label><input type="number" class="control-input" id="newsMainTitleFontSize" value="42"></div><div class="control-group"><label>BG Color</label><input type="color" class="control-input" id="newsMainTitleBgColor" value="#f7b731"></div><div class="control-group"><label>Text Color</label><input type="color" class="control-input" id="newsMainTitleTextColor" value="#FFFFFF"></div><!-- ADDED SPACING CONTROL --><div class="control-group"><label>Space Below Title (px)</label><input type="number" class="control-input" id="newsMainTitleMarginBottom" value="20"></div><div id="newsListSettings"><h6><i class="fas fa-list-ul"></i> List Options (for 'Points' Content)</h6><div class="control-group"><label>Bullet/Number Style</label><select class="control-input" id="newsBulletStyle"><option value="bullet">Standard Bullet (•)</option><option value="check">Checkmark (✓)</option><option value="arrow">Arrow (→)</option><option value="number">Numbered (1.)</option><option value="circle">Numbered in Circle</option><option value="square">Numbered in Square</option></select></div><div class="control-group"><label><input type="checkbox" id="newsEnableDivider" class="control-input" style="width:auto; margin-right: 5px;" checked> Show Divider Line</label></div><div class="control-group"><label>Bullet Points <small>(One per line)</small></label><textarea class="control-input" id="newsListPoints" rows="5">Israeli military says missiles launched from Iran towards Israel
 several explosions heard over Tel Aviv
 Interceptions seen in sky over Jerusalem
 Multiple explosions heard in Central Israel</textarea></div><div class="control-group"><label>List Text Color</label><input type="color" class="control-input" id="newsListPointsColor" value="#FFFFFF"></div></div><div id="newsQuoteSettings" style="display: none;"><h6><i class="fas fa-quote-left"></i> Quote Options (for 'Quote' Content)</h6><div class="control-group"><label>Quote Text</label><textarea class="control-input" id="newsQuoteText" rows="4">"Trump's bold decision to target Iran's nuclear facilities will change history."</textarea></div><div class="control-group"><label>Font Size (px)</label><input type="number" class="control-input" id="newsQuoteTextFontSize" value="26"></div><div class="control-group"><label>Text Color</label><input type="color" class="control-input" id="newsQuoteTextColor" value="#FFFFFF"></div><hr style="margin: 10px 0;"><div class="control-group"><label>Attribution Name</label><input type="text" class="control-input" id="newsQuoteAttribution" value="BENJAMIN NETANYAHU"></div><div class="control-group"><label>Font Size (px)</label><input type="number" class="control-input" id="newsQuoteAttributionFontSize" value="24"></div><div class="control-group"><label>Text Color</label><input type="color" class="control-input" id="newsQuoteAttributionColor" value="#FFFFFF"></div><hr style="margin: 10px 0;"><div class="control-group"><label>Attribution Designation</label><input type="text" class="control-input" id="newsQuoteDesignation" value="Israeli PM"></div><div class="control-group"><label>Font Size (px)</label><input type="number" class="control-input" id="newsQuoteDesignationFontSize" value="18"></div><div class="control-group"><label>Text Color</label><input type="color" class="control-input" id="newsQuoteDesignationColor" value="#FFFFFF"></div><hr style="margin: 10px 0;"><div class="control-group"><label>Person Image Size (px)</label><input type="number" class="control-input" id="newsPersonImageSize" value="100"></div><div class="control-group"><label>Person Image URL</label><input type="url" class="control-input" id="newsPersonImageUrl"></div><div class="control-group"><label>Upload Person Image</label><input type="file" class="control-input" id="newsPersonImageUpload" accept="image/*"></div></div><div id="newsSideImageSettings"><h6><i class="fas fa-image"></i> Side Image (List Layout Only)</h6><div class="control-group"><label><input type="checkbox" id="newsEnableSideImage" class="control-input" style="width:auto; margin-right: 5px;"> Add Side Image</label></div><div class="control-group"><label>Side Image URL</label><input type="url" class="control-input" id="newsSideImageUrl"></div><div class="control-group"><label>Upload Side Image</label><input type="file" class="control-input" id="newsSideImageUpload" accept="image/*"></div><div class="control-group"><label>Position</label><select class="control-input" id="newsSideImagePosition"><option value="right">Right</option><option value="left">Left</option></select></div><div class="control-group"><label>Width (%)</label><input type="number" class="control-input" id="newsSideImageWidth" value="30" min="10" max="70"></div><div class="control-group"><label>Zoom (%)</label><input type="range" class="control-input" id="newsSideImageZoom" min="50" max="300" value="100"></div><div class="control-group"><label>Position X (px)</label><input type="number" class="control-input" id="newsSideImagePosX" value="0" step="5"></div><div class="control-group"><label>Position Y (px)</label><input type="number" class="control-input" id="newsSideImagePosY" value="0" step="5"></div></div><hr style="border: none; border-top: 1px solid var(--subtle-border); margin: 20px 0;"><h6><i class="fas fa-at"></i> Source</h6><div class="control-group"><label>Source Text <small>(e.g., Agencies)</small></label><input type="text" class="control-input" id="newsSourceText" value="(Agencies)"></div><div class="control-group"><label>Source Text Color</label><input type="color" class="control-input" id="newsSourceTextColor" value="#FFFFFF"></div></div></div><div class="specific-settings-container"></div></div>
@@ -1321,6 +1419,10 @@ A visual bookmarking tool that helps you discover and save creative ideas.</text
         let selectedElement = null;
         let floatingToolbar = null;
         let isSyncingFromCanvas = false;
+        // --- BLANK CANVAS STATE ---
+        let blankCanvasElements = [];
+        let bcElementCounter = 0;
+        let selectedBcElement = null;
 
         // --- CANVAS SIZING AND ZOOM ---
         function applyCanvasScale(scale) {
@@ -1381,6 +1483,7 @@ A visual bookmarking tool that helps you discover and save creative ideas.</text
                     if (selectedElement) {
                         selectedElement.classList.remove('element-selected');
                         selectedElement = null;
+                        if(currentTab !== 'blankCanvas') selectedBcElement = null;
                     }
                     hideFloatingToolbar();
                     
@@ -1412,16 +1515,34 @@ A visual bookmarking tool that helps you discover and save creative ideas.</text
                     fitCanvasToContainer();
                 } else if (button.id === 'resetZoomBtn') {
                     applyCanvasScale(1.0);
+                } else if (button.id === 'blankCanvasAddText') {
+                    bc_addElement('text');
+                } else if (button.id === 'blankCanvasAddImage') {
+                    bc_addElement('image');
+                } else if (button.id === 'blankCanvasDeleteElement') {
+                    bc_deleteSelectedElement();
                 }
             });
             
             sidebar.addEventListener('input', (e) => { 
+                if (e.target.closest('#blankCanvasSelectedElementControls')) {
+                    bc_updateSelectedElementFromControls();
+                    return;
+                }
                 if (e.target.classList.contains('control-input')) { 
                     if(e.target.id === 'processStepTitlesCSV') suggestIconsForProcess(); 
                     handleControlChange(e.target); 
                 } 
             });
             sidebar.addEventListener('change', (e) => { 
+                if (e.target.closest('#blankCanvasSelectedElementControls')) {
+                     if(e.target.id === 'prop-image-upload') {
+                        bc_handleImageUpload(e);
+                    } else {
+                        bc_updateSelectedElementFromControls();
+                    }
+                    return;
+                }
                 if (e.target.classList.contains('control-input')) {
                     handleControlChange(e.target); 
                 }
@@ -1454,15 +1575,31 @@ A visual bookmarking tool that helps you discover and save creative ideas.</text
                 const infographicDiv = document.getElementById('infographicCanvas');
                 if (!infographicDiv) return;
                 
-                const selectedControlId = selectedElement ? selectedElement.dataset.controlId : null;
-                const selectedIndex = selectedElement ? selectedElement.dataset.index : null;
-                if (selectedElement) {
-                    selectedElement.classList.remove('element-selected');
-                    selectedElement = null;
+                if (currentTab !== 'blankCanvas') {
+                    const selectedControlId = selectedElement ? selectedElement.dataset.controlId : null;
+                    const selectedIndex = selectedElement ? selectedElement.dataset.index : null;
+                    if (selectedElement) {
+                        selectedElement.classList.remove('element-selected');
+                        selectedElement = null;
+                    }
+                    infographicDiv.innerHTML = '';
+                    if (selectedControlId) {
+                       let selector = `[data-control-id="${selectedControlId}"]`;
+                       if (selectedIndex) selector += `[data-index="${selectedIndex}"]`;
+                       const newElement = infographicDiv.querySelector(selector);
+                       if (newElement) {
+                           selectedElement = newElement;
+                           selectedElement.classList.add('element-selected');
+                           selectedElement.addEventListener('input', handleContentEditableInput);
+                       } else {
+                           hideFloatingToolbar();
+                       }
+                    }
+                } else {
+                    infographicDiv.innerHTML = ''; // Clear for blank canvas redraw
                 }
                 
                 const currentTransform = infographicDiv.style.transform;
-                infographicDiv.innerHTML = '';
                 infographicDiv.style.cssText = '';
                 infographicDiv.style.transform = currentTransform;
                 
@@ -1513,21 +1650,6 @@ A visual bookmarking tool that helps you discover and save creative ideas.</text
                 drawCurrentInfographicType(infographicDiv);
                 applyFooterBar(infographicDiv);
                 
-                if (selectedControlId) {
-                    let selector = `[data-control-id="${selectedControlId}"]`;
-                    if (selectedIndex) {
-                        selector += `[data-index="${selectedIndex}"]`;
-                    }
-                    const newElement = infographicDiv.querySelector(selector);
-                    if (newElement) {
-                        selectedElement = newElement;
-                        selectedElement.classList.add('element-selected');
-                        selectedElement.addEventListener('input', handleContentEditableInput);
-                    } else {
-                        hideFloatingToolbar();
-                    }
-                }
-                
             } catch (error) {
                 console.error("Error during _renderInfographic:", error);
                 const infographicDiv = document.getElementById('infographicCanvas');
@@ -1550,9 +1672,9 @@ A visual bookmarking tool that helps you discover and save creative ideas.</text
             const layoutStyles = getGlobalLayoutStyles();
             const padding = getElementValue('globalContentPadding', '20') + 'px';
             
-            canvas.innerHTML = '';
             canvas.style.display = 'flex';
             
+            if (currentTab === 'blankCanvas') { bc_renderAllElements(canvas); return; }
             if (currentTab === 'dashboard') { generateDashboardInfographic(canvas, fontStyles, layoutStyles); return; }
             if (currentTab === 'social') { generateSocialInfographic(canvas, fontStyles, layoutStyles, padding); return; }
             if (currentTab === 'newsAlert') { generateNewsAlertInfographic(canvas, fontStyles, layoutStyles); return; }
@@ -1647,6 +1769,7 @@ A visual bookmarking tool that helps you discover and save creative ideas.</text
             const mainTitleBg = getElementValue('newsMainTitleBgColor');
             const mainTitleFontSize = getElementValue('newsMainTitleFontSize', '42') + 'px';
             const mainTitleTextColor = getElementValue('newsMainTitleTextColor', '#FFFFFF');
+            const mainTitleMarginBottom = getElementValue('newsMainTitleMarginBottom', '20') + 'px'; // MODIFICATION
 
             const contentType = getElementValue('newsLayout', 'list');
             let bodyHtml = '';
@@ -1726,7 +1849,7 @@ A visual bookmarking tool that helps you discover and save creative ideas.</text
                     ${textAlign === 'space-between' ? taglineHtml : ''}
                 </div>
                 <div class="news-content-area">
-                    <div class="news-main-title" style="background-color: ${mainTitleBg}; font-size: ${mainTitleFontSize}; color:${mainTitleTextColor};">
+                    <div class="news-main-title" style="background-color: ${mainTitleBg}; font-size: ${mainTitleFontSize}; color:${mainTitleTextColor}; margin-bottom: ${mainTitleMarginBottom};">
                          <span data-control-id="newsMainTitle" data-font-size-control="newsMainTitleFontSize" data-font-weight-control="${currentTab}-fontWeight" data-color-control="newsMainTitleTextColor" style="font-weight:${f.fontWeight};" contenteditable="true">${mainTitle}</span>
                     </div>
                     <div class="news-body-list">${bodyHtml}</div>
@@ -2173,7 +2296,7 @@ A visual bookmarking tool that helps you discover and save creative ideas.</text
                     cardStyle = `background: ${defaultGradients[i-1]};`;
                 } else {
                     const color = cardColors[(i-1) % cardColors.length] || themeColors[0];
-                    cardStyle = `background: linear-gradient(135deg, ${color}, color-mix(in srgb, ${color} 70%, black));`;
+                    cardStyle = `background: linear-gradient(135deg, ${color}, color-mix(in srgb, ${color} 70%,black));`;
                 }
 
                 html += `<div class="price-card" style="${cardStyle}">
@@ -2189,7 +2312,6 @@ A visual bookmarking tool that helps you discover and save creative ideas.</text
             }
             contentDiv.innerHTML = html;
         }
-
         function generateComparisonInfographic(contentDiv, f, l) {
             const sectionTitle = getElementValue('compareSectionTitle');
             let html = createSectionTitle(sectionTitle, f, l, 'compareSectionTitle');
@@ -2872,7 +2994,7 @@ A visual bookmarking tool that helps you discover and save creative ideas.</text
 
             try {
                 const canvas = await html2canvas(originalElement, {
-                    scale: 2,
+                    scale: 3, // MODIFICATION FOR HD
                     useCORS: true,
                     allowTaint: true,
                     backgroundColor: bgColor,
@@ -2925,7 +3047,7 @@ A visual bookmarking tool that helps you discover and save creative ideas.</text
             });
         }
         
-        const SETTINGS_KEY = 'avAiInfoCreatorSettings_v20';
+        const SETTINGS_KEY = 'avAiInfoCreatorSettings_v21'; // Incremented version for new features
 
         function saveSettings() {
             const saveBtn = document.getElementById('saveBtn');
@@ -2934,9 +3056,12 @@ A visual bookmarking tool that helps you discover and save creative ideas.</text
             
             const settings = {};
             document.querySelectorAll('.control-input').forEach(el => {
-                if (el.type === 'file' || el.id === 'aiModalApiKey' || el.id === 'geminiApiKey') return;
+                if (el.type === 'file' || el.id === 'aiModalApiKey' || el.id === 'geminiApiKey' || el.id.startsWith('prop-')) return;
                 settings[el.id] = (el.type === 'checkbox') ? el.checked : el.value;
             });
+
+            // Save Blank Canvas elements
+            settings.blankCanvasElements = blankCanvasElements;
             
             const aiKey = document.getElementById('aiModalApiKey').value;
             if (aiKey) settings['aiModalApiKey_saved'] = btoa(aiKey);
@@ -2963,6 +3088,12 @@ A visual bookmarking tool that helps you discover and save creative ideas.</text
             if (!savedSettings) return;
 
             const settings = JSON.parse(savedSettings);
+            
+            // Load Blank Canvas elements if they exist
+            if (settings.blankCanvasElements && Array.isArray(settings.blankCanvasElements)) {
+                blankCanvasElements = settings.blankCanvasElements;
+                bcElementCounter = blankCanvasElements.reduce((max, el) => Math.max(max, el.id), 0) + 1;
+            }
 
             Object.keys(settings).forEach(id => {
                 if (id === 'aiModalApiKey_saved' && settings[id]) {
@@ -3494,14 +3625,30 @@ Kannada Article: ${text}`
                         <div class="img-gen-image-container">
                             <img src="${img.imageUrl}" alt="${img.title}" class="img-gen-generated-image" />
                             <div class="img-gen-image-title">${img.title}</div>
-                            <button class="btn btn-success" style="width: 100%; margin: 5px 0;" onclick="imgGen_applyImageToInfographic('${img.imageUrl}')">
-                                <i class="fas fa-check"></i> Apply to Infographic
-                            </button>
+                            <div style="display: flex; gap: 5px; margin: 5px 0;">
+                                <button class="btn btn-success" style="width: 100%;" onclick="imgGen_applyImageToInfographic('${img.imageUrl}')">
+                                    <i class="fas fa-check"></i> Apply
+                                </button>
+                                <button class="btn btn-secondary" style="width: 100%;" onclick="imgGen_downloadImage(event, '${img.imageUrl}', '${img.title}')">
+                                    <i class="fas fa-download"></i> Download
+                                </button>
+                            </div>
                         </div>
                     `).join('')}
                 </div>`;
             
             container.innerHTML = html;
+        }
+
+        function imgGen_downloadImage(event, imageUrl, title) {
+            event.stopPropagation(); // Prevent other clicks
+            const link = document.createElement('a');
+            link.href = imageUrl;
+            const safeTitle = title.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+            link.download = `av-ai-image-${safeTitle}.png`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         }
         
         function imgGen_applyImageToInfographic(imageUrl) {
@@ -3561,7 +3708,7 @@ Kannada Article: ${text}`
             
             mainContentWrapper.addEventListener('click', (e) => {
                 const isClickOnToolbar = e.target.closest('#floatingToolbar');
-                const targetElement = e.target.closest('[data-control-id]');
+                const targetElement = e.target.closest('[data-control-id], [data-bc-id]');
                 if (isClickOnToolbar) return;
 
                 if (targetElement) {
@@ -3570,15 +3717,23 @@ Kannada Article: ${text}`
                     }
                     selectedElement = targetElement;
                     selectedElement.classList.add('element-selected');
-                    showFloatingToolbar(selectedElement);
-                    if (targetElement.isContentEditable) {
-                        targetElement.focus();
+
+                    if(currentTab === 'blankCanvas') {
+                        bc_selectElement(parseInt(selectedElement.dataset.bcId));
+                    } else {
+                        showFloatingToolbar(selectedElement);
+                        if (targetElement.isContentEditable) {
+                            targetElement.focus();
+                        }
+                        selectedElement.addEventListener('input', handleContentEditableInput);
                     }
-                    selectedElement.addEventListener('input', handleContentEditableInput);
                 } else {
                     if (selectedElement) {
                          selectedElement.classList.remove('element-selected');
                          selectedElement = null;
+                         if(currentTab === 'blankCanvas') {
+                            bc_deselectElement();
+                         }
                     }
                     hideFloatingToolbar();
                 }
@@ -3589,7 +3744,21 @@ Kannada Article: ${text}`
             isSyncingFromCanvas = true;
             const element = event.target;
             const controlId = element.dataset.controlId;
+            const bcId = element.dataset.bcId;
             const index = element.dataset.index;
+
+            // Handle Blank Canvas elements
+            if (currentTab === 'blankCanvas' && bcId !== undefined) {
+                const bcElement = blankCanvasElements.find(el => el.id == bcId);
+                if (bcElement) {
+                    bcElement.text = element.innerHTML.replace(/<br\s*[\/]?>/gi, "\n");
+                    document.getElementById('prop-text-content').value = bcElement.text;
+                }
+                isSyncingFromCanvas = false;
+                return;
+            }
+            
+            // Handle template elements
             const control = document.getElementById(controlId);
             if (!control) { isSyncingFromCanvas = false; return; }
             
@@ -3803,6 +3972,128 @@ Kannada Article: ${text}`
             });
         }
         
+        // --- BLANK CANVAS LOGIC ---
+        function bc_addElement(type) {
+            const newElement = {
+                id: bcElementCounter++,
+                type: type,
+                x: 20, y: 20,
+                width: type === 'text' ? 300 : 200,
+                height: type === 'text' ? 100 : 200,
+                rotation: 0,
+                zIndex: blankCanvasElements.length + 1,
+                text: type === 'text' ? 'New Text Box' : '',
+                src: type === 'image' ? 'https://placehold.co/200x200/cccccc/2c3e50?text=Image' : '',
+                fontSize: 24,
+                fontColor: '#2c3e50'
+            };
+            blankCanvasElements.push(newElement);
+            bc_renderAllElements();
+            bc_selectElement(newElement.id);
+        }
+
+        function bc_renderAllElements(canvas = document.getElementById('infographicCanvas')) {
+            if (!canvas || currentTab !== 'blankCanvas') return;
+            canvas.innerHTML = ''; // Clear previous elements
+            blankCanvasElements.forEach(el => {
+                const div = document.createElement('div');
+                div.className = 'blank-canvas-element';
+                div.dataset.bcId = el.id;
+                div.style.left = `${el.x}px`;
+                div.style.top = `${el.y}px`;
+                div.style.width = `${el.width}px`;
+                div.style.height = `${el.height}px`;
+                div.style.transform = `rotate(${el.rotation}deg)`;
+                div.style.zIndex = el.zIndex;
+                
+                if (el.type === 'text') {
+                    div.innerHTML = `<div class="bc-text" contenteditable="true" data-bc-id="${el.id}" style="font-size: ${el.fontSize}px; color: ${el.fontColor};">${el.text.replace(/\n/g, '<br>')}</div>`;
+                } else {
+                    div.innerHTML = `<img src="${sanitizeHTML(el.src)}" class="bc-image" data-bc-id="${el.id}" alt="Blank canvas image">`;
+                }
+                canvas.appendChild(div);
+            });
+            // Re-select element if it exists
+            if (selectedBcElement) {
+                const domEl = canvas.querySelector(`[data-bc-id="${selectedBcElement.id}"]`);
+                if (domEl) domEl.classList.add('element-selected');
+            }
+        }
+
+        function bc_selectElement(id) {
+            selectedBcElement = blankCanvasElements.find(el => el.id === id);
+            bc_updateControlsForSelectedElement();
+            // Also update the generic selectedElement for highlight class
+            selectedElement = document.querySelector(`.blank-canvas-element[data-bc-id="${id}"]`);
+            document.querySelectorAll('.blank-canvas-element').forEach(el => el.classList.remove('element-selected'));
+            if(selectedElement) selectedElement.classList.add('element-selected');
+        }
+
+        function bc_deselectElement() {
+            selectedBcElement = null;
+            document.getElementById('blankCanvasSelectedElementControls').style.display = 'none';
+        }
+
+        function bc_updateControlsForSelectedElement() {
+            const controlsContainer = document.getElementById('blankCanvasSelectedElementControls');
+            if (!selectedBcElement) {
+                controlsContainer.style.display = 'none';
+                return;
+            }
+            controlsContainer.style.display = 'block';
+
+            document.getElementById('prop-text-content-group').style.display = selectedBcElement.type === 'text' ? 'block' : 'none';
+            document.getElementById('prop-font-size-group').style.display = selectedBcElement.type === 'text' ? 'block' : 'none';
+            document.getElementById('prop-font-color-group').style.display = selectedBcElement.type === 'text' ? 'block' : 'none';
+            document.getElementById('prop-image-src-group').style.display = selectedBcElement.type === 'image' ? 'block' : 'none';
+            
+            document.getElementById('prop-text-content').value = selectedBcElement.text || '';
+            document.getElementById('prop-image-src').value = selectedBcElement.src || '';
+            document.getElementById('prop-pos-x').value = selectedBcElement.x;
+            document.getElementById('prop-pos-y').value = selectedBcElement.y;
+            document.getElementById('prop-width').value = selectedBcElement.width;
+            document.getElementById('prop-height').value = selectedBcElement.height;
+            document.getElementById('prop-rotate').value = selectedBcElement.rotation;
+            document.getElementById('prop-font-size').value = selectedBcElement.fontSize;
+            document.getElementById('prop-font-color').value = selectedBcElement.fontColor;
+            document.getElementById('prop-z-index').value = selectedBcElement.zIndex;
+        }
+
+        function bc_updateSelectedElementFromControls() {
+            if (!selectedBcElement || isSyncingFromCanvas) return;
+            selectedBcElement.text = getElementValue('prop-text-content');
+            selectedBcElement.src = uploadedImageCache['prop-image-upload'] || getElementValue('prop-image-src');
+            selectedBcElement.x = getElementIntValue('prop-pos-x');
+            selectedBcElement.y = getElementIntValue('prop-pos-y');
+            selectedBcElement.width = getElementIntValue('prop-width');
+            selectedBcElement.height = getElementIntValue('prop-height');
+            selectedBcElement.rotation = getElementIntValue('prop-rotate');
+            selectedBcElement.fontSize = getElementIntValue('prop-font-size');
+            selectedBcElement.fontColor = getElementValue('prop-font-color');
+            selectedBcElement.zIndex = getElementIntValue('prop-z-index');
+            bc_renderAllElements();
+        }
+
+        function bc_deleteSelectedElement() {
+            if (!selectedBcElement) return;
+            blankCanvasElements = blankCanvasElements.filter(el => el.id !== selectedBcElement.id);
+            bc_deselectElement();
+            bc_renderAllElements();
+        }
+
+        function bc_handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (file && selectedBcElement && selectedBcElement.type === 'image') {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    uploadedImageCache['prop-image-upload'] = e.target.result;
+                    document.getElementById('prop-image-src').value = '';
+                    bc_updateSelectedElementFromControls();
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
         // --- INITIALIZATION ---
         document.addEventListener('DOMContentLoaded', () => { 
             const tabContentContainer = document.getElementById('tabContentContainer');
